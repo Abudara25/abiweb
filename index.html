@@ -753,23 +753,48 @@
     event.target.classList.add('active');
   }
 
-  function submitContact() {
+  function mailtoFallbackContact(data) {
+    const subject = encodeURIComponent('Demande de devis AbiWeb — ' + data.nom);
+    const body = encodeURIComponent(
+      'Nom : ' + data.nom + '\n' +
+      'Email : ' + data.email + '\n' +
+      (data.tel ? 'Téléphone : ' + data.tel + '\n' : '') +
+      (data.formule ? 'Formule : ' + data.formule + '\n' : '') +
+      '\nMessage :\n' + data.message
+    );
+    window.location.href = 'mailto:abiweb@outlook.fr?subject=' + subject + '&body=' + body;
+  }
+
+  async function submitContact() {
     const nom = document.getElementById('c-nom').value.trim();
     const email = document.getElementById('c-email').value.trim();
     const message = document.getElementById('c-message').value.trim();
     if (!nom || !email || !message) { alert('Merci de remplir au moins votre nom, email et message.'); return; }
-    const formule = document.getElementById('c-formule').value;
-    const tel = document.getElementById('c-tel').value;
-    const subject = encodeURIComponent('Demande de devis AbiWeb — ' + nom);
-    const body = encodeURIComponent(
-      'Nom : ' + nom + '\n' +
-      'Email : ' + email + '\n' +
-      (tel ? 'Téléphone : ' + tel + '\n' : '') +
-      (formule ? 'Formule : ' + formule + '\n' : '') +
-      '\nMessage :\n' + message
-    );
-    window.location.href = 'mailto:abiweb@outlook.fr?subject=' + subject + '&body=' + body;
-    document.getElementById('success-contact').style.display = 'block';
+    const data = {
+      nom, email, message,
+      formule: document.getElementById('c-formule').value,
+      tel: document.getElementById('c-tel').value,
+    };
+    const btn = event.target;
+    const originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+
+    try {
+      const resp = await fetch('/api/send-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!resp.ok) throw new Error('send_failed');
+      document.getElementById('success-contact').style.display = 'block';
+    } catch (e) {
+      const fallback = confirm("L'envoi automatique a échoué. Voulez-vous ouvrir votre messagerie pour envoyer le message par email à la place ?");
+      if (fallback) mailtoFallbackContact(data);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+    }
   }
 
 </script>

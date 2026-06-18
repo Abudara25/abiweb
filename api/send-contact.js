@@ -6,48 +6,15 @@ export default async function handler(req, res) {
 
   const data = req.body || {};
 
-  const domaineLabel =
-    data.domaine === 'non' ? 'Non, à acheter'
-    : data.domaine === 'oui' ? 'Oui, déjà acheté'
-    : 'Adresse gratuite (vercel.app)';
+  const text = `=== CONTACT RAPIDE ABIWEB ===
 
-  const text = `=== BRIEF CLIENT ABIWEB ===
-
---- CONTACT ---
-Structure : ${data.nom || ''}
-Type : ${data.type || ''}
-Nom contact : ${data.contact || ''}
+Nom : ${data.nom || ''}
 Email : ${data.email || ''}
 Téléphone : ${data.tel || 'Non renseigné'}
-Ville : ${data.ville || 'Non renseignée'}
-Activité : ${data.activite || ''}
-Site existant : ${data.siteExistant === 'oui' ? 'Oui — refonte' + (data.siteUrl ? ' (' + data.siteUrl + ')' : '') : 'Non — 1er site'}
-
---- FORMULE ---
 Formule : ${data.formule || 'Non précisé'}
-Domaine : ${domaineLabel}${data.domaineNom ? ' — ' + data.domaineNom : ''}
 
---- CONTENU ---
-Sections souhaitées : ${(data.sections && data.sections.length) ? data.sections.join(', ') : 'Non précisé'}
-Photos : ${data.photos || 'Non précisé'} — Nombre : ${data.photosNb || 'Non précisé'}
-Vidéos : ${data.videos || 'Non précisé'}
-Logo : ${data.logo || 'Non précisé'}
-Textes : ${data.textes || 'Non précisé'}
-Facebook : ${data.fbLink || 'Aucun'}
-Instagram : ${data.igLink || 'Aucun'}
-YouTube : ${data.ytLink || 'Aucun'}
-Autre lien : ${data.autreLink || 'Aucun'}
-
---- DESIGN ---
-Style : ${data.style || 'Non précisé'}
-Couleur principale : ${data.couleur1 || ''}
-Couleur secondaire : ${data.couleur2 || ''}
-Précisions couleurs : ${data.couleursTexte || 'Aucune'}
-Références : ${data.refs || 'Aucune'}
-À éviter : ${data.refNon || 'Aucun'}
-
---- INFOS COMPLÉMENTAIRES ---
-${data.infos || 'Aucune'}
+Message :
+${data.message || ''}
 `;
 
   try {
@@ -61,7 +28,7 @@ ${data.infos || 'Aucune'}
         sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
         to: [{ email: 'abiweb@outlook.fr' }],
         replyTo: data.email ? { email: data.email } : undefined,
-        subject: `Brief AbiWeb — ${data.nom || 'Sans nom'} (${data.formule || ''})`,
+        subject: `Demande de devis AbiWeb — ${data.nom || 'Sans nom'}`,
         textContent: text,
       }),
     });
@@ -84,8 +51,8 @@ ${data.infos || 'Aucune'}
           body: JSON.stringify({
             email: data.email,
             attributes: {
-              PRENOM: data.contact || '',
-              NOM: data.nom ? `${data.nom}${data.formule ? ' — ' + data.formule : ''}` : '',
+              PRENOM: data.nom || '',
+              NOM: data.formule ? `Contact rapide — ${data.formule}` : 'Contact rapide',
               SMS: data.tel || '',
             },
             listIds: [2],
