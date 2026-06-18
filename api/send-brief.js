@@ -51,24 +51,24 @@ ${data.infos || 'Aucune'}
 `;
 
   try {
-    const resendRes = await fetch('https://api.resend.com/emails', {
+    const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'api-key': process.env.BREVO_API_KEY,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'AbiWeb Brief <onboarding@resend.dev>',
-        to: ['abiweb@outlook.fr'],
-        reply_to: data.email || undefined,
+        sender: { name: 'AbiWeb', email: 'abiweb@outlook.fr' },
+        to: [{ email: 'abiweb@outlook.fr' }],
+        replyTo: data.email ? { email: data.email } : undefined,
         subject: `Brief AbiWeb — ${data.nom || 'Sans nom'} (${data.formule || ''})`,
-        text,
+        textContent: text,
       }),
     });
 
-    if (!resendRes.ok) {
-      const detail = await resendRes.text();
-      console.error('Resend error:', detail);
+    if (!brevoRes.ok) {
+      const detail = await brevoRes.text();
+      console.error('Brevo error:', detail);
       res.status(502).json({ error: 'send_failed' });
       return;
     }
