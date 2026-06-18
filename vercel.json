@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/((?!api/|coming-soon.html|images/).*)", "destination": "/coming-soon.html" }
+  ]
+}
