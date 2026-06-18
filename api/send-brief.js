@@ -1,3 +1,10 @@
+function normalizeFrenchPhone(tel) {
+  if (!tel) return '';
+  const digits = tel.replace(/[^0-9]/g, '');
+  if (digits.startsWith('0')) return '33' + digits.slice(1);
+  return digits;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'method_not_allowed' });
@@ -75,7 +82,14 @@ ${data.infos || 'Aucune'}
 
     if (data.email) {
       try {
-        await fetch('https://api.brevo.com/v3/contacts', {
+        const attributes = {
+          PRENOM: data.contact || '',
+          NOM: data.nom ? `${data.nom}${data.formule ? ' — ' + data.formule : ''}` : '',
+        };
+        const sms = normalizeFrenchPhone(data.tel);
+        if (sms) attributes.SMS = sms;
+
+        const contactRes = await fetch('https://api.brevo.com/v3/contacts', {
           method: 'POST',
           headers: {
             'api-key': process.env.BREVO_API_KEY,
@@ -83,15 +97,15 @@ ${data.infos || 'Aucune'}
           },
           body: JSON.stringify({
             email: data.email,
-            attributes: {
-              PRENOM: data.contact || '',
-              NOM: data.nom ? `${data.nom}${data.formule ? ' — ' + data.formule : ''}` : '',
-              SMS: data.tel || '',
-            },
+            attributes,
             listIds: [2],
             updateEnabled: true,
           }),
         });
+
+        if (!contactRes.ok) {
+          console.error('Brevo contact upsert failed:', await contactRes.text());
+        }
       } catch (err) {
         console.error('Brevo contact upsert error:', err);
       }
