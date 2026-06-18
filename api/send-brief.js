@@ -58,7 +58,7 @@ ${data.infos || 'Aucune'}
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        sender: { name: 'AbiWeb', email: 'abiweb@outlook.fr' },
+        sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
         to: [{ email: 'abiweb@outlook.fr' }],
         replyTo: data.email ? { email: data.email } : undefined,
         subject: `Brief AbiWeb — ${data.nom || 'Sans nom'} (${data.formule || ''})`,
