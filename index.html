@@ -3,39 +3,800 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AbiWeb — Bientôt disponible</title>
-  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- SEO TITLE & META -->
+  <title>AbiWeb — Création site internet pas cher | Associations, TPE, Auto-entrepreneurs</title>
+  <meta name="description" content="Création de site internet clé en main à partir de 390€. Sites vitrines pour associations, commerçants et auto-entrepreneurs. Livraison en 7 jours, 100% à distance, partout en France. Devis gratuit." />
+  <meta name="keywords" content="création site internet pas cher, site vitrine association, site internet auto-entrepreneur, site internet artisan, freelance création site internet, site internet TPE PME, créer site internet à distance, site internet clé en main, site vitrine pas cher France" />
+  <meta name="author" content="AbiWeb" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://abiweb.fr" />
+
+  <!-- OPEN GRAPH (Facebook, LinkedIn, WhatsApp) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://abiweb.fr" />
+  <meta property="og:title" content="AbiWeb — Création site internet pas cher à partir de 390€" />
+  <meta property="og:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Livraison en 7 jours, partout en France, 100% à distance. Devis gratuit." />
+  <meta property="og:locale" content="fr_FR" />
+
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="AbiWeb — Création site internet pas cher à partir de 390€" />
+  <meta name="twitter:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Livraison en 7 jours, partout en France." />
+
+  <!-- SCHEMA.ORG — Service freelance -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "AbiWeb — Création de site internet",
+    "description": "Création de sites internet clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Livraison en 7 jours, 100% à distance, partout en France.",
+    "provider": {
+      "@type": "Person",
+      "name": "AbiWeb",
+      "url": "https://abiweb.fr"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "France"
+    },
+    "serviceType": "Création de site internet",
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Formule Essentiel",
+        "price": "390",
+        "priceCurrency": "EUR",
+        "description": "Site une page pour association ou auto-entrepreneur"
+      },
+      {
+        "@type": "Offer",
+        "name": "Formule Standard",
+        "price": "690",
+        "priceCurrency": "EUR",
+        "description": "Site multi-sections pour association ou commerce"
+      },
+      {
+        "@type": "Offer",
+        "name": "Formule Premium",
+        "price": "1100",
+        "priceCurrency": "EUR",
+        "description": "Site multi-pages pour PME avec catalogue"
+      }
+    ]
+  }
+  </script>
+
+  <!-- FAQ SCHEMA (boost SEO Google) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Combien coûte la création d'un site internet avec AbiWeb ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AbiWeb propose 3 formules : Essentiel à 390€ (site une page), Standard à 690€ (site multi-sections) et Premium à 1 100€ (site multi-pages). Tous les prix sont nets, sans abonnement caché."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Combien de temps faut-il pour créer un site internet ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Votre site est livré en 7 jours maximum à compter de la réception de vos contenus (textes et photos)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Travaillez-vous partout en France ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui, AbiWeb travaille 100% à distance et peut accompagner des clients partout en France."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Est-ce que je dois payer avant de voir le site ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Un acompte de 30% est demandé au démarrage. Vous recevez une prévisualisation du site avant de payer le solde. La mise en ligne se fait uniquement après votre validation et votre paiement final."
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --ink: #0f0f11; --paper: #f8f7f4; --mid: #6b6b72; --accent: #3b5bdb; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
+    :root {
+      --ink: #0f0f11; --paper: #f8f7f4; --mid: #6b6b72;
+      --accent: #3b5bdb; --accent2: #e8f0ff; --line: #e2e1de;
+      --white: #ffffff; --green: #1e7a48; --green-bg: #e8f5ee;
     }
-    .logo { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.5rem; letter-spacing: -0.02em; margin-bottom: 2rem; }
-    .logo span { color: var(--accent); }
-    h1 { font-family: 'Poppins', sans-serif; font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
-    p { font-size: 1rem; color: var(--mid); max-width: 420px; margin: 0 auto 1.75rem; line-height: 1.6; }
-    a.contact { color: var(--accent); text-decoration: none; font-weight: 600; }
-    a.contact:hover { text-decoration: underline; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; font-size: 16px; }
+
+    /* NAV */
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(248,247,244,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-logo { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-link { font-size: 0.875rem; color: var(--mid); text-decoration: none; transition: color .15s; }
+    .nav-link:hover { color: var(--ink); }
+    .nav-cta { background: var(--ink); color: var(--white); text-decoration: none; padding: 0.45rem 1.1rem; border-radius: 6px; font-size: 0.875rem; font-weight: 500; transition: opacity .15s; }
+    .nav-cta:hover { opacity: 0.8; }
+
+    /* HERO */
+    .hero { text-align: center; padding: 5rem 2rem 3.5rem; max-width: 760px; margin: 0 auto; }
+    .hero-eyebrow { display: inline-block; background: var(--accent2); color: var(--accent); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.85rem; border-radius: 999px; margin-bottom: 1.5rem; }
+    .hero h1 { font-family: 'Poppins', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 1.25rem; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { font-size: 1.075rem; color: var(--mid); max-width: 520px; margin: 0 auto 0.75rem; }
+    .hero-note { font-size: 0.82rem; color: var(--mid); }
+
+    /* PLANS */
+    .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; max-width: 1020px; margin: 0 auto; padding: 2rem 2rem 2rem; }
+    .plan { background: var(--white); border: 1px solid var(--line); border-radius: 14px; padding: 2rem 1.75rem; display: flex; flex-direction: column; position: relative; transition: box-shadow .2s, transform .2s; }
+    .plan:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-3px); }
+    .plan.featured { border-color: var(--accent); border-width: 2px; box-shadow: 0 4px 24px rgba(59,91,219,0.12); }
+    .badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--white); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.28rem 0.85rem; border-radius: 999px; white-space: nowrap; }
+    .plan-label { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.5rem; }
+    .plan-name { font-family: 'Poppins', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 0.35rem; }
+    .plan-desc { font-size: 0.875rem; color: var(--mid); margin-bottom: 1.75rem; min-height: 2.5em; }
+    .plan-price { display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 0.25rem; }
+    .price-amount { font-family: 'Poppins', sans-serif; font-size: 2.8rem; font-weight: 800; letter-spacing: -0.04em; color: var(--ink); }
+    .price-currency { font-size: 1.4rem; font-weight: 600; color: var(--ink); }
+    .price-sub { font-size: 0.78rem; color: var(--mid); margin-bottom: 1.75rem; }
+    .divider { height: 1px; background: var(--line); margin-bottom: 1.5rem; }
+    .features { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; flex: 1; margin-bottom: 2rem; }
+    .features li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.875rem; color: var(--ink); }
+    .features li .icon { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--green-bg); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; margin-top: 1px; }
+    .features li .icon-minus { background: #f1f1f1; color: #bbb; }
+    .features li.muted { color: var(--mid); }
+    .plan-btn { display: block; text-align: center; text-decoration: none; padding: 0.8rem 1.25rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; transition: all .15s; cursor: pointer; }
+    .plan-btn-outline { border: 1.5px solid var(--line); color: var(--ink); background: transparent; }
+    .plan-btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .plan-btn-filled { background: var(--accent); color: var(--white); border: none; }
+    .plan-btn-filled:hover { background: #2f4ec4; }
+    .plan-btn-dark { background: var(--ink); color: var(--white); border: none; }
+    .plan-btn-dark:hover { background: #2a2a30; }
+
+    /* INTÉGRATIONS */
+    .integrations-section { max-width: 1020px; margin: 0 auto; padding: 0 2rem 2.5rem; }
+    .integrations-title { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 1.25rem; }
+    .integrations-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+    .integ-group { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 1.1rem 1.25rem; }
+    .integ-group-label { font-size: 0.8rem; font-weight: 700; color: var(--ink); margin-bottom: 0.75rem; }
+    .integ-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .itag { background: var(--accent2); color: var(--accent); font-size: 0.75rem; font-weight: 600; padding: 0.22rem 0.6rem; border-radius: 5px; }
+
+    /* HÉBERGEMENT */
+    .hosting-section { max-width: 1020px; margin: 0 auto; padding: 0 2rem 3rem; }
+    .hosting-title { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 1rem; }
+    .hosting-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+    .hosting-card { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 1.25rem 1.5rem; }
+    .hosting-card.recommended { border-color: var(--accent); border-width: 1.5px; }
+    .hosting-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+    .hosting-card-name { font-weight: 700; font-size: 0.9rem; color: var(--ink); }
+    .hosting-chip { font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px; white-space: nowrap; }
+    .chip-free { background: var(--green-bg); color: var(--green); }
+    .chip-paid { background: var(--accent2); color: var(--accent); }
+    .hosting-price { font-family: 'Poppins', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 0.3rem; }
+    .hosting-desc { font-size: 0.8rem; color: var(--mid); line-height: 1.5; }
+    .hosting-note { background: var(--accent2); border-left: 3px solid var(--accent); padding: 0.85rem 1rem; border-radius: 0 6px 6px 0; margin-top: 1rem; font-size: 0.82rem; color: var(--accent); }
+
+    /* GARANTIE */
+    .guarantee { background: var(--ink); color: var(--white); text-align: center; padding: 2.5rem 2rem; }
+    .guarantee-inner { max-width: 580px; margin: 0 auto; }
+    .guarantee-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .guarantee h2 { font-family: 'Poppins', sans-serif; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.6rem; }
+    .guarantee p { font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.65; }
+
+    /* PROCESSUS */
+    .process-section { max-width: 820px; margin: 0 auto; padding: 4rem 2rem; }
+    .section-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.6rem; }
+    .process-section h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.5rem; color: var(--ink); }
+    .process-subtitle { font-size: 0.9rem; color: var(--mid); margin-bottom: 2.5rem; }
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step { display: flex; gap: 1.25rem; align-items: flex-start; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
+    .step:last-child { border-bottom: none; }
+    .step-num { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--white); display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 0.85rem; margin-top: 2px; }
+    .step-body h3 { font-weight: 700; font-size: 0.95rem; color: var(--ink); margin-bottom: 0.25rem; }
+    .step-body p { font-size: 0.85rem; color: var(--mid); line-height: 1.55; }
+    .step-tag { display: inline-block; background: var(--green-bg); color: var(--green); font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; margin-top: 0.3rem; }
+    .step-tag-warning { background: #fff3e0; color: #e67e22; }
+
+    /* INCLUS */
+    .included { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .included-inner { max-width: 820px; margin: 0 auto; padding: 4rem 2rem; }
+    .included-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 2.5rem; color: var(--ink); }
+    .included-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    .included-item { display: flex; gap: 0.85rem; align-items: flex-start; }
+    .included-dot { flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-top: 6px; }
+    .included-item h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--ink); }
+    .included-item p { font-size: 0.8rem; color: var(--mid); line-height: 1.5; }
+
+    /* FAQ */
+    .faq-section { padding: 4rem 2rem; }
+    .faq-inner { max-width: 660px; margin: 0 auto; }
+    .faq-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 2.5rem; color: var(--ink); }
+    .faq-item { border-bottom: 1px solid var(--line); padding: 1.15rem 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-weight: 600; font-size: 0.925rem; color: var(--ink); margin-bottom: 0.4rem; }
+    .faq-a { font-size: 0.875rem; color: var(--mid); line-height: 1.6; }
+
+    /* RÉALISATIONS */
+    .realisations-section { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 4rem 2rem; }
+    .realisations-inner { max-width: 1020px; margin: 0 auto; }
+    .realisations-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: var(--ink); }
+    .realisations-subtitle { font-size: 0.9rem; color: var(--mid); margin-bottom: 2.5rem; }
+    .realisation-card { display: grid; grid-template-columns: 1fr 1.4fr; gap: 2.5rem; align-items: center; }
+    .realisation-tag { display: inline-block; background: var(--accent2); color: var(--accent); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 5px; margin-bottom: 0.85rem; }
+    .realisation-name { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--ink); margin-bottom: 0.75rem; }
+    .realisation-desc { font-size: 0.875rem; color: var(--mid); line-height: 1.6; margin-bottom: 1.25rem; }
+    .realisation-features { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.75rem; }
+    .realisation-features li { font-size: 0.85rem; color: var(--ink); }
+    .realisation-btn { display: inline-block; background: var(--accent); color: var(--white); text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: background .15s; }
+    .realisation-btn:hover { background: #2f4ec4; }
+    .realisation-preview { border-radius: 12px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12); border: 1px solid var(--line); }
+    .browser-bar { background: #f1f1f1; padding: 0.6rem 1rem; display: flex; align-items: center; gap: 0.75rem; border-bottom: 1px solid var(--line); }
+    .browser-dots { display: flex; gap: 0.35rem; }
+    .browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: #ddd; }
+    .browser-dots span:nth-child(1) { background: #ff5f57; }
+    .browser-dots span:nth-child(2) { background: #ffbd2e; }
+    .browser-dots span:nth-child(3) { background: #28c840; }
+    .browser-url { font-size: 0.75rem; color: var(--mid); background: var(--white); padding: 0.2rem 0.75rem; border-radius: 4px; flex: 1; border: 1px solid var(--line); }
+    .realisation-iframe { width: 100%; height: 380px; border: none; display: block; }
+    @media (max-width: 700px) {
+      .realisation-card { grid-template-columns: 1fr; }
+      .realisation-preview { display: none; }
+    }
+
+    /* FORMULAIRE */
+    .form-section { background: var(--ink); padding: 4rem 2rem; }
+    .form-inner { max-width: 760px; margin: 0 auto; }
+    .form-inner .section-label { color: rgba(255,255,255,0.5); }
+    .form-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.5rem; color: var(--white); }
+    .form-inner .form-subtitle { font-size: 0.9rem; color: rgba(255,255,255,0.55); margin-bottom: 2rem; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.7); letter-spacing: 0.03em; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 7px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.875rem;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      transition: border-color .15s;
+      outline: none;
+      width: 100%;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--accent); background: rgba(59,91,219,0.1); }
+    .form-group select option { background: #1a1a2e; color: var(--white); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-separator { grid-column: 1 / -1; height: 1px; background: rgba(255,255,255,0.1); margin: 0.5rem 0; }
+    .form-section-title { grid-column: 1 / -1; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5); padding-top: 0.5rem; }
+
+    .form-radio-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .form-radio { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; }
+    .form-radio input[type="radio"] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+    .form-radio span { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
+
+    .form-checkbox-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-checkbox { display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; }
+    .form-checkbox input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+    .form-checkbox span { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
+
+    .form-submit { margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .btn-submit { background: var(--accent); color: var(--white); border: none; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background .15s; font-family: 'Inter', sans-serif; }
+    .btn-submit:hover { background: #2f4ec4; }
+    .form-note { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+
+    .form-success { display: none; background: var(--green-bg); border: 1px solid var(--green); border-radius: 10px; padding: 1.25rem 1.5rem; color: var(--green); font-size: 0.9rem; font-weight: 600; margin-top: 1rem; }
+
+    /* TABS */
+    .form-tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+    .form-tab { padding: 0.55rem 1.1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif; }
+    .form-tab.active { background: var(--accent); color: var(--white); border-color: var(--accent); }
+    .form-panel { display: none; }
+    .form-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* CTA FINAL */
+    .cta-final { text-align: center; padding: 5rem 2rem; max-width: 600px; margin: 0 auto; }
+    .cta-final h2 { font-family: 'Poppins', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; color: var(--ink); }
+    .cta-final p { font-size: 0.95rem; color: var(--mid); margin-bottom: 2rem; }
+    .cta-group { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: var(--accent); color: var(--white); text-decoration: none; padding: 0.85rem 2rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; transition: background .15s; }
+    .btn-primary:hover { background: #2f4ec4; }
+    .btn-secondary { background: transparent; color: var(--ink); text-decoration: none; padding: 0.85rem 2rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; border: 1.5px solid var(--line); transition: border-color .15s, color .15s; }
+    .btn-secondary:hover { border-color: var(--ink); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--line); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--mid); }
+    footer a { color: var(--mid); text-decoration: underline; }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .hero { padding: 3.5rem 1.25rem 2.5rem; }
+      .plans, .hosting-section { padding-left: 1.25rem; padding-right: 1.25rem; }
+      nav { padding: 0 1.25rem; }
+      .nav-links .nav-link { display: none; }
+      .form-panel.active, .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+      .form-separator { grid-column: 1; }
+      .form-section-title { grid-column: 1; }
+    }
   </style>
 </head>
 <body>
-  <div>
-    <p class="logo">Abi<span>Web</span></p>
-    <h1>Bientôt disponible</h1>
-    <p>Nouveau site en préparation. Revenez très vite !</p>
-    <a class="contact" href="mailto:contact@abiweb.fr">contact@abiweb.fr</a>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Abi<span>Web</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="#tarifs">Tarifs</a>
+    <a class="nav-link" href="#processus">Comment ça marche</a>
+    <a class="nav-link" href="#formulaire">Devis</a>
+    <a class="nav-cta" href="#formulaire">Démarrer</a>
   </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-eyebrow">Création de sites internet · Partout en France · 100% à distance</span>
+  <h1>Création de site internet<br>pas cher qui <em>représente</em><br>votre activité</h1>
+  <p>Sites vitrines clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Livraison en 7 jours, sans jargon, sans abonnement caché.</p>
+  <p class="hero-note">À partir de 390€ · Acompte 30% · Solde à la livraison · Retouches offertes 7 jours · Accès admin inclus</p>
+</section>
+
+<!-- PLANS -->
+<div class="plans" id="tarifs">
+  <!-- ESSENTIEL -->
+  <div class="plan">
+    <p class="plan-label">Formule</p>
+    <p class="plan-name">Essentiel</p>
+    <p class="plan-desc">Vitrine simple et efficace pour une association ou un auto-entrepreneur.</p>
+    <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">390</span></div>
+    <p class="price-sub">tarif unique · livraison 5 jours</p>
+    <div class="divider"></div>
+    <ul class="features">
+      <li><span class="icon">✓</span> Site une page (scroll)</li>
+      <li><span class="icon">✓</span> Jusqu'à 5 sections</li>
+      <li><span class="icon">✓</span> Jusqu'à 8 photos</li>
+      <li><span class="icon">✓</span> Formulaire de contact fonctionnel</li>
+      <li><span class="icon">✓</span> Emails reçus directement via Brevo</li>
+      <li><span class="icon">✓</span> Design aux couleurs de votre activité</li>
+      <li><span class="icon">✓</span> Responsive mobile</li>
+      <li><span class="icon">✓</span> Mise en ligne incluse</li>
+      <li><span class="icon">✓</span> Accès admin — vous modifiez seul après livraison</li>
+      <li class="muted"><span class="icon icon-minus">–</span> Plusieurs sections / pages</li>
+      <li class="muted"><span class="icon icon-minus">–</span> Liens de paiement (HelloAsso, Stripe, PayPal…)</li>
+      <li class="muted"><span class="icon icon-minus">–</span> PDF ou documents téléchargeables</li>
+    </ul>
+    <a href="#formulaire" class="plan-btn plan-btn-outline">Choisir Essentiel</a>
+  </div>
+  <!-- STANDARD -->
+  <div class="plan featured">
+    <span class="badge">⭐ Recommandé</span>
+    <p class="plan-label">Formule</p>
+    <p class="plan-name">Standard</p>
+    <p class="plan-desc">Le choix idéal pour une association ou un commerce qui veut une vraie vitrine.</p>
+    <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">690</span></div>
+    <p class="price-sub">tarif unique · livraison 7 jours</p>
+    <div class="divider"></div>
+    <ul class="features">
+      <li><span class="icon">✓</span> Site multi-sections (jusqu'à 8 sections)</li>
+      <li><span class="icon">✓</span> Jusqu'à 15 photos</li>
+      <li><span class="icon">✓</span> 1 lien vidéo (YouTube / Vimeo)</li>
+      <li><span class="icon">✓</span> Formulaire de contact intégré</li>
+      <li><span class="icon">✓</span> Emails et base de contacts gérés via Brevo</li>
+      <li><span class="icon">✓</span> Design personnalisé + charte graphique</li>
+      <li><span class="icon">✓</span> Responsive mobile</li>
+      <li><span class="icon">✓</span> Mise en ligne incluse</li>
+      <li><span class="icon">✓</span> Liens paiement / adhésion (HelloAsso, PayPal, Stripe, SumUp…)</li>
+      <li><span class="icon">✓</span> Liens réseaux sociaux (Facebook, Instagram, YouTube…)</li>
+      <li><span class="icon">✓</span> PDF téléchargeables (règlement, programme, tarifs…)</li>
+      <li><span class="icon">✓</span> Accès admin — vous modifiez seul après livraison</li>
+      <li class="muted"><span class="icon icon-minus">–</span> Blog ou catalogue produits</li>
+    </ul>
+    <a href="#formulaire" class="plan-btn plan-btn-filled">Choisir Standard</a>
+  </div>
+  <!-- PREMIUM -->
+  <div class="plan">
+    <p class="plan-label">Formule</p>
+    <p class="plan-name">Premium</p>
+    <p class="plan-desc">Pour les PME qui ont besoin de plusieurs pages et d'un contenu riche.</p>
+    <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">1 100</span></div>
+    <p class="price-sub">tarif unique · livraison 10 jours</p>
+    <div class="divider"></div>
+    <ul class="features">
+      <li><span class="icon">✓</span> Site multi-pages (jusqu'à 6 pages)</li>
+      <li><span class="icon">✓</span> Jusqu'à 20 photos</li>
+      <li><span class="icon">✓</span> Jusqu'à 3 liens vidéo (YouTube / Vimeo)</li>
+      <li><span class="icon">✓</span> Formulaire de contact avancé</li>
+      <li><span class="icon">✓</span> Base de contacts et emails automatisés via Brevo</li>
+      <li><span class="icon">✓</span> Design sur-mesure + animations soignées</li>
+      <li><span class="icon">✓</span> Responsive mobile</li>
+      <li><span class="icon">✓</span> Mise en ligne incluse</li>
+      <li><span class="icon">✓</span> Liens paiement / réservation (HelloAsso, Stripe, PayPal, SumUp, Calendly, Doctolib…)</li>
+      <li><span class="icon">✓</span> Liens réseaux (Facebook, Instagram, LinkedIn, YouTube, TikTok…)</li>
+      <li><span class="icon">✓</span> PDF, galerie, vidéos, documents téléchargeables</li>
+      <li><span class="icon">✓</span> Catalogue ou présentation produits/services</li>
+      <li><span class="icon">✓</span> Accès admin — vous modifiez seul après livraison</li>
+    </ul>
+    <a href="#formulaire" class="plan-btn plan-btn-dark">Choisir Premium</a>
+  </div>
+</div>
+
+<!-- INTÉGRATIONS -->
+<div class="integrations-section">
+  <p class="integrations-title">🔗 Exemples d'intégrations possibles selon votre activité</p>
+  <div class="integrations-grid">
+    <div class="integ-group">
+      <p class="integ-group-label">💳 Paiement &amp; adhésion</p>
+      <div class="integ-tags">
+        <span class="itag">HelloAsso</span>
+        <span class="itag">PayPal</span>
+        <span class="itag">Stripe</span>
+        <span class="itag">SumUp</span>
+        <span class="itag">Lydia</span>
+        <span class="itag">Lien virement</span>
+      </div>
+    </div>
+    <div class="integ-group">
+      <p class="integ-group-label">📅 Réservation &amp; rendez-vous</p>
+      <div class="integ-tags">
+        <span class="itag">Calendly</span>
+        <span class="itag">Doctolib</span>
+        <span class="itag">Planity</span>
+        <span class="itag">Google Agenda</span>
+        <span class="itag">Reservio</span>
+      </div>
+    </div>
+    <div class="integ-group">
+      <p class="integ-group-label">📱 Réseaux sociaux</p>
+      <div class="integ-tags">
+        <span class="itag">Facebook</span>
+        <span class="itag">Instagram</span>
+        <span class="itag">LinkedIn</span>
+        <span class="itag">YouTube</span>
+        <span class="itag">TikTok</span>
+        <span class="itag">WhatsApp</span>
+      </div>
+    </div>
+    <div class="integ-group">
+      <p class="integ-group-label">📄 Documents &amp; contenus</p>
+      <div class="integ-tags">
+        <span class="itag">PDF téléchargeables</span>
+        <span class="itag">Galerie photos</span>
+        <span class="itag">Vidéos YouTube</span>
+        <span class="itag">Carte Google Maps</span>
+        <span class="itag">Avis Google</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HÉBERGEMENT -->
+<div class="hosting-section">
+  <p class="hosting-title">🌐 Hébergement &amp; domaine — Simple et sans abonnement</p>
+  <div class="hosting-cards">
+    <div class="hosting-card recommended">
+      <div class="hosting-card-head">
+        <span class="hosting-card-name">Hébergement — Votre compte, gratuit à vie</span>
+        <span class="hosting-chip chip-free">Gratuit</span>
+      </div>
+      <p class="hosting-price">0 € / mois</p>
+      <p class="hosting-desc">Vous créez un compte gratuit sur Vercel ou Cloudflare (5 minutes, je vous guide). Je déploie votre site dessus. Vous êtes propriétaire à 100%, je n'interviens plus après livraison. Aucun abonnement, aucune dépendance.</p>
+    </div>
+    <div class="hosting-card">
+      <div class="hosting-card-head">
+        <span class="hosting-card-name">Nom de domaine — Offert la 1ère année</span>
+        <span class="hosting-chip chip-free">Offert</span>
+      </div>
+      <p class="hosting-price">Offert · dans la limite de 15 € TTC</p>
+      <p class="hosting-desc">Je prends en charge votre nom de domaine (.fr, .com, .org…) la première année, dans la limite de 15 €. À partir de la 2ème année, le renouvellement (~10–15 €/an) est à votre charge — je vous explique comment faire. Si vous avez déjà un domaine, la connexion est gratuite.</p>
+    </div>
+    <div class="hosting-card">
+      <div class="hosting-card-head">
+        <span class="hosting-card-name">Après livraison — Vous êtes 100% autonome</span>
+        <span class="hosting-chip chip-free">Inclus</span>
+      </div>
+      <p class="hosting-price">Accès admin + 30 min de formation</p>
+      <p class="hosting-desc">Je vous remets votre accès admin et vous montre en 30 minutes comment modifier vos textes, photos et tarifs vous-même — sans me contacter. Pour toute modification plus importante (nouvelle page, changement de charte), je reste disponible à 70 €/h.</p>
+    </div>
+  </div>
+  <p class="hosting-note">✅ <strong>Le principe AbiWeb :</strong> je crée votre site, je vous le livre clé en main, et vous en êtes l'unique propriétaire. Pas d'abonnement, pas de dépendance, pas de surprise.</p>
+</div>
+
+<!-- GARANTIE -->
+<div class="guarantee">
+  <div class="guarantee-inner">
+    <div class="guarantee-icon">🛡️</div>
+    <h2>Garantie retouches — 7 jours</h2>
+    <p>Après livraison, vous disposez de 7 jours pour signaler des ajustements : modifier un texte existant, remplacer une photo, corriger un lien. Ces retouches sont incluses. L'ajout d'une nouvelle section, d'une page ou d'un changement de charte graphique sort de ce périmètre et fait l'objet d'un devis séparé.</p>
+  </div>
+</div>
+
+<!-- PROCESSUS -->
+<section class="process-section" id="processus">
+  <p class="section-label">Comment ça se passe</p>
+  <h2>Création de votre site internet en 6 étapes</h2>
+  <p class="process-subtitle">De la demande à la mise en ligne — clair, rapide, sans mauvaise surprise.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Vous remplissez le formulaire</h3>
+        <p>Décrivez votre activité, vos besoins, vos préférences. Je prends le temps de l'étudier et vous réponds avec un devis clair.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Bon de commande signé + acompte 30%</h3>
+        <p>Vous signez un bon de commande simple. L'acompte déclenche le démarrage du projet.</p>
+        <span class="step-tag step-tag-warning">Exemple : 690€ → acompte 207€</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Développement + prévisualisation</h3>
+        <p>Je développe votre site et vous envoie un lien de démo. Vous pouvez voir le résultat avant de payer le solde.</p>
+        <span class="step-tag">Vous validez en ligne, sans engagement supplémentaire</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Solde 70% → mise en ligne</h3>
+        <p>Une fois votre validation reçue, vous réglez le solde. Le site est mis en ligne uniquement après encaissement.</p>
+        <span class="step-tag step-tag-warning">Le site ne sort jamais avant paiement complet</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h3>Livraison + guide de mise à jour</h3>
+        <p>Site en ligne, domaine connecté, formulaire de contact actif. Je vous remets un guide simple pour modifier vos textes vous-même.</p>
+        <span class="step-tag">Garantie retouches 7 jours déclenchée</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h3>Suivi à J+7</h3>
+        <p>Je vérifie que tout fonctionne et je reste disponible pour vos questions. Renouvellement annuel de l'hébergement si option B choisie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUS -->
+<section class="included">
+  <div class="included-inner">
+    <p class="section-label">Inclus dans chaque formule</p>
+    <h2>Tout ce qu'inclut votre site internet clé en main</h2>
+    <div class="included-grid">
+      <div class="included-item"><div class="included-dot"></div><div><h3>Mise en ligne incluse</h3><p>Je m'occupe du déploiement. Vous n'avez rien à faire techniquement.</p></div></div>
+      <div class="included-item"><div class="included-dot"></div><div><h3>Nom de domaine guidé</h3><p>Je vous accompagne pour choisir et connecter votre domaine .fr ou .com.</p></div></div>
+      <div class="included-item"><div class="included-dot"></div><div><h3>Mobile-first</h3><p>Le site s'adapte parfaitement aux smartphones et tablettes.</p></div></div>
+      <div class="included-item"><div class="included-dot"></div><div><h3>Livraison en 7 jours</h3><p>Délai maximum à compter de la réception de vos contenus.</p></div></div>
+      <div class="included-item"><div class="included-dot"></div><div><h3>Prise en main simple</h3><p>Un guide clair vous est remis pour mettre à jour vos textes vous-même.</p></div></div>
+      <div class="included-item"><div class="included-dot"></div><div><h3>Aucune surprise</h3><p>Le prix affiché est le prix final. Acompte 30% au démarrage, solde à la livraison.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <p class="section-label">FAQ</p>
+    <h2>Questions fréquentes sur la création de site internet</h2>
+    <div class="faq-item">
+      <p class="faq-q">Est-ce que je dois fournir les textes et photos ?</p>
+      <p class="faq-a">Oui, idéalement vous me fournissez vos textes et vos photos. Si vous n'en avez pas, je peux vous proposer des visuels libres de droits et rédiger une première version des textes avec vous.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Que se passe-t-il si je n'aime pas le résultat ?</p>
+      <p class="faq-a">Avant de payer le solde, vous recevez un lien de prévisualisation. Si le site ne vous convient pas, vous ne payez pas le solde et le projet s'arrête là — vous n'avez perdu que l'acompte de 30%. Pendant 7 jours après la livraison, toutes les retouches sont incluses.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Quelle différence entre l'hébergement gratuit et l'option France ?</p>
+      <p class="faq-a">L'option gratuite (compte Vercel ou Cloudflare à votre nom) est parfaite pour la plupart des sites vitrine. L'option à 60€/an place votre site sur des serveurs en France, ce qui peut être important pour les PME sensibles au RGPD ou qui stockent des données clients.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Est-ce que je paye avant ou après ?</p>
+      <p class="faq-a">Un acompte de 30% est demandé au démarrage. Le solde de 70% est réglé après votre validation de la démo, juste avant la mise en ligne. Aucun paiement final sans votre accord explicite.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Mon site sera-t-il trouvable sur Google ?</p>
+      <p class="faq-a">Le site est construit avec les bonnes pratiques techniques (balises, rapidité de chargement). Pour apparaître en première page sur Google, un travail SEO spécifique est nécessaire — ce n'est pas inclus, mais je peux vous orienter.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Vous intervenez dans quelle zone géographique ?</p>
+      <p class="faq-a">Tout se fait à distance, je peux accompagner des clients partout en France.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RÉALISATIONS -->
+<section class="realisations-section" id="realisations">
+  <div class="realisations-inner">
+    <p class="section-label">Mes réalisations</p>
+    <h2>Un exemple concret de ce que je crée</h2>
+    <p class="realisations-subtitle">Un site livré, en ligne, fonctionnel. Voyez par vous-même.</p>
+    <div class="realisation-card">
+      <div class="realisation-info">
+        <div class="realisation-tag">Formule Standard · Association sportive</div>
+        <h3 class="realisation-name">ASC Muay Thaï</h3>
+        <p class="realisation-desc">Site vitrine complet pour un club de Muay Thaï. Présentation du club, programme des cours, tarifs d'adhésion, lien HelloAsso, galerie photos, formulaire de contact et carte d'accès.</p>
+        <ul class="realisation-features">
+          <li>✓ Design personnalisé aux couleurs du club</li>
+          <li>✓ Formulaire de contact Brevo intégré</li>
+          <li>✓ Base de données adhérents connectée à Brevo</li>
+          <li>✓ Lien adhésion HelloAsso</li>
+          <li>✓ PDF téléchargeables</li>
+          <li>✓ 100% responsive mobile</li>
+        </ul>
+        <a href="https://www.asc-muaythai.fr/" target="_blank" rel="noopener" class="realisation-btn">Voir le site →</a>
+      </div>
+      <div class="realisation-preview">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser-url">asc-muaythai.fr</div>
+        </div>
+        <img src="/images/asc-muaythai-preview.png" alt="Aperçu du site ASC Muay Thaï" class="realisation-iframe" loading="lazy" style="height: auto; object-fit: contain;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULAIRE DOUBLE -->
+<section class="form-section" id="formulaire">
+  <div class="form-inner">
+    <p class="section-label">Devis gratuit</p>
+    <h2>Demandez votre site internet</h2>
+    <p class="form-subtitle">Remplissez le formulaire — je l'étudie et vous réponds avec un devis clair, sans engagement.</p>
+
+    <div class="form-tabs">
+      <button class="form-tab active" onclick="switchTab('contact')">✉️ Contact rapide</button>
+      <button class="form-tab" onclick="switchTab('brief')">📋 Présenter mon projet</button>
+    </div>
+
+    <!-- ONGLET CONTACT -->
+    <div class="form-panel active" id="tab-contact">
+      <div class="form-group">
+        <label>Prénom et nom *</label>
+        <input type="text" placeholder="Ex : Jean Martin" id="c-nom" />
+      </div>
+      <div class="form-group">
+        <label>Email *</label>
+        <input type="email" placeholder="Ex : jean@monentreprise.fr" id="c-email" />
+      </div>
+      <div class="form-group">
+        <label>Téléphone</label>
+        <input type="tel" placeholder="06 00 00 00 00" id="c-tel" />
+      </div>
+      <div class="form-group">
+        <label>Formule qui vous intéresse</label>
+        <select id="c-formule">
+          <option value="">— Choisir —</option>
+          <option>Essentiel — 390€</option>
+          <option>Standard — 690€</option>
+          <option>Premium — 1 100€</option>
+          <option>Je ne sais pas encore</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Votre message *</label>
+        <textarea placeholder="Décrivez votre activité et ce que vous souhaitez en quelques lignes..." id="c-message"></textarea>
+      </div>
+      <div class="form-submit full">
+        <button class="btn-submit" onclick="submitContact()">Envoyer le message →</button>
+        <span class="form-note">Réponse rapide · Sans engagement</span>
+      </div>
+      <div class="form-success" id="success-contact">✅ Message envoyé ! Je vous réponds rapidement.</div>
+    </div>
+
+    <!-- ONGLET BRIEF -->
+    <div class="form-panel" id="tab-brief">
+      <div style="grid-column: 1 / -1; text-align: center; padding: 1.5rem 0;">
+        <p style="color: rgba(255,255,255,0.75); font-size: 0.95rem; max-width: 460px; margin: 0 auto 1.5rem;">Présentez votre projet sur une page dédiée, en 5 étapes guidées (votre structure, vos besoins, votre style). Comptez environ 5 minutes.</p>
+        <a href="/devis" class="btn-submit" style="display: inline-block; text-decoration: none;">Présenter mon projet →</a>
+        <p class="form-note" style="margin-top: 1rem;">Je vous recontacte dès que possible pour en discuter</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>Une question avant de vous lancer ?</h2>
+  <p>Envoyez un message, je réponds dans la journée.</p>
+  <div class="cta-group">
+    <a class="btn-primary" href="#formulaire">Remplir le formulaire</a>
+    <a class="btn-secondary" href="mailto:abiweb@outlook.fr">Envoyer un email</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 AbiWeb · <a href="mailto:abiweb@outlook.fr">abiweb@outlook.fr</a></p>
+</footer>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function mailtoFallbackContact(data) {
+    const subject = encodeURIComponent('Demande de devis AbiWeb — ' + data.nom);
+    const body = encodeURIComponent(
+      'Nom : ' + data.nom + '\n' +
+      'Email : ' + data.email + '\n' +
+      (data.tel ? 'Téléphone : ' + data.tel + '\n' : '') +
+      (data.formule ? 'Formule : ' + data.formule + '\n' : '') +
+      '\nMessage :\n' + data.message
+    );
+    window.location.href = 'mailto:abiweb@outlook.fr?subject=' + subject + '&body=' + body;
+  }
+
+  async function submitContact() {
+    const nom = document.getElementById('c-nom').value.trim();
+    const email = document.getElementById('c-email').value.trim();
+    const message = document.getElementById('c-message').value.trim();
+    if (!nom || !email || !message) { alert('Merci de remplir au moins votre nom, email et message.'); return; }
+    const data = {
+      nom, email, message,
+      formule: document.getElementById('c-formule').value,
+      tel: document.getElementById('c-tel').value,
+    };
+    const btn = event.target;
+    const originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+
+    try {
+      const resp = await fetch('/api/send-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!resp.ok) throw new Error('send_failed');
+      document.getElementById('success-contact').style.display = 'block';
+    } catch (e) {
+      const fallback = confirm("L'envoi automatique a échoué. Voulez-vous ouvrir votre messagerie pour envoyer le message par email à la place ?");
+      if (fallback) mailtoFallbackContact(data);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+    }
+  }
+
+</script>
 </body>
 </html>
