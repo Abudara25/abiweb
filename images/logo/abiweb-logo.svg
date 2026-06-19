@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56">
+  <rect x="3" y="4" width="58" height="48" rx="13" fill="none" stroke="#15171C" stroke-width="3"></rect>
+  <line x1="3" y1="21" x2="61" y2="21" stroke="#15171C" stroke-width="3"></line>
+  <circle cx="13" cy="12.5" r="2.6" fill="#F1583E"></circle>
+  <circle cx="22" cy="12.5" r="2.6" fill="#15171C"></circle>
+  <circle cx="31" cy="12.5" r="2.6" fill="#15171C"></circle><text x="80" y="41" font-family="&#39;Space Grotesk&#39;, system-ui, -apple-system, sans-serif" font-weight="700" font-size="40" letter-spacing="-1.5"><tspan fill="#15171C">Abi</tspan><tspan fill="#1E3FC4">Web</tspan></text></svg>
