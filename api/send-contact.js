@@ -33,7 +33,7 @@ ${data.message || ''}
       },
       body: JSON.stringify({
         sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
-        to: [{ email: 'abiweb@outlook.fr' }],
+        to: [{ email: 'contact@abiweb.fr' }],
         replyTo: data.email ? { email: data.email } : undefined,
         subject: `Demande de devis AbiWeb — ${data.nom || 'Sans nom'}`,
         textContent: text,
