@@ -20,6 +20,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AbiWeb — Présentez votre projet</title>
+  <link rel="icon" type="image/svg+xml" href="/images/logo/abiweb-favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -48,8 +49,7 @@
       border-bottom: 1px solid var(--line);
       padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px;
     }
-    .nav-logo { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
-    .nav-logo span { color: var(--accent); }
+    .nav-logo { height: 28px; display: block; }
     .nav-sub { font-size: 0.8rem; color: var(--mid); }
 
     /* HEADER */
@@ -343,7 +343,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <nav>
-  <a class="nav-logo" href="#">Abi<span>Web</span></a>
+  <a href="#"><img class="nav-logo" src="/images/logo/abiweb-logo.svg" alt="AbiWeb" /></a>
   <span class="nav-sub">Présentez votre projet — 5 min</span>
 </nav>
 
@@ -803,13 +803,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="success-screen" id="successScreen">
     <div class="success-icon">🎉</div>
     <h2>Projet envoyé !</h2>
-    <p>Merci ! Je prends le temps de bien lire votre projet et vous recontacte dès que possible pour en discuter.<br><br>En attendant, si vous avez des questions : <a href="mailto:abiweb@outlook.fr" style="color:var(--accent)">abiweb@outlook.fr</a></p>
+    <p>Merci ! Je prends le temps de bien lire votre projet et vous recontacte dès que possible pour en discuter.<br><br>En attendant, si vous avez des questions : <a href="mailto:contact@abiweb.fr" style="color:var(--accent)">contact@abiweb.fr</a></p>
   </div>
 
 </div>
 
 <footer>
-  <p>© 2026 AbiWeb · <a href="mailto:abiweb@outlook.fr">abiweb@outlook.fr</a></p>
+  <p>© 2026 AbiWeb · <a href="mailto:contact@abiweb.fr">contact@abiweb.fr</a></p>
 </footer>
 
 <script>
@@ -1029,7 +1029,7 @@ Références : ${data.refs || 'Aucune'}
 --- INFOS COMPLÉMENTAIRES ---
 ${data.infos || 'Aucune'}
 `);
-    window.location.href = `mailto:abiweb@outlook.fr?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:contact@abiweb.fr?subject=${subject}&body=${body}`;
   }
 
   async function submitBrief() {

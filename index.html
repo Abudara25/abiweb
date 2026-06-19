@@ -22,6 +22,7 @@
 
   <!-- SEO TITLE & META -->
   <title>AbiWeb — Création site internet pas cher | Associations, TPE, Auto-entrepreneurs</title>
+  <link rel="icon" type="image/svg+xml" href="/images/logo/abiweb-favicon.svg" />
   <meta name="description" content="Création de site internet clé en main à partir de 390€. Sites vitrines pour associations, commerçants et auto-entrepreneurs. Livraison en 7 jours, 100% à distance, partout en France. Devis gratuit." />
   <meta name="keywords" content="création site internet pas cher, site vitrine association, site internet auto-entrepreneur, site internet artisan, freelance création site internet, site internet TPE PME, créer site internet à distance, site internet clé en main, site vitrine pas cher France" />
   <meta name="author" content="AbiWeb" />
@@ -140,8 +141,7 @@
 
     /* NAV */
     nav { position: sticky; top: 0; z-index: 100; background: rgba(248,247,244,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
-    .nav-logo { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
-    .nav-logo span { color: var(--accent); }
+    .nav-logo { height: 28px; display: block; }
     .nav-links { display: flex; gap: 1.5rem; align-items: center; }
     .nav-link { font-size: 0.875rem; color: var(--mid); text-decoration: none; transition: color .15s; }
     .nav-link:hover { color: var(--ink); }
@@ -369,7 +369,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">Abi<span>Web</span></a>
+  <a href="#"><img class="nav-logo" src="/images/logo/abiweb-logo.svg" alt="AbiWeb" /></a>
   <div class="nav-links">
     <a class="nav-link" href="#tarifs">Tarifs</a>
     <a class="nav-link" href="#processus">Comment ça marche</a>
@@ -756,13 +756,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p>Envoyez un message, je réponds dans la journée.</p>
   <div class="cta-group">
     <a class="btn-primary" href="#formulaire">Remplir le formulaire</a>
-    <a class="btn-secondary" href="mailto:abiweb@outlook.fr">Envoyer un email</a>
+    <a class="btn-secondary" href="mailto:contact@abiweb.fr">Envoyer un email</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2026 AbiWeb · <a href="mailto:abiweb@outlook.fr">abiweb@outlook.fr</a></p>
+  <p>© 2026 AbiWeb · <a href="mailto:contact@abiweb.fr">contact@abiweb.fr</a></p>
 </footer>
 
 <script>
@@ -782,7 +782,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       (data.formule ? 'Formule : ' + data.formule + '\n' : '') +
       '\nMessage :\n' + data.message
     );
-    window.location.href = 'mailto:abiweb@outlook.fr?subject=' + subject + '&body=' + body;
+    window.location.href = 'mailto:contact@abiweb.fr?subject=' + subject + '&body=' + body;
   }
 
   async function submitContact() {
