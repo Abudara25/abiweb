@@ -64,21 +64,21 @@
         "name": "Formule Essentiel",
         "price": "390",
         "priceCurrency": "EUR",
-        "description": "Site une page pour association ou auto-entrepreneur"
+        "description": "Site vitrine 5 sections, formulaire de contact, design responsive, SEO de base"
       },
       {
         "@type": "Offer",
         "name": "Formule Standard",
-        "price": "690",
+        "price": "590",
         "priceCurrency": "EUR",
-        "description": "Site multi-sections pour association ou commerce"
+        "description": "Base + système admin client + galerie photos dynamique"
       },
       {
         "@type": "Offer",
         "name": "Formule Premium",
-        "price": "1100",
+        "price": "1090",
         "priceCurrency": "EUR",
-        "description": "Site multi-pages pour PME avec catalogue"
+        "description": "Tout inclus — base + les 8 modules à la carte (admin, galerie, inscription, blog, HelloAsso, Brevo, Stripe, SEO avancé)"
       }
     ]
   }
@@ -95,7 +95,7 @@
         "name": "Combien coûte la création d'un site internet avec AbiWeb ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AbiWeb propose 3 formules : Essentiel à 390€ (site une page), Standard à 690€ (site multi-sections) et Premium à 1 100€ (site multi-pages). Tous les prix sont nets, sans abonnement caché."
+          "text": "AbiWeb propose une base à 390€ (site vitrine 5 sections, contact, design responsive, SEO de base) à laquelle s'ajoutent des modules à la carte (admin, galerie, blog, paiement en ligne…), ou des formules clé en main : Essentiel 390€, Standard 590€ et Premium 1090€ (tout inclus). Tous les prix sont nets, sans abonnement caché."
         }
       },
       {
@@ -155,6 +155,7 @@
     .hero h1 em { font-style: normal; color: var(--accent); }
     .hero p { font-size: 1.075rem; color: var(--mid); max-width: 520px; margin: 0 auto 0.75rem; }
     .hero-note { font-size: 0.82rem; color: var(--mid); }
+    .hero-asterisk { font-size: 0.72rem; color: var(--mid); opacity: 0.7; margin-top: 0.35rem; max-width: 460px; margin-left: auto; margin-right: auto; }
 
     /* PLANS */
     .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; max-width: 1020px; margin: 0 auto; padding: 2rem 2rem 2rem; }
@@ -182,6 +183,47 @@
     .plan-btn-filled:hover { background: #2f4ec4; }
     .plan-btn-dark { background: var(--ink); color: var(--white); border: none; }
     .plan-btn-dark:hover { background: #2a2a30; }
+
+    /* SIMULATEUR */
+    .simulator-section { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 4rem 2rem; }
+    .simulator-inner { max-width: 1020px; margin: 0 auto; }
+    .simulator-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: var(--ink); }
+    .simulator-subtitle { font-size: 0.9rem; color: var(--mid); margin-bottom: 2rem; }
+    .simulator-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: start; }
+    @media (max-width: 760px) { .simulator-grid { grid-template-columns: 1fr; } }
+    .simulator-base { background: var(--accent2); border: 1px solid var(--accent); border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .simulator-base-label { font-weight: 700; font-size: 0.875rem; color: var(--accent); }
+    .simulator-base-desc { font-size: 0.78rem; color: var(--accent); opacity: 0.85; flex: 1 1 260px; }
+    .simulator-base-price { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--accent); white-space: nowrap; }
+    .simulator-modules-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .sim-module-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      background: var(--paper); border: 1.5px solid var(--line); border-radius: 10px;
+      padding: 0.85rem 1.1rem; cursor: pointer; transition: border-color .15s, background .15s;
+    }
+    .sim-module-item:hover { border-color: var(--accent); }
+    .sim-module-item.checked { border-color: var(--accent); background: var(--accent2); }
+    .sim-module-check { display: flex; align-items: center; gap: 0.7rem; font-size: 0.875rem; color: var(--ink); }
+    .sim-module-check input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+    .sim-module-price { font-weight: 700; font-size: 0.875rem; color: var(--ink); white-space: nowrap; }
+    .simulator-summary { position: sticky; top: 76px; }
+    .simulator-total-card { background: var(--ink); color: var(--white); border-radius: 16px; padding: 1.75rem 1.5rem; }
+    .simulator-total-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 0.4rem; }
+    .simulator-total-amount { font-family: 'Poppins', sans-serif; font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
+    .simulator-suggestion {
+      display: none; background: var(--green-bg); color: var(--green);
+      border-radius: 10px; padding: 0.85rem 1rem; font-size: 0.8rem; line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+    .simulator-suggestion.visible { display: block; }
+    .simulator-suggestion strong { font-weight: 700; }
+    .btn-simulator-cta {
+      display: block; width: 100%; text-align: center; background: var(--accent); color: var(--white);
+      border: none; padding: 0.85rem 1.25rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: background .15s; font-family: 'Inter', sans-serif; text-decoration: none;
+    }
+    .btn-simulator-cta:hover { background: #2f4ec4; }
+    .simulator-cta-note { font-size: 0.75rem; color: rgba(255,255,255,0.45); text-align: center; margin-top: 0.75rem; }
 
     /* INTÉGRATIONS */
     .integrations-section { max-width: 1020px; margin: 0 auto; padding: 0 2rem 2.5rem; }
@@ -372,6 +414,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="#"><img class="nav-logo" src="/images/logo/abiweb-logo.svg" alt="AbiWeb" /></a>
   <div class="nav-links">
     <a class="nav-link" href="#tarifs">Tarifs</a>
+    <a class="nav-link" href="#simulateur">Simulateur</a>
     <a class="nav-link" href="#processus">Comment ça marche</a>
     <a class="nav-link" href="#formulaire">Devis</a>
     <a class="nav-cta" href="#formulaire">Démarrer</a>
@@ -383,7 +426,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <span class="hero-eyebrow">Création de sites internet · Partout en France · 100% à distance</span>
   <h1>Création de site internet<br>pas cher qui <em>représente</em><br>votre activité</h1>
   <p>Sites vitrines clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Livraison en 7 jours, sans jargon, sans abonnement caché.</p>
-  <p class="hero-note">À partir de 390€ · Acompte 30% · Solde à la livraison · Retouches offertes 7 jours · Accès admin inclus</p>
+  <p class="hero-note">Livraison en 7 jours · <a href="#garantie" style="color:var(--mid);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;">Retouches offertes 7 jours*</a> · Modules à la carte · Devis gratuit</p>
 </section>
 
 <!-- PLANS -->
@@ -392,78 +435,91 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="plan">
     <p class="plan-label">Formule</p>
     <p class="plan-name">Essentiel</p>
-    <p class="plan-desc">Vitrine simple et efficace pour une association ou un auto-entrepreneur.</p>
+    <p class="plan-desc">La base seule — vitrine simple et efficace pour démarrer.</p>
     <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">390</span></div>
     <p class="price-sub">tarif unique · livraison 5 jours</p>
     <div class="divider"></div>
     <ul class="features">
-      <li><span class="icon">✓</span> Site une page (scroll)</li>
-      <li><span class="icon">✓</span> Jusqu'à 5 sections</li>
-      <li><span class="icon">✓</span> Jusqu'à 8 photos</li>
+      <li><span class="icon">✓</span> Site vitrine jusqu'à 5 sections</li>
       <li><span class="icon">✓</span> Formulaire de contact fonctionnel</li>
+      <li><span class="icon">✓</span> Design responsive (mobile, tablette, ordinateur)</li>
+      <li><span class="icon">✓</span> SEO de base</li>
       <li><span class="icon">✓</span> Emails reçus directement via Brevo</li>
-      <li><span class="icon">✓</span> Design aux couleurs de votre activité</li>
-      <li><span class="icon">✓</span> Responsive mobile</li>
       <li><span class="icon">✓</span> Mise en ligne incluse</li>
-      <li><span class="icon">✓</span> Accès admin — vous modifiez seul après livraison</li>
-      <li class="muted"><span class="icon icon-minus">–</span> Plusieurs sections / pages</li>
-      <li class="muted"><span class="icon icon-minus">–</span> Liens de paiement (HelloAsso, Stripe, PayPal…)</li>
-      <li class="muted"><span class="icon icon-minus">–</span> PDF ou documents téléchargeables</li>
+      <li class="muted"><span class="icon icon-minus">–</span> Système admin (modifier seul après livraison)</li>
+      <li class="muted"><span class="icon icon-minus">–</span> Galerie photos dynamique</li>
+      <li class="muted"><span class="icon icon-minus">–</span> Paiement en ligne / emailing CRM</li>
     </ul>
-    <a href="#formulaire" class="plan-btn plan-btn-outline">Choisir Essentiel</a>
+    <a href="#simulateur" class="plan-btn plan-btn-outline">Choisir Essentiel</a>
   </div>
   <!-- STANDARD -->
   <div class="plan featured">
     <span class="badge">⭐ Recommandé</span>
     <p class="plan-label">Formule</p>
     <p class="plan-name">Standard</p>
-    <p class="plan-desc">Le choix idéal pour une association ou un commerce qui veut une vraie vitrine.</p>
-    <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">690</span></div>
-    <p class="price-sub">tarif unique · livraison 7 jours</p>
+    <p class="plan-desc">Base + accès admin + galerie photos — pack à prix réduit.</p>
+    <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">590</span></div>
+    <p class="price-sub">au lieu de 670€ à la carte (−80€) · livraison 7 jours</p>
     <div class="divider"></div>
     <ul class="features">
-      <li><span class="icon">✓</span> Site multi-sections (jusqu'à 8 sections)</li>
-      <li><span class="icon">✓</span> Jusqu'à 15 photos</li>
-      <li><span class="icon">✓</span> 1 lien vidéo (YouTube / Vimeo)</li>
-      <li><span class="icon">✓</span> Formulaire de contact intégré</li>
-      <li><span class="icon">✓</span> Emails et base de contacts gérés via Brevo</li>
-      <li><span class="icon">✓</span> Design personnalisé + charte graphique</li>
-      <li><span class="icon">✓</span> Responsive mobile</li>
-      <li><span class="icon">✓</span> Mise en ligne incluse</li>
-      <li><span class="icon">✓</span> Liens paiement / adhésion (HelloAsso, PayPal, Stripe, SumUp…)</li>
-      <li><span class="icon">✓</span> Liens réseaux sociaux (Facebook, Instagram, YouTube…)</li>
-      <li><span class="icon">✓</span> PDF téléchargeables (règlement, programme, tarifs…)</li>
-      <li><span class="icon">✓</span> Accès admin — vous modifiez seul après livraison</li>
-      <li class="muted"><span class="icon icon-minus">–</span> Blog ou catalogue produits</li>
+      <li><span class="icon">✓</span> Tout Essentiel</li>
+      <li><span class="icon">✓</span> Système admin client — modifiez textes/photos seul</li>
+      <li><span class="icon">✓</span> Galerie photos dynamique</li>
+      <li class="muted"><span class="icon icon-minus">–</span> Modules Premium (inscription, blog, paiement, CRM, SEO…)</li>
     </ul>
-    <a href="#formulaire" class="plan-btn plan-btn-filled">Choisir Standard</a>
+    <a href="#simulateur" class="plan-btn plan-btn-filled">Choisir Standard</a>
   </div>
   <!-- PREMIUM -->
   <div class="plan">
     <p class="plan-label">Formule</p>
     <p class="plan-name">Premium</p>
-    <p class="plan-desc">Pour les PME qui ont besoin de plusieurs pages et d'un contenu riche.</p>
-    <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">1 100</span></div>
-    <p class="price-sub">tarif unique · livraison 10 jours</p>
+    <p class="plan-desc">Tout inclus — la formule la plus complète, rien à ajouter.</p>
+    <div class="plan-price"><span class="price-currency">€</span><span class="price-amount">1 090</span></div>
+    <p class="price-sub">au lieu de 1 330€ à la carte (−240€) · livraison 10 jours</p>
     <div class="divider"></div>
     <ul class="features">
-      <li><span class="icon">✓</span> Site multi-pages (jusqu'à 6 pages)</li>
-      <li><span class="icon">✓</span> Jusqu'à 20 photos</li>
-      <li><span class="icon">✓</span> Jusqu'à 3 liens vidéo (YouTube / Vimeo)</li>
-      <li><span class="icon">✓</span> Formulaire de contact avancé</li>
-      <li><span class="icon">✓</span> Base de contacts et emails automatisés via Brevo</li>
-      <li><span class="icon">✓</span> Design sur-mesure + animations soignées</li>
-      <li><span class="icon">✓</span> Responsive mobile</li>
-      <li><span class="icon">✓</span> Mise en ligne incluse</li>
-      <li><span class="icon">✓</span> Liens paiement / réservation (HelloAsso, Stripe, PayPal, SumUp, Calendly, Doctolib…)</li>
-      <li><span class="icon">✓</span> Liens réseaux (Facebook, Instagram, LinkedIn, YouTube, TikTok…)</li>
-      <li><span class="icon">✓</span> PDF, galerie, vidéos, documents téléchargeables</li>
-      <li><span class="icon">✓</span> Catalogue ou présentation produits/services</li>
-      <li><span class="icon">✓</span> Accès admin — vous modifiez seul après livraison</li>
+      <li><span class="icon">✓</span> Tout Standard</li>
+      <li><span class="icon">✓</span> Formulaire d'inscription + génération PDF</li>
+      <li><span class="icon">✓</span> Blog / actualités</li>
+      <li><span class="icon">✓</span> Paiement en ligne (HelloAsso)</li>
+      <li><span class="icon">✓</span> Emailing / CRM (Brevo)</li>
+      <li><span class="icon">✓</span> Paiement sécurisé avancé (Stripe)</li>
+      <li><span class="icon">✓</span> SEO avancé + référencement Google</li>
     </ul>
-    <a href="#formulaire" class="plan-btn plan-btn-dark">Choisir Premium</a>
+    <a href="#simulateur" class="plan-btn plan-btn-dark">Choisir Premium</a>
   </div>
 </div>
+<p style="text-align:center; font-size:0.85rem; color:var(--mid); margin-top:-1.5rem; padding: 0 2rem 2rem;">Besoin d'une autre combinaison ? <a href="#simulateur" style="color:var(--accent); font-weight:600; text-decoration:none;">Composez votre formule sur-mesure →</a></p>
+
+<!-- SIMULATEUR -->
+<section class="simulator-section" id="simulateur">
+  <div class="simulator-inner">
+    <p class="section-label">Tarif sur-mesure</p>
+    <h2>Simulez le prix de votre site</h2>
+    <p class="simulator-subtitle">Cochez les modules dont vous avez besoin, le total se met à jour automatiquement.</p>
+    <div class="simulator-grid">
+      <div>
+        <div class="simulator-base">
+          <div>
+            <div class="simulator-base-label">✓ Base — toujours incluse</div>
+            <div class="simulator-base-desc" id="simulatorBaseDesc"></div>
+          </div>
+          <div class="simulator-base-price" id="simulatorBasePrice"></div>
+        </div>
+        <div class="simulator-modules-list" id="simulatorModules"></div>
+      </div>
+      <div class="simulator-summary">
+        <div class="simulator-total-card">
+          <p class="simulator-total-label">Total estimé</p>
+          <p class="simulator-total-amount" id="simulatorTotal">390 €</p>
+          <div class="simulator-suggestion" id="simulatorSuggestion"></div>
+          <button class="btn-simulator-cta" id="simulatorCta" type="button">Demander un devis →</button>
+          <p class="simulator-cta-note">Pas d'engagement · Réponse rapide</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- INTÉGRATIONS -->
 <div class="integrations-section">
@@ -536,18 +592,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="hosting-card">
       <div class="hosting-card-head">
-        <span class="hosting-card-name">Après livraison — Vous êtes 100% autonome</span>
+        <span class="hosting-card-name">Après livraison — Vous êtes propriétaire</span>
         <span class="hosting-chip chip-free">Inclus</span>
       </div>
-      <p class="hosting-price">Accès admin + 30 min de formation</p>
-      <p class="hosting-desc">Je vous remets votre accès admin et vous montre en 30 minutes comment modifier vos textes, photos et tarifs vous-même — sans me contacter. Pour toute modification plus importante (nouvelle page, changement de charte), je reste disponible à 70 €/h.</p>
+      <p class="hosting-price">Hébergement à votre nom, aucune dépendance</p>
+      <p class="hosting-desc">Votre site est déployé sur votre propre compte, vous en êtes l'unique propriétaire. Pour modifier vous-même vos textes, photos et tarifs après livraison, le module Système admin client (200€, inclus dans les formules Standard et Premium) vous donne un accès dédié. Sans ce module, je reste disponible à 70 €/h pour les modifications.</p>
     </div>
   </div>
   <p class="hosting-note">✅ <strong>Le principe AbiWeb :</strong> je crée votre site, je vous le livre clé en main, et vous en êtes l'unique propriétaire. Pas d'abonnement, pas de dépendance, pas de surprise.</p>
 </div>
 
 <!-- GARANTIE -->
-<div class="guarantee">
+<div class="guarantee" id="garantie">
   <div class="guarantee-inner">
     <div class="guarantee-icon">🛡️</div>
     <h2>Garantie retouches — 7 jours</h2>
@@ -573,7 +629,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="step-body">
         <h3>Bon de commande signé + acompte 30%</h3>
         <p>Vous signez un bon de commande simple. L'acompte déclenche le démarrage du projet.</p>
-        <span class="step-tag step-tag-warning">Exemple : 690€ → acompte 207€</span>
+        <span class="step-tag step-tag-warning">Exemple : 590€ → acompte 177€</span>
       </div>
     </div>
     <div class="step">
@@ -632,6 +688,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="section-label">FAQ</p>
     <h2>Questions fréquentes sur la création de site internet</h2>
     <div class="faq-item">
+      <p class="faq-q">Quelle différence entre une formule clé en main et les modules à la carte ?</p>
+      <p class="faq-a">Les formules (Essentiel, Standard, Premium) regroupent les modules les plus demandés avec une remise de 80 à 240€. Si vous avez besoin d'une combinaison différente — par exemple la base avec uniquement HelloAsso sans le système admin — le simulateur vous permet de composer exactement ce qu'il vous faut, sans payer pour des options inutiles.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Puis-je ajouter un module après la livraison de mon site ?</p>
+      <p class="faq-a">Oui, tout à fait. Chaque module peut être ajouté ultérieurement au tarif à la carte en vigueur. La seule contrainte : si vous avez choisi la formule Essentiel (sans système admin) et souhaitez l'ajouter plus tard, cela représente une intervention de développement supplémentaire facturée à 200€.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">La maintenance mensuelle est-elle obligatoire ?</p>
+      <p class="faq-a">Non, elle est entièrement optionnelle. L'hébergement Vercel est gratuit et votre site fonctionne sans aucun abonnement. La maintenance est utile si vous souhaitez déléguer les mises à jour régulières ou avoir un support prioritaire — sinon, vous êtes 100% autonome après la livraison.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Qu'est-ce que le SEO de base inclus dans toutes les formules ?</p>
+      <p class="faq-a">Le SEO de base couvre les fondamentaux techniques : balises title et meta description optimisées, structure sémantique (H1/H2), temps de chargement rapide, données structurées Schema.org et sitemap. Votre site sera correctement indexé par Google. Pour apparaître sur des mots-clés concurrentiels (ex. "plombier Paris"), le module SEO avancé (80€) propose un travail de fond sur le contenu et le maillage.</p>
+    </div>
+    <div class="faq-item">
       <p class="faq-q">Est-ce que je dois fournir les textes et photos ?</p>
       <p class="faq-a">Oui, idéalement vous me fournissez vos textes et vos photos. Si vous n'en avez pas, je peux vous proposer des visuels libres de droits et rédiger une première version des textes avec vous.</p>
     </div>
@@ -666,7 +738,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="realisations-subtitle">Un site livré, en ligne, fonctionnel. Voyez par vous-même.</p>
     <div class="realisation-card">
       <div class="realisation-info">
-        <div class="realisation-tag">Formule Standard · Association sportive</div>
+        <div class="realisation-tag">Formule Premium · Association sportive</div>
         <h3 class="realisation-name">ASC Muay Thaï</h3>
         <p class="realisation-desc">Site vitrine complet pour un club de Muay Thaï. Présentation du club, programme des cours, tarifs d'adhésion, lien HelloAsso, galerie photos, formulaire de contact et carte d'accès.</p>
         <ul class="realisation-features">
@@ -723,8 +795,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <select id="c-formule">
           <option value="">— Choisir —</option>
           <option>Essentiel — 390€</option>
-          <option>Standard — 690€</option>
-          <option>Premium — 1 100€</option>
+          <option>Standard — 590€</option>
+          <option>Premium — 1090€</option>
+          <option>Sur-mesure à la carte</option>
           <option>Je ne sais pas encore</option>
         </select>
       </div>
@@ -762,10 +835,66 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2026 AbiWeb · <a href="mailto:contact@abiweb.fr">contact@abiweb.fr</a></p>
+  <p>© 2026 AbiWeb · <a href="mailto:contact@abiweb.fr">contact@abiweb.fr</a> · <a href="/mentions-legales">Mentions légales</a> · <a href="/cgv">CGV</a> · <a href="/politique-de-confidentialite">Politique de confidentialité</a></p>
 </footer>
 
+<script src="/js/pricing-data.js"></script>
 <script>
+  (function () {
+    var pricing = window.AbiWebPricing;
+    var selectedModules = [];
+
+    var listEl = document.getElementById('simulatorModules');
+    document.getElementById('simulatorBaseDesc').textContent = pricing.BASE_LABEL;
+    document.getElementById('simulatorBasePrice').textContent = pricing.BASE_PRICE + ' €';
+
+    pricing.MODULES.forEach(function (mod) {
+      var item = document.createElement('label');
+      item.className = 'sim-module-item';
+      item.innerHTML =
+        '<span class="sim-module-check"><input type="checkbox" value="' + mod.key + '" />' + mod.label + '</span>' +
+        '<span class="sim-module-price">+' + mod.price + ' €</span>';
+      listEl.appendChild(item);
+    });
+
+    function updateTotal() {
+      var checkboxes = listEl.querySelectorAll('input[type="checkbox"]');
+      selectedModules = Array.prototype.filter.call(checkboxes, function (c) { return c.checked; })
+        .map(function (c) { return c.value; });
+
+      checkboxes.forEach(function (c) { c.closest('.sim-module-item').classList.toggle('checked', c.checked); });
+
+      var total = pricing.alaCarteTotal(selectedModules);
+      document.getElementById('simulatorTotal').textContent = total + ' €';
+
+      var suggestionEl = document.getElementById('simulatorSuggestion');
+      var suggestion = pricing.bestPackSuggestion(selectedModules);
+      if (suggestion) {
+        suggestionEl.classList.add('visible');
+        suggestionEl.innerHTML = 'Vous avez sélectionné l\'équivalent de la formule <strong>' + suggestion.formule.name +
+          '</strong>, économisez <strong>' + suggestion.savings + ' €</strong> en prenant le pack (' + suggestion.packTotal + ' € au lieu de ' + total + ' €).';
+      } else {
+        suggestionEl.classList.remove('visible');
+        suggestionEl.innerHTML = '';
+      }
+    }
+
+    listEl.addEventListener('change', updateTotal);
+    updateTotal();
+
+    document.getElementById('simulatorCta').addEventListener('click', function () {
+      var total = pricing.alaCarteTotal(selectedModules);
+      var suggestion = pricing.bestPackSuggestion(selectedModules);
+      var selection = {
+        modules: selectedModules,
+        total: total,
+        suggestion: suggestion ? { formule: suggestion.formule.key, packTotal: suggestion.packTotal, savings: suggestion.savings } : null,
+      };
+      try { sessionStorage.setItem('abiweb_pricing_selection', JSON.stringify(selection)); } catch (e) {}
+      window.location.href = '/devis';
+    });
+  })();
+
   function switchTab(tab) {
     document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));

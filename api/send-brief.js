@@ -18,6 +18,14 @@ export default async function handler(req, res) {
     : data.domaine === 'oui' ? 'Oui, déjà acheté'
     : 'Adresse gratuite (vercel.app)';
 
+  const tarifMode = data.tarifMode === 'alacarte' ? 'Sur mesure à la carte' : 'Formule clé en main';
+  const tarifLabel = data.tarifMode === 'alacarte'
+    ? `Sur mesure — ${data.totalEstime || 0}€`
+    : (data.formule || 'Non précisé');
+  const tarifDetail = data.tarifMode === 'alacarte'
+    ? `Modules : ${(data.modulesChoisis && data.modulesChoisis.length) ? data.modulesChoisis.join(', ') : 'Base seule'}\nTotal estimé : ${data.totalEstime || 0}€`
+    : `Formule : ${data.formule || 'Non précisé'}`;
+
   const text = `=== BRIEF CLIENT ABIWEB ===
 
 --- CONTACT ---
@@ -30,8 +38,10 @@ Ville : ${data.ville || 'Non renseignée'}
 Activité : ${data.activite || ''}
 Site existant : ${data.siteExistant === 'oui' ? 'Oui — refonte' + (data.siteUrl ? ' (' + data.siteUrl + ')' : '') : 'Non — 1er site'}
 
---- FORMULE ---
-Formule : ${data.formule || 'Non précisé'}
+--- TARIFICATION ---
+Mode : ${tarifMode}
+${tarifDetail}
+Maintenance : ${data.maintenance || 'Non précisé'}
 Domaine : ${domaineLabel}${data.domaineNom ? ' — ' + data.domaineNom : ''}
 
 --- CONTENU ---
@@ -68,7 +78,7 @@ ${data.infos || 'Aucune'}
         sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
         to: [{ email: 'contact@abiweb.fr' }],
         replyTo: data.email ? { email: data.email } : undefined,
-        subject: `Brief AbiWeb — ${data.nom || 'Sans nom'} (${data.formule || ''})`,
+        subject: `Brief AbiWeb — ${data.nom || 'Sans nom'} (${tarifLabel})`,
         textContent: text,
       }),
     });
@@ -84,7 +94,7 @@ ${data.infos || 'Aucune'}
       try {
         const attributes = {
           PRENOM: data.contact || '',
-          NOM: data.nom ? `${data.nom}${data.formule ? ' — ' + data.formule : ''}` : '',
+          NOM: data.nom ? `${data.nom} — ${tarifLabel}` : '',
         };
         const sms = normalizeFrenchPhone(data.tel);
         if (sms) attributes.SMS = sms;
