@@ -13,6 +13,7 @@
     { key: 'brevo', label: 'Emailing / CRM (Brevo)', price: 80 },
     { key: 'stripe', label: 'Paiement sécurisé avancé (Stripe)', price: 150 },
     { key: 'seo', label: 'SEO avancé + référencement Google', price: 80 },
+    { key: 'resa', label: 'Prise de rendez-vous en ligne (Calendly, Doctolib, Planity…)', price: 80 },
   ];
 
   var FORMULES = [
@@ -28,7 +29,7 @@
       badge: 'Populaire',
     },
     {
-      key: 'premium', name: 'Premium', price: 1090, modules: ['admin', 'galerie', 'inscription', 'blog', 'helloasso', 'brevo', 'stripe', 'seo'],
+      key: 'premium', name: 'Premium', price: 1090, modules: ['admin', 'galerie', 'inscription', 'blog', 'helloasso', 'brevo', 'stripe', 'seo', 'resa'],
       delaiJours: 10,
       desc: 'Tout inclus — base + les 8 modules à la carte.',
     },
