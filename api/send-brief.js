@@ -8,6 +8,8 @@ const LIMITS = {
   activite: 1000,
   siteUrl: 300,
   formule: 60,
+  tarifMode: 20,
+  maintenance: 80,
   domaine: 20,
   domaineNom: 120,
   photos: 40,
@@ -33,6 +35,14 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 function clean(value, max) {
   if (typeof value !== 'string') return '';
   return value.trim().slice(0, max);
+}
+
+function cleanList(value, maxItems, maxLen) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((s) => typeof s === 'string')
+    .slice(0, maxItems)
+    .map((s) => s.trim().slice(0, maxLen));
 }
 
 function normalizeFrenchPhone(tel) {
@@ -62,12 +72,11 @@ export default async function handler(req, res) {
     data[field] = clean(body[field], max);
   }
   data.siteExistant = body.siteExistant === 'oui' ? 'oui' : 'non';
-  data.sections = Array.isArray(body.sections)
-    ? body.sections
-        .filter((s) => typeof s === 'string')
-        .slice(0, 20)
-        .map((s) => s.trim().slice(0, 100))
-    : [];
+  data.sections = cleanList(body.sections, 20, 100);
+  data.modulesChoisis = cleanList(body.modulesChoisis, 20, 100);
+  data.totalEstime = Number.isFinite(Number(body.totalEstime))
+    ? Math.max(0, Math.min(100000, Math.round(Number(body.totalEstime))))
+    : 0;
 
   if (!data.nom || !data.contact || !data.activite || !EMAIL_RE.test(data.email)) {
     res.status(400).json({ error: 'invalid_input' });
@@ -78,6 +87,14 @@ export default async function handler(req, res) {
     data.domaine === 'non' ? 'Non, à acheter'
     : data.domaine === 'oui' ? 'Oui, déjà acheté'
     : 'Adresse gratuite (vercel.app)';
+
+  const tarifMode = data.tarifMode === 'alacarte' ? 'Sur mesure à la carte' : 'Formule clé en main';
+  const tarifLabel = data.tarifMode === 'alacarte'
+    ? `Sur mesure — ${data.totalEstime}€`
+    : (data.formule || 'Non précisé');
+  const tarifDetail = data.tarifMode === 'alacarte'
+    ? `Modules : ${data.modulesChoisis.length ? data.modulesChoisis.join(', ') : 'Base seule'}\nTotal estimé : ${data.totalEstime}€`
+    : `Formule : ${data.formule || 'Non précisé'}`;
 
   const text = `=== BRIEF CLIENT ABIWEB ===
 
@@ -91,8 +108,10 @@ Ville : ${data.ville || 'Non renseignée'}
 Activité : ${data.activite}
 Site existant : ${data.siteExistant === 'oui' ? 'Oui — refonte' + (data.siteUrl ? ' (' + data.siteUrl + ')' : '') : 'Non — 1er site'}
 
---- FORMULE ---
-Formule : ${data.formule || 'Non précisé'}
+--- TARIFICATION ---
+Mode : ${tarifMode}
+${tarifDetail}
+Maintenance : ${data.maintenance || 'Non précisé'}
 Domaine : ${domaineLabel}${data.domaineNom ? ' — ' + data.domaineNom : ''}
 
 --- CONTENU ---
@@ -129,7 +148,7 @@ ${data.infos || 'Aucune'}
         sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
         to: [{ email: 'contact@abiweb.fr' }],
         replyTo: { email: data.email },
-        subject: `Brief AbiWeb — ${data.nom} (${data.formule || 'formule non précisée'})`,
+        subject: `Brief AbiWeb — ${data.nom} (${tarifLabel})`,
         textContent: text,
       }),
     });
@@ -144,7 +163,7 @@ ${data.infos || 'Aucune'}
     try {
       const attributes = {
         PRENOM: data.contact,
-        NOM: `${data.nom}${data.formule ? ' — ' + data.formule : ''}`,
+        NOM: `${data.nom} — ${tarifLabel}`,
       };
       const sms = normalizeFrenchPhone(data.tel);
       if (sms) attributes.SMS = sms;
