@@ -1,3 +1,40 @@
+const LIMITS = {
+  nom: 120,
+  type: 60,
+  contact: 100,
+  email: 254,
+  tel: 30,
+  ville: 100,
+  activite: 1000,
+  siteUrl: 300,
+  formule: 60,
+  domaine: 20,
+  domaineNom: 120,
+  photos: 40,
+  photosNb: 40,
+  videos: 20,
+  logo: 40,
+  textes: 80,
+  fbLink: 300,
+  igLink: 300,
+  ytLink: 300,
+  autreLink: 300,
+  style: 60,
+  couleur1: 30,
+  couleur2: 30,
+  couleursTexte: 300,
+  refs: 500,
+  refNon: 300,
+  infos: 3000,
+};
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function clean(value, max) {
+  if (typeof value !== 'string') return '';
+  return value.trim().slice(0, max);
+}
+
 function normalizeFrenchPhone(tel) {
   if (!tel) return '';
   const digits = tel.replace(/[^0-9]/g, '');
@@ -11,7 +48,31 @@ export default async function handler(req, res) {
     return;
   }
 
-  const data = req.body || {};
+  const body = req.body && typeof req.body === 'object' ? req.body : {};
+
+  // Honeypot : champ invisible pour les humains — rempli, c'est un bot.
+  // On répond un faux succès pour ne pas lui signaler le rejet.
+  if (typeof body.website === 'string' && body.website.trim() !== '') {
+    res.status(200).json({ ok: true });
+    return;
+  }
+
+  const data = {};
+  for (const [field, max] of Object.entries(LIMITS)) {
+    data[field] = clean(body[field], max);
+  }
+  data.siteExistant = body.siteExistant === 'oui' ? 'oui' : 'non';
+  data.sections = Array.isArray(body.sections)
+    ? body.sections
+        .filter((s) => typeof s === 'string')
+        .slice(0, 20)
+        .map((s) => s.trim().slice(0, 100))
+    : [];
+
+  if (!data.nom || !data.contact || !data.activite || !EMAIL_RE.test(data.email)) {
+    res.status(400).json({ error: 'invalid_input' });
+    return;
+  }
 
   const domaineLabel =
     data.domaine === 'non' ? 'Non, à acheter'
@@ -21,13 +82,13 @@ export default async function handler(req, res) {
   const text = `=== BRIEF CLIENT ABIWEB ===
 
 --- CONTACT ---
-Structure : ${data.nom || ''}
-Type : ${data.type || ''}
-Nom contact : ${data.contact || ''}
-Email : ${data.email || ''}
+Structure : ${data.nom}
+Type : ${data.type}
+Nom contact : ${data.contact}
+Email : ${data.email}
 Téléphone : ${data.tel || 'Non renseigné'}
 Ville : ${data.ville || 'Non renseignée'}
-Activité : ${data.activite || ''}
+Activité : ${data.activite}
 Site existant : ${data.siteExistant === 'oui' ? 'Oui — refonte' + (data.siteUrl ? ' (' + data.siteUrl + ')' : '') : 'Non — 1er site'}
 
 --- FORMULE ---
@@ -35,7 +96,7 @@ Formule : ${data.formule || 'Non précisé'}
 Domaine : ${domaineLabel}${data.domaineNom ? ' — ' + data.domaineNom : ''}
 
 --- CONTENU ---
-Sections souhaitées : ${(data.sections && data.sections.length) ? data.sections.join(', ') : 'Non précisé'}
+Sections souhaitées : ${data.sections.length ? data.sections.join(', ') : 'Non précisé'}
 Photos : ${data.photos || 'Non précisé'} — Nombre : ${data.photosNb || 'Non précisé'}
 Vidéos : ${data.videos || 'Non précisé'}
 Logo : ${data.logo || 'Non précisé'}
@@ -47,8 +108,8 @@ Autre lien : ${data.autreLink || 'Aucun'}
 
 --- DESIGN ---
 Style : ${data.style || 'Non précisé'}
-Couleur principale : ${data.couleur1 || ''}
-Couleur secondaire : ${data.couleur2 || ''}
+Couleur principale : ${data.couleur1}
+Couleur secondaire : ${data.couleur2}
 Précisions couleurs : ${data.couleursTexte || 'Aucune'}
 Références : ${data.refs || 'Aucune'}
 À éviter : ${data.refNon || 'Aucun'}
@@ -67,8 +128,8 @@ ${data.infos || 'Aucune'}
       body: JSON.stringify({
         sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
         to: [{ email: 'contact@abiweb.fr' }],
-        replyTo: data.email ? { email: data.email } : undefined,
-        subject: `Brief AbiWeb — ${data.nom || 'Sans nom'} (${data.formule || ''})`,
+        replyTo: { email: data.email },
+        subject: `Brief AbiWeb — ${data.nom} (${data.formule || 'formule non précisée'})`,
         textContent: text,
       }),
     });
@@ -80,35 +141,33 @@ ${data.infos || 'Aucune'}
       return;
     }
 
-    if (data.email) {
-      try {
-        const attributes = {
-          PRENOM: data.contact || '',
-          NOM: data.nom ? `${data.nom}${data.formule ? ' — ' + data.formule : ''}` : '',
-        };
-        const sms = normalizeFrenchPhone(data.tel);
-        if (sms) attributes.SMS = sms;
+    try {
+      const attributes = {
+        PRENOM: data.contact,
+        NOM: `${data.nom}${data.formule ? ' — ' + data.formule : ''}`,
+      };
+      const sms = normalizeFrenchPhone(data.tel);
+      if (sms) attributes.SMS = sms;
 
-        const contactRes = await fetch('https://api.brevo.com/v3/contacts', {
-          method: 'POST',
-          headers: {
-            'api-key': process.env.BREVO_API_KEY,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: data.email,
-            attributes,
-            listIds: [2],
-            updateEnabled: true,
-          }),
-        });
+      const contactRes = await fetch('https://api.brevo.com/v3/contacts', {
+        method: 'POST',
+        headers: {
+          'api-key': process.env.BREVO_API_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          attributes,
+          listIds: [2],
+          updateEnabled: true,
+        }),
+      });
 
-        if (!contactRes.ok) {
-          console.error('Brevo contact upsert failed:', await contactRes.text());
-        }
-      } catch (err) {
-        console.error('Brevo contact upsert error:', err);
+      if (!contactRes.ok) {
+        console.error('Brevo contact upsert failed:', await contactRes.text());
       }
+    } catch (err) {
+      console.error('Brevo contact upsert error:', err);
     }
 
     res.status(200).json({ ok: true });
