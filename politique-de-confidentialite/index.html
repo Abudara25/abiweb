@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtag/js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-N439P2KJ');</script>
-  <!-- End Google Tag Manager -->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S2QVJFM4L5"></script>
+  <!-- GTM + GA chargés uniquement après consentement (bannière cookies en bas de page) -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-S2QVJFM4L5');
+    function abiwebLoadAnalytics() {
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-N439P2KJ');
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-S2QVJFM4L5';
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ window.dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-S2QVJFM4L5');
+    }
+    if (localStorage.getItem('abiweb-consent') === 'granted') abiwebLoadAnalytics();
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,13 +44,17 @@
     a:hover { text-decoration: underline; }
     .back { display: inline-block; margin-top: 3rem; font-size: 0.9rem; }
     .updated { font-size: 0.82rem; color: var(--mid); margin-bottom: 2rem; }
+    .cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; }
+    .cookie-banner p { color: rgba(255,255,255,0.85); font-size: 0.85rem; max-width: none; margin: 0 0 0.75rem; }
+    .cookie-banner a { color: #9db1f5; }
+    .cookie-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .cookie-actions button { font-family: inherit; font-size: 0.85rem; font-weight: 600; border-radius: 7px; padding: 0.5rem 1rem; cursor: pointer; }
+    #cookieAccept { background: var(--accent); color: #fff; border: none; }
+    #cookieRefuse { background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.3); }
   </style>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N439P2KJ"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
   <div class="wrap">
     <a href="/"><img class="logo" src="/images/logo/abiweb-logo.svg" alt="AbiWeb" /></a>
     <h1>Politique de confidentialité</h1>
@@ -116,15 +125,20 @@
 
     <h2>7. Cookies et mesure d'audience</h2>
     <p>
-      Ce site utilise <strong>Google Analytics</strong> et <strong>Google Tag Manager</strong> pour mesurer la fréquentation et améliorer l'expérience utilisateur. Ces outils peuvent déposer des cookies sur votre navigateur.
+      Ce site utilise <strong>Google Analytics</strong> et <strong>Google Tag Manager</strong> pour mesurer la fréquentation et améliorer l'expérience utilisateur. Ces outils ne sont chargés — et aucun cookie n'est déposé — qu'après votre accord, exprimé via la bannière de consentement affichée lors de votre première visite.
     </p>
     <p>
-      Les données collectées (pages visitées, durée de session, pays…) sont anonymisées et ne permettent pas de vous identifier personnellement. Vous pouvez vous opposer à ce suivi en :
+      Les données collectées (pages visitées, durée de session, pays…) sont anonymisées et ne permettent pas de vous identifier personnellement. Vous pouvez retirer ou modifier votre consentement à tout moment :
     </p>
     <ul>
-      <li>Désactivant les cookies dans les paramètres de votre navigateur</li>
-      <li>Installant l'extension <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out</a></li>
+      <li><a href="#" onclick="abiwebCookieChoice(); return false;">Gérer mes préférences cookies</a> (réaffiche la bannière de choix)</li>
+      <li>Ou en désactivant les cookies dans les paramètres de votre navigateur</li>
+      <li>Ou en installant l'extension <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out</a></li>
     </ul>
+    <p>
+      Le site utilise également Vercel Analytics, une solution de mesure d'audience qui ne dépose aucun
+      cookie et ne collecte aucune donnée personnelle identifiante.
+    </p>
     <p>Aucun autre cookie de tracking ou publicitaire n'est utilisé sur ce site.</p>
 
     <h2>8. Sécurité</h2>
@@ -134,5 +148,29 @@
 
     <a class="back" href="/">← Retour à l'accueil</a>
   </div>
+  <div class="cookie-banner" id="cookieBanner" hidden>
+    <p>Ce site utilise des cookies de mesure d'audience (Google Analytics), déposés uniquement avec votre accord. <a href="/politique-de-confidentialite">En savoir plus</a></p>
+    <div class="cookie-actions">
+      <button id="cookieRefuse">Continuer sans accepter</button>
+      <button id="cookieAccept">Accepter</button>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var banner = document.getElementById('cookieBanner');
+      function choose(value) {
+        localStorage.setItem('abiweb-consent', value);
+        banner.hidden = true;
+        if (value === 'granted') abiwebLoadAnalytics();
+      }
+      document.getElementById('cookieAccept').addEventListener('click', function () { choose('granted'); });
+      document.getElementById('cookieRefuse').addEventListener('click', function () { choose('denied'); });
+      if (!localStorage.getItem('abiweb-consent')) banner.hidden = false;
+      window.abiwebCookieChoice = function () {
+        localStorage.removeItem('abiweb-consent');
+        banner.hidden = false;
+      };
+    })();
+  </script>
 </body>
 </html>
