@@ -52,6 +52,50 @@ function normalizeFrenchPhone(tel) {
   return digits;
 }
 
+// Les données client sont échappées avant insertion dans le HTML de l'email.
+function esc(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escMultiline(value) {
+  return esc(value).replace(/\n/g, '<br />');
+}
+
+function safeColor(value) {
+  return /^#[0-9a-fA-F]{3,8}$/.test(value) ? value : '';
+}
+
+function htmlLink(url) {
+  if (!url) return '';
+  return /^https?:\/\//i.test(url)
+    ? `<a href="${esc(url)}" style="color:#3b5bdb;">${esc(url)}</a>`
+    : esc(url);
+}
+
+function htmlRow(label, valueHtml) {
+  return `<tr>
+    <td style="padding:7px 16px 7px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b6b72;vertical-align:top;width:170px;">${label}</td>
+    <td style="padding:7px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#0f0f11;line-height:1.5;">${valueHtml}</td>
+  </tr>`;
+}
+
+function htmlSection(title, rows) {
+  return `<tr><td style="padding:22px 28px 0;">
+    <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;color:#3b5bdb;text-transform:uppercase;">${title}</p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e2e1de;">${rows.join('')}</table>
+  </td></tr>`;
+}
+
+function colorChip(hex) {
+  const safe = safeColor(hex);
+  if (!safe) return 'Non précisé';
+  return `<span style="display:inline-block;width:14px;height:14px;border-radius:3px;background-color:${safe};border:1px solid #d5d4d0;">&nbsp;</span>&nbsp;${esc(safe)}`;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'method_not_allowed' });
@@ -137,6 +181,81 @@ Références : ${data.refs || 'Aucune'}
 ${data.infos || 'Aucune'}
 `;
 
+  const contactRows = [
+    htmlRow('Structure', `<strong>${esc(data.nom)}</strong>`),
+    htmlRow('Type', esc(data.type) || 'Non précisé'),
+    htmlRow('Contact', esc(data.contact)),
+    htmlRow('Email', `<a href="mailto:${esc(data.email)}" style="color:#3b5bdb;">${esc(data.email)}</a>`),
+    htmlRow('Téléphone', esc(data.tel) || 'Non renseigné'),
+    htmlRow('Ville', esc(data.ville) || 'Non renseignée'),
+    htmlRow('Activité', escMultiline(data.activite)),
+    htmlRow('Site existant', data.siteExistant === 'oui'
+      ? 'Oui - refonte' + (data.siteUrl ? ' (' + htmlLink(data.siteUrl) + ')' : '')
+      : 'Non - 1er site'),
+  ];
+
+  const tarifRows = [
+    htmlRow('Mode', esc(tarifMode)),
+    data.tarifMode === 'alacarte'
+      ? htmlRow('Modules', esc(data.modulesChoisis.length ? data.modulesChoisis.join(', ') : 'Base seule'))
+      : htmlRow('Formule', esc(data.formule) || 'Non précisé'),
+  ];
+  if (data.tarifMode === 'alacarte') {
+    tarifRows.push(htmlRow('Total estimé', `<strong>${data.totalEstime}&nbsp;€</strong>`));
+  }
+  tarifRows.push(htmlRow('Maintenance', esc(data.maintenance) || 'Non précisé'));
+  tarifRows.push(htmlRow('Domaine', esc(domaineLabel) + (data.domaineNom ? ' - ' + esc(data.domaineNom) : '')));
+
+  const contenuRows = [
+    htmlRow('Sections', esc(data.sections.length ? data.sections.join(', ') : 'Non précisé')),
+    htmlRow('Photos', (esc(data.photos) || 'Non précisé') + (data.photosNb ? ' - ' + esc(data.photosNb) : '')),
+    htmlRow('Vidéos', esc(data.videos) || 'Non précisé'),
+    htmlRow('Logo', esc(data.logo) || 'Non précisé'),
+    htmlRow('Textes', esc(data.textes) || 'Non précisé'),
+    htmlRow('Facebook', htmlLink(data.fbLink) || 'Aucun'),
+    htmlRow('Instagram', htmlLink(data.igLink) || 'Aucun'),
+    htmlRow('YouTube', htmlLink(data.ytLink) || 'Aucun'),
+    htmlRow('Autre lien', htmlLink(data.autreLink) || 'Aucun'),
+  ];
+
+  const designRows = [
+    htmlRow('Style', esc(data.style) || 'Non précisé'),
+    htmlRow('Couleur principale', colorChip(data.couleur1)),
+    htmlRow('Couleur secondaire', colorChip(data.couleur2)),
+    htmlRow('Précisions couleurs', esc(data.couleursTexte) || 'Aucune'),
+    htmlRow('Références', esc(data.refs) || 'Aucune'),
+    htmlRow('À éviter', esc(data.refNon) || 'Aucun'),
+  ];
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<body style="margin:0;padding:0;background-color:#f8f7f4;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f7f4;">
+    <tr><td align="center" style="padding:28px 12px;">
+      <table cellpadding="0" cellspacing="0" style="width:100%;max-width:620px;background-color:#ffffff;border-radius:14px;border:1px solid #e2e1de;">
+        <tr><td style="background-color:#0f0f11;border-radius:13px 13px 0 0;padding:22px 28px;">
+          <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:#ffffff;">Abi<span style="color:#8fa3ec;">Web</span></p>
+          <p style="margin:6px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#9a9aa2;">Nouveau brief client reçu via abiweb.fr</p>
+        </td></tr>
+        <tr><td style="padding:24px 28px 0;">
+          <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:20px;font-weight:bold;color:#0f0f11;">${esc(data.nom)}</p>
+          <p style="margin:8px 0 0;"><span style="display:inline-block;background-color:#e8f0ff;color:#3b5bdb;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;padding:4px 12px;border-radius:999px;">${esc(tarifLabel)}</span></p>
+        </td></tr>
+        ${htmlSection('Contact', contactRows)}
+        ${htmlSection('Tarification', tarifRows)}
+        ${htmlSection('Contenu', contenuRows)}
+        ${htmlSection('Design', designRows)}
+        ${htmlSection('Infos complémentaires', [htmlRow('Message', escMultiline(data.infos) || 'Aucune')])}
+        <tr><td style="padding:26px 28px 30px;">
+          <a href="mailto:${esc(data.email)}?subject=${encodeURIComponent('Re : votre projet ' + data.nom + ' - AbiWeb')}" style="display:inline-block;background-color:#3b5bdb;color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:12px 24px;border-radius:8px;">Répondre à ${esc(data.contact)}</a>
+        </td></tr>
+      </table>
+      <p style="margin:14px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#9a9aa2;">Email automatique - formulaire /devis de abiweb.fr</p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
   try {
     const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
@@ -150,6 +269,7 @@ ${data.infos || 'Aucune'}
         replyTo: { email: data.email },
         subject: `Brief AbiWeb - ${data.nom} (${tarifLabel})`,
         textContent: text,
+        htmlContent: html,
       }),
     });
 

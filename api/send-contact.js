@@ -20,6 +20,26 @@ function normalizeFrenchPhone(tel) {
   return digits;
 }
 
+// Les données client sont échappées avant insertion dans le HTML de l'email.
+function esc(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escMultiline(value) {
+  return esc(value).replace(/\n/g, '<br />');
+}
+
+function htmlRow(label, valueHtml) {
+  return `<tr>
+    <td style="padding:7px 16px 7px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b6b72;vertical-align:top;width:140px;">${label}</td>
+    <td style="padding:7px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#0f0f11;line-height:1.5;">${valueHtml}</td>
+  </tr>`;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'method_not_allowed' });
@@ -59,6 +79,40 @@ Message :
 ${data.message}
 `;
 
+  const rows = [
+    htmlRow('Nom', `<strong>${esc(data.nom)}</strong>`),
+    htmlRow('Email', `<a href="mailto:${esc(data.email)}" style="color:#3b5bdb;">${esc(data.email)}</a>`),
+    htmlRow('Téléphone', esc(data.tel) || 'Non renseigné'),
+    htmlRow('Formule', esc(data.formule) || 'Non précisé'),
+  ];
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<body style="margin:0;padding:0;background-color:#f8f7f4;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f7f4;">
+    <tr><td align="center" style="padding:28px 12px;">
+      <table cellpadding="0" cellspacing="0" style="width:100%;max-width:620px;background-color:#ffffff;border-radius:14px;border:1px solid #e2e1de;">
+        <tr><td style="background-color:#0f0f11;border-radius:13px 13px 0 0;padding:22px 28px;">
+          <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:#ffffff;">Abi<span style="color:#8fa3ec;">Web</span></p>
+          <p style="margin:6px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#9a9aa2;">Nouveau message reçu via abiweb.fr</p>
+        </td></tr>
+        <tr><td style="padding:24px 28px 0;">
+          <table width="100%" cellpadding="0" cellspacing="0">${rows.join('')}</table>
+        </td></tr>
+        <tr><td style="padding:22px 28px 0;">
+          <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;color:#3b5bdb;text-transform:uppercase;">Message</p>
+          <p style="margin:0;padding:14px 16px;background-color:#f8f7f4;border-radius:8px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#0f0f11;line-height:1.6;">${escMultiline(data.message)}</p>
+        </td></tr>
+        <tr><td style="padding:24px 28px 30px;">
+          <a href="mailto:${esc(data.email)}?subject=${encodeURIComponent('Re : votre demande - AbiWeb')}" style="display:inline-block;background-color:#3b5bdb;color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:12px 24px;border-radius:8px;">Répondre à ${esc(data.nom)}</a>
+        </td></tr>
+      </table>
+      <p style="margin:14px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#9a9aa2;">Email automatique - formulaire contact de abiweb.fr</p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
   try {
     const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
@@ -72,6 +126,7 @@ ${data.message}
         replyTo: { email: data.email },
         subject: `Demande de devis AbiWeb - ${data.nom}`,
         textContent: text,
+        htmlContent: html,
       }),
     });
 
