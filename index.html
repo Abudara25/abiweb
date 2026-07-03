@@ -457,6 +457,33 @@
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition: none !important; animation: none !important; }
     }
+
+    /* ===== Refresh visuel ===== */
+    ::selection { background: var(--accent2); color: var(--ink); }
+
+    .hero { position: relative; }
+    .hero::before { content: ''; position: absolute; left: 50%; top: -60px; transform: translateX(-50%); width: min(900px, 100vw); height: 460px; background: radial-gradient(ellipse 55% 55% at 50% 0%, rgba(59,91,219,0.12), transparent 70%); pointer-events: none; z-index: -1; }
+    .hero h1 em { background: linear-gradient(180deg, transparent 64%, var(--accent2) 64%); border-radius: 3px; padding: 0 0.06em; }
+
+    .hero-preview { max-width: 720px; margin: 3rem auto 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--white); box-shadow: 0 24px 80px rgba(59,91,219,0.16), 0 6px 24px rgba(0,0,0,0.07); }
+    .hero-preview-caption { font-size: 0.8rem; color: var(--mid); margin-top: 0.9rem; }
+
+    .plan { border-radius: 16px; }
+    .plan.featured { box-shadow: 0 10px 44px rgba(59,91,219,0.14); }
+
+    .btn-primary, .btn-submit, .plan-btn-filled { box-shadow: 0 4px 16px rgba(59,91,219,0.28); transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+    .btn-primary:hover, .btn-submit:hover, .plan-btn-filled:hover { transform: translateY(-1px); box-shadow: 0 7px 22px rgba(59,91,219,0.32); }
+    .btn-secondary, .plan-btn-outline, .plan-btn-dark { transition: transform .15s ease, border-color .15s ease, color .15s ease, background .15s ease; }
+    .btn-secondary:hover, .plan-btn-outline:hover, .plan-btn-dark:hover { transform: translateY(-1px); }
+
+    .form-section, .guarantee { position: relative; overflow: hidden; }
+    .form-section::before, .guarantee::before { content: ''; position: absolute; top: -140px; right: -140px; width: 440px; height: 440px; background: radial-gradient(circle, rgba(59,91,219,0.22), transparent 65%); pointer-events: none; }
+    .form-inner, .guarantee-inner { position: relative; }
+
+    /* Apparition douce au scroll (classe posée par le JS) */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
   </style>
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -494,6 +521,14 @@
     <a class="btn-primary" href="/devis">Demander un devis gratuit</a>
     <a class="btn-secondary" href="#tarifs">Voir les tarifs</a>
   </div>
+  <div class="hero-preview">
+    <div class="browser-bar">
+      <div class="browser-dots"><span></span><span></span><span></span></div>
+      <div class="browser-url">asc-muaythai.fr</div>
+    </div>
+    <img src="/images/asc-muaythai-preview.jpg" alt="Exemple de site livré : ASC Muay Thaï" width="1400" height="613" style="width:100%;height:auto;display:block;" />
+  </div>
+  <p class="hero-preview-caption">Site livré pour le club ASC Muay Thaï · formule Standard</p>
 </section>
 
 <!-- PLANS -->
@@ -991,6 +1026,21 @@
         burger.setAttribute('aria-expanded', 'false');
       });
     });
+
+    // Apparition douce des cartes au scroll
+    if ('IntersectionObserver' in window) {
+      var revealEls = document.querySelectorAll('.plan, .step, .included-item, .integ-group, .hosting-card, .realisation-card');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12 });
+      revealEls.forEach(function (el, i) {
+        el.classList.add('reveal');
+        el.style.transitionDelay = (i % 3) * 60 + 'ms';
+        io.observe(el);
+      });
+    }
   })();
 
   function switchTab(tab, btn) {
