@@ -60,7 +60,7 @@ export default async function handler(req, res) {
 
   const body = req.body && typeof req.body === 'object' ? req.body : {};
 
-  // Honeypot : champ invisible pour les humains — rempli, c'est un bot.
+  // Honeypot : champ invisible pour les humains - rempli, c'est un bot.
   // On répond un faux succès pour ne pas lui signaler le rejet.
   if (typeof body.website === 'string' && body.website.trim() !== '') {
     res.status(200).json({ ok: true });
@@ -90,7 +90,7 @@ export default async function handler(req, res) {
 
   const tarifMode = data.tarifMode === 'alacarte' ? 'Sur mesure à la carte' : 'Formule clé en main';
   const tarifLabel = data.tarifMode === 'alacarte'
-    ? `Sur mesure — ${data.totalEstime}€`
+    ? `Sur mesure - ${data.totalEstime}€`
     : (data.formule || 'Non précisé');
   const tarifDetail = data.tarifMode === 'alacarte'
     ? `Modules : ${data.modulesChoisis.length ? data.modulesChoisis.join(', ') : 'Base seule'}\nTotal estimé : ${data.totalEstime}€`
@@ -106,17 +106,17 @@ Email : ${data.email}
 Téléphone : ${data.tel || 'Non renseigné'}
 Ville : ${data.ville || 'Non renseignée'}
 Activité : ${data.activite}
-Site existant : ${data.siteExistant === 'oui' ? 'Oui — refonte' + (data.siteUrl ? ' (' + data.siteUrl + ')' : '') : 'Non — 1er site'}
+Site existant : ${data.siteExistant === 'oui' ? 'Oui - refonte' + (data.siteUrl ? ' (' + data.siteUrl + ')' : '') : 'Non - 1er site'}
 
 --- TARIFICATION ---
 Mode : ${tarifMode}
 ${tarifDetail}
 Maintenance : ${data.maintenance || 'Non précisé'}
-Domaine : ${domaineLabel}${data.domaineNom ? ' — ' + data.domaineNom : ''}
+Domaine : ${domaineLabel}${data.domaineNom ? ' - ' + data.domaineNom : ''}
 
 --- CONTENU ---
 Sections souhaitées : ${data.sections.length ? data.sections.join(', ') : 'Non précisé'}
-Photos : ${data.photos || 'Non précisé'} — Nombre : ${data.photosNb || 'Non précisé'}
+Photos : ${data.photos || 'Non précisé'} - Nombre : ${data.photosNb || 'Non précisé'}
 Vidéos : ${data.videos || 'Non précisé'}
 Logo : ${data.logo || 'Non précisé'}
 Textes : ${data.textes || 'Non précisé'}
@@ -148,7 +148,7 @@ ${data.infos || 'Aucune'}
         sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
         to: [{ email: 'contact@abiweb.fr' }],
         replyTo: { email: data.email },
-        subject: `Brief AbiWeb — ${data.nom} (${tarifLabel})`,
+        subject: `Brief AbiWeb - ${data.nom} (${tarifLabel})`,
         textContent: text,
       }),
     });
@@ -163,7 +163,7 @@ ${data.infos || 'Aucune'}
     try {
       const attributes = {
         PRENOM: data.contact,
-        NOM: `${data.nom} — ${tarifLabel}`,
+        NOM: `${data.nom} - ${tarifLabel}`,
       };
       const sms = normalizeFrenchPhone(data.tel);
       if (sms) attributes.SMS = sms;

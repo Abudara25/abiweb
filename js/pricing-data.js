@@ -20,7 +20,7 @@
     {
       key: 'essentiel', name: 'Essentiel', price: 490, modules: [],
       delaiJours: 5,
-      desc: 'La base seule — vitrine simple et efficace.',
+      desc: 'La base seule - vitrine simple et efficace.',
     },
     {
       key: 'standard', name: 'Standard', price: 690, modules: ['admin', 'galerie'],
@@ -31,15 +31,15 @@
     {
       key: 'premium', name: 'Premium', price: 1190, modules: ['admin', 'galerie', 'inscription', 'blog', 'helloasso', 'brevo', 'stripe', 'seo', 'resa'],
       delaiJours: 10,
-      desc: 'Tout inclus — base + les 8 modules à la carte.',
+      desc: 'Tout inclus - base + les 8 modules à la carte.',
     },
   ];
 
   var MAINTENANCE = [
     { key: 'aucune', label: 'Aucune pour l\'instant', price: 0 },
-    { key: 'basique', label: 'Basique — hébergement, surveillance, 1 modif/mois', price: 25 },
-    { key: 'standard', label: 'Standard — + 3 modifs/mois + support email 48h', price: 45 },
-    { key: 'premium', label: 'Premium — modifs illimitées + support prioritaire 24h', price: 80 },
+    { key: 'basique', label: 'Basique - hébergement, surveillance, 1 modif/mois', price: 25 },
+    { key: 'standard', label: 'Standard - + 3 modifs/mois + support email 48h', price: 45 },
+    { key: 'premium', label: 'Premium - modifs illimitées + support prioritaire 24h', price: 80 },
   ];
 
   function moduleByKey(key) {

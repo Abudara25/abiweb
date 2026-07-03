@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
   const body = req.body && typeof req.body === 'object' ? req.body : {};
 
-  // Honeypot : champ invisible pour les humains — rempli, c'est un bot.
+  // Honeypot : champ invisible pour les humains - rempli, c'est un bot.
   // On répond un faux succès pour ne pas lui signaler le rejet.
   if (typeof body.website === 'string' && body.website.trim() !== '') {
     res.status(200).json({ ok: true });
@@ -70,7 +70,7 @@ ${data.message}
         sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
         to: [{ email: 'contact@abiweb.fr' }],
         replyTo: { email: data.email },
-        subject: `Demande de devis AbiWeb — ${data.nom}`,
+        subject: `Demande de devis AbiWeb - ${data.nom}`,
         textContent: text,
       }),
     });
@@ -85,7 +85,7 @@ ${data.message}
     try {
       const attributes = {
         PRENOM: data.nom,
-        NOM: data.formule ? `Contact rapide — ${data.formule}` : 'Contact rapide',
+        NOM: data.formule ? `Contact rapide - ${data.formule}` : 'Contact rapide',
       };
       const sms = normalizeFrenchPhone(data.tel);
       if (sms) attributes.SMS = sms;
