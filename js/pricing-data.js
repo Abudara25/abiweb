@@ -9,11 +9,11 @@
     { key: 'galerie', label: 'Galerie photos dynamique', price: 80 },
     { key: 'inscription', label: 'Formulaire d\'inscription + génération PDF', price: 150 },
     { key: 'blog', label: 'Blog / actualités', price: 120 },
-    { key: 'helloasso', label: 'Paiement en ligne (HelloAsso)', price: 80 },
-    { key: 'brevo', label: 'Emailing / CRM (Brevo)', price: 80 },
-    { key: 'stripe', label: 'Paiement sécurisé avancé (Stripe)', price: 150 },
+    { key: 'helloasso', label: 'Paiement en ligne (ex : HelloAsso, PayPal…)', price: 80 },
+    { key: 'brevo', label: 'Emailing / CRM (ex : Brevo…)', price: 80 },
+    { key: 'stripe', label: 'Paiement sécurisé avancé (ex : Stripe…)', price: 150 },
     { key: 'seo', label: 'SEO avancé + référencement Google', price: 80 },
-    { key: 'resa', label: 'Prise de rendez-vous en ligne (Calendly, Doctolib, Planity…)', price: 80 },
+    { key: 'resa', label: 'Prise de rendez-vous en ligne (ex : Calendly, Doctolib, Planity…)', price: 80 },
   ];
 
   var FORMULES = [
