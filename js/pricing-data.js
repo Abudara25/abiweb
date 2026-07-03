@@ -1,7 +1,7 @@
 (function (global) {
   'use strict';
 
-  var BASE_PRICE = 390;
+  var BASE_PRICE = 490;
   var BASE_LABEL = 'Site vitrine 5 sections, formulaire de contact, design responsive, SEO de base';
 
   var MODULES = [
@@ -18,18 +18,18 @@
 
   var FORMULES = [
     {
-      key: 'essentiel', name: 'Essentiel', price: 390, modules: [],
+      key: 'essentiel', name: 'Essentiel', price: 490, modules: [],
       delaiJours: 5,
       desc: 'La base seule — vitrine simple et efficace.',
     },
     {
-      key: 'standard', name: 'Standard', price: 590, modules: ['admin', 'galerie'],
+      key: 'standard', name: 'Standard', price: 690, modules: ['admin', 'galerie'],
       delaiJours: 7,
       desc: 'Base + accès admin + galerie photos.',
       badge: 'Populaire',
     },
     {
-      key: 'premium', name: 'Premium', price: 1090, modules: ['admin', 'galerie', 'inscription', 'blog', 'helloasso', 'brevo', 'stripe', 'seo', 'resa'],
+      key: 'premium', name: 'Premium', price: 1190, modules: ['admin', 'galerie', 'inscription', 'blog', 'helloasso', 'brevo', 'stripe', 'seo', 'resa'],
       delaiJours: 10,
       desc: 'Tout inclus — base + les 8 modules à la carte.',
     },
