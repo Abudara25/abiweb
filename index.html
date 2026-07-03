@@ -422,6 +422,41 @@
     .cookie-actions button { font-family: inherit; font-size: 0.85rem; font-weight: 600; border-radius: 7px; padding: 0.5rem 1rem; cursor: pointer; }
     #cookieAccept { background: var(--accent); color: #fff; border: none; }
     #cookieRefuse { background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.3); }
+
+    /* Ancres : ne pas atterrir sous la nav sticky */
+    #tarifs, #simulateur, #garantie, #processus, #realisations, #formulaire { scroll-margin-top: 76px; }
+
+    /* Menu mobile */
+    .nav-burger { display: none; background: none; border: none; padding: 0.5rem; cursor: pointer; flex-direction: column; gap: 4px; }
+    .nav-burger span { display: block; width: 20px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform .2s, opacity .2s; }
+    .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-menu { display: none; position: absolute; top: 60px; left: 0; right: 0; background: var(--paper); border-bottom: 1px solid var(--line); padding: 0.25rem 1.25rem 0.75rem; flex-direction: column; }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { padding: 0.7rem 0; color: var(--ink); text-decoration: none; font-size: 0.95rem; font-weight: 500; border-bottom: 1px solid var(--line); }
+    .nav-menu a:last-child { border-bottom: none; }
+    @media (max-width: 640px) { .nav-burger { display: flex; } }
+
+    /* FAQ en accordéons */
+    .faq-item summary { cursor: pointer; list-style: none; position: relative; padding-right: 2rem; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: '+'; position: absolute; right: 0.25rem; top: 50%; transform: translateY(-50%); color: var(--accent); font-weight: 600; font-size: 1.15rem; }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item .faq-a { margin-top: 0.5rem; }
+
+    /* Erreurs inline du formulaire contact */
+    .form-group .field-error { display: none; font-size: 0.75rem; color: #ffb4a8; }
+    .form-group.has-error .field-error { display: block; }
+    .form-group.has-error input,
+    .form-group.has-error textarea { border-color: #e5484d; background: rgba(229,72,77,0.12); }
+
+    /* Accessibilité : focus clavier visible + mouvement réduit */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
   </style>
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -433,9 +468,19 @@
   <div class="nav-links">
     <a class="nav-link" href="#tarifs">Tarifs</a>
     <a class="nav-link" href="#simulateur">Simulateur</a>
+    <a class="nav-link" href="#realisations">Réalisations</a>
     <a class="nav-link" href="#processus">Comment ça marche</a>
-    <a class="nav-link" href="#formulaire">Devis</a>
     <a class="nav-cta" href="#formulaire">Démarrer</a>
+    <button class="nav-burger" id="navBurger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-menu" id="navMenu">
+    <a href="#tarifs">Tarifs</a>
+    <a href="#simulateur">Simulateur</a>
+    <a href="#realisations">Réalisations</a>
+    <a href="#processus">Comment ça marche</a>
+    <a href="#formulaire">Demander un devis</a>
   </div>
 </nav>
 
@@ -444,7 +489,11 @@
   <span class="hero-eyebrow">Création de sites internet · Partout en France · 100% à distance</span>
   <h1>Création de site internet<br>pas cher qui <em>représente</em><br>votre activité</h1>
   <p>Sites vitrines clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Livraison en 7 jours, sans jargon, sans abonnement caché.</p>
-  <p class="hero-note">Livraison en 7 jours · <a href="#garantie" style="color:var(--mid);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;">Retouches offertes 7 jours*</a> · Modules à la carte · Devis gratuit</p>
+  <p class="hero-note"><a href="#garantie" style="color:var(--mid);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;">Retouches offertes 7 jours*</a> · Acompte 30 %, solde à la livraison · Modules à la carte</p>
+  <div class="cta-group" style="margin-top: 1.75rem;">
+    <a class="btn-primary" href="/devis">Demander un devis gratuit</a>
+    <a class="btn-secondary" href="#tarifs">Voir les tarifs</a>
+  </div>
 </section>
 
 <!-- PLANS -->
@@ -468,7 +517,7 @@
       <li class="muted"><span class="icon icon-minus">–</span> Emailing / CRM (ex : Brevo…)</li>
       <li class="muted"><span class="icon icon-minus">–</span> Paiement en ligne</li>
     </ul>
-    <a href="#simulateur" class="plan-btn plan-btn-outline">Choisir Essentiel</a>
+    <a href="/devis" class="plan-btn plan-btn-outline" data-formule="essentiel">Choisir Essentiel</a>
   </div>
   <!-- STANDARD -->
   <div class="plan featured">
@@ -485,7 +534,7 @@
       <li><span class="icon">✓</span> Galerie photos dynamique</li>
       <li class="muted"><span class="icon icon-minus">–</span> Modules Premium (inscription, blog, paiement, CRM, SEO…)</li>
     </ul>
-    <a href="#simulateur" class="plan-btn plan-btn-filled">Choisir Standard</a>
+    <a href="/devis" class="plan-btn plan-btn-filled" data-formule="standard">Choisir Standard</a>
   </div>
   <!-- PREMIUM -->
   <div class="plan">
@@ -505,7 +554,7 @@
       <li><span class="icon">✓</span> SEO avancé + référencement Google</li>
       <li><span class="icon">✓</span> Prise de rendez-vous en ligne (ex : Calendly, Doctolib…)</li>
     </ul>
-    <a href="#simulateur" class="plan-btn plan-btn-dark">Choisir Premium</a>
+    <a href="/devis" class="plan-btn plan-btn-dark" data-formule="premium">Choisir Premium</a>
   </div>
 </div>
 <p style="text-align:center; font-size:0.85rem; color:var(--mid); margin-top:-1.5rem; padding: 0 2rem 2rem;">Besoin d'une autre combinaison ? <a href="#simulateur" style="color:var(--accent); font-weight:600; text-decoration:none;">Composez votre formule sur-mesure →</a></p>
@@ -535,6 +584,40 @@
           <button class="btn-simulator-cta" id="simulatorCta" type="button">Demander un devis →</button>
           <p class="simulator-cta-note">Pas d'engagement · Réponse rapide</p>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RÉALISATIONS -->
+<section class="realisations-section" id="realisations">
+  <div class="realisations-inner">
+    <p class="section-label">Mes réalisations</p>
+    <h2>Un exemple concret de ce que je crée</h2>
+    <p class="realisations-subtitle">Un site livré, en ligne, fonctionnel. Voyez par vous-même.</p>
+    <div class="realisation-card">
+      <div class="realisation-info">
+        <div class="realisation-tag">Formule Premium · Association sportive</div>
+        <h3 class="realisation-name">ASC Muay Thaï</h3>
+        <p class="realisation-desc">Site vitrine complet pour un club de Muay Thaï. Présentation du club, programme des cours, tarifs d'adhésion, lien HelloAsso, galerie photos, formulaire de contact et carte d'accès.</p>
+        <ul class="realisation-features">
+          <li>✓ Design personnalisé aux couleurs du club</li>
+          <li>✓ Formulaire de contact Brevo intégré</li>
+          <li>✓ Base de données adhérents connectée à Brevo</li>
+          <li>✓ Lien adhésion HelloAsso</li>
+          <li>✓ PDF téléchargeables</li>
+          <li>✓ 100% responsive mobile</li>
+        </ul>
+        <a href="https://www.asc-muaythai.fr/" target="_blank" rel="noopener" class="realisation-btn">Voir le site →</a>
+      </div>
+      <div class="realisation-preview">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser-url">asc-muaythai.fr</div>
+        </div>
+        <img src="/images/asc-muaythai-preview.jpg" alt="Aperçu du site ASC Muay Thaï" class="realisation-iframe" loading="lazy" width="1400" height="613" style="height: auto; object-fit: contain;" />
       </div>
     </div>
   </div>
@@ -706,82 +789,49 @@
   <div class="faq-inner">
     <p class="section-label">FAQ</p>
     <h2>Questions fréquentes sur la création de site internet</h2>
-    <div class="faq-item">
-      <p class="faq-q">Quelle différence entre une formule clé en main et les modules à la carte ?</p>
+    <details class="faq-item">
+      <summary class="faq-q">Quelle différence entre une formule clé en main et les modules à la carte ?</summary>
       <p class="faq-a">Les formules (Essentiel, Standard, Premium) regroupent les modules les plus demandés avec une remise de 80 à 240€. Si vous avez besoin d'une combinaison différente - par exemple la base avec uniquement le paiement en ligne, sans le système admin - le simulateur vous permet de composer exactement ce qu'il vous faut, sans payer pour des options inutiles.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Puis-je ajouter un module après la livraison de mon site ?</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Puis-je ajouter un module après la livraison de mon site ?</summary>
       <p class="faq-a">Oui, tout à fait. Chaque module peut être ajouté ultérieurement au tarif à la carte en vigueur. La seule contrainte : si vous avez choisi la formule Essentiel (sans système admin) et souhaitez l'ajouter plus tard, cela représente une intervention de développement supplémentaire facturée à 200€.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">La maintenance mensuelle est-elle obligatoire ?</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">La maintenance mensuelle est-elle obligatoire ?</summary>
       <p class="faq-a">Non, elle est entièrement optionnelle. L'hébergement Vercel est gratuit et votre site fonctionne sans aucun abonnement. La maintenance est utile si vous souhaitez déléguer les mises à jour régulières ou avoir un support prioritaire - sinon, vous êtes 100% autonome après la livraison.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Qu'est-ce que le SEO de base inclus dans toutes les formules ?</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Qu'est-ce que le SEO de base inclus dans toutes les formules ?</summary>
       <p class="faq-a">Le SEO de base couvre les fondamentaux techniques : balises title et meta description optimisées, structure sémantique (H1/H2), temps de chargement rapide, données structurées Schema.org et sitemap. Votre site sera correctement indexé par Google. Pour apparaître sur des mots-clés concurrentiels (ex. "plombier Paris"), le module SEO avancé (80€) propose un travail de fond sur le contenu et le maillage.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Est-ce que je dois fournir les textes et photos ?</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Est-ce que je dois fournir les textes et photos ?</summary>
       <p class="faq-a">Oui, idéalement vous me fournissez vos textes et vos photos. Si vous n'en avez pas, je peux vous proposer des visuels libres de droits et rédiger une première version des textes avec vous.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Que se passe-t-il si je n'aime pas le résultat ?</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Que se passe-t-il si je n'aime pas le résultat ?</summary>
       <p class="faq-a">Avant de payer le solde, vous recevez un lien de prévisualisation. Si le site ne vous convient pas, vous ne payez pas le solde et le projet s'arrête là - vous n'avez perdu que l'acompte de 30%. Pendant 7 jours après la livraison, toutes les retouches sont incluses.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Quelle différence entre l'hébergement gratuit et l'option France ?</p>
-      <p class="faq-a">L'option gratuite (compte Vercel ou Cloudflare à votre nom) est parfaite pour la plupart des sites vitrine. L'option à 60€/an place votre site sur des serveurs en France, ce qui peut être important pour les PME sensibles au RGPD ou qui stockent des données clients.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Est-ce que je paye avant ou après ?</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">L'hébergement est-il vraiment gratuit ?</summary>
+      <p class="faq-a">Oui. Votre site est déployé sur un compte gratuit (Vercel ou Cloudflare) créé à votre nom : pour un site vitrine, l'hébergement ne coûte rien, sans limite de durée. Seul le nom de domaine se renouvelle (environ 10 à 15 €/an) - il est offert la 1ère année.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Est-ce que je paye avant ou après ?</summary>
       <p class="faq-a">Un acompte de 30% est demandé au démarrage. Le solde de 70% est réglé après votre validation de la démo, juste avant la mise en ligne. Aucun paiement final sans votre accord explicite.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Mon site sera-t-il trouvable sur Google ?</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Mon site sera-t-il trouvable sur Google ?</summary>
       <p class="faq-a">Le site est construit avec les bonnes pratiques techniques (balises, rapidité de chargement). Pour apparaître en première page sur Google, un travail SEO spécifique est nécessaire - ce n'est pas inclus, mais je peux vous orienter.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Vous intervenez dans quelle zone géographique ?</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Vous intervenez dans quelle zone géographique ?</summary>
       <p class="faq-a">Tout se fait à distance, je peux accompagner des clients partout en France.</p>
-    </div>
+    </details>
   </div>
 </section>
 
-<!-- RÉALISATIONS -->
-<section class="realisations-section" id="realisations">
-  <div class="realisations-inner">
-    <p class="section-label">Mes réalisations</p>
-    <h2>Un exemple concret de ce que je crée</h2>
-    <p class="realisations-subtitle">Un site livré, en ligne, fonctionnel. Voyez par vous-même.</p>
-    <div class="realisation-card">
-      <div class="realisation-info">
-        <div class="realisation-tag">Formule Premium · Association sportive</div>
-        <h3 class="realisation-name">ASC Muay Thaï</h3>
-        <p class="realisation-desc">Site vitrine complet pour un club de Muay Thaï. Présentation du club, programme des cours, tarifs d'adhésion, lien HelloAsso, galerie photos, formulaire de contact et carte d'accès.</p>
-        <ul class="realisation-features">
-          <li>✓ Design personnalisé aux couleurs du club</li>
-          <li>✓ Formulaire de contact Brevo intégré</li>
-          <li>✓ Base de données adhérents connectée à Brevo</li>
-          <li>✓ Lien adhésion HelloAsso</li>
-          <li>✓ PDF téléchargeables</li>
-          <li>✓ 100% responsive mobile</li>
-        </ul>
-        <a href="https://www.asc-muaythai.fr/" target="_blank" rel="noopener" class="realisation-btn">Voir le site →</a>
-      </div>
-      <div class="realisation-preview">
-        <div class="browser-bar">
-          <div class="browser-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="browser-url">asc-muaythai.fr</div>
-        </div>
-        <img src="/images/asc-muaythai-preview.jpg" alt="Aperçu du site ASC Muay Thaï" class="realisation-iframe" loading="lazy" width="1400" height="613" style="height: auto; object-fit: contain;" />
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- FORMULAIRE DOUBLE -->
 <section class="form-section" id="formulaire">
@@ -791,26 +841,28 @@
     <p class="form-subtitle">Remplissez le formulaire - je l'étudie et vous réponds avec un devis clair, sans engagement.</p>
 
     <div class="form-tabs">
-      <button class="form-tab active" onclick="switchTab('contact')">✉️ Contact rapide</button>
-      <button class="form-tab" onclick="switchTab('brief')">📋 Présenter mon projet</button>
+      <button class="form-tab active" onclick="switchTab('contact', this)">✉️ Contact rapide</button>
+      <button class="form-tab" onclick="switchTab('brief', this)">📋 Présenter mon projet</button>
     </div>
 
     <!-- ONGLET CONTACT -->
     <div class="form-panel active" id="tab-contact">
       <div class="form-group">
-        <label>Prénom et nom *</label>
-        <input type="text" placeholder="Ex : Jean Martin" id="c-nom" />
+        <label for="c-nom">Prénom et nom *</label>
+        <input type="text" placeholder="Ex : Jean Martin" id="c-nom" autocomplete="name" />
+        <span class="field-error">Merci d'indiquer votre nom.</span>
       </div>
       <div class="form-group">
-        <label>Email *</label>
-        <input type="email" placeholder="Ex : jean@monentreprise.fr" id="c-email" />
+        <label for="c-email">Email *</label>
+        <input type="email" placeholder="Ex : jean@monentreprise.fr" id="c-email" autocomplete="email" />
+        <span class="field-error">Adresse email invalide.</span>
       </div>
       <div class="form-group">
-        <label>Téléphone</label>
-        <input type="tel" placeholder="06 00 00 00 00" id="c-tel" />
+        <label for="c-tel">Téléphone</label>
+        <input type="tel" placeholder="06 00 00 00 00" id="c-tel" autocomplete="tel" />
       </div>
       <div class="form-group">
-        <label>Formule qui vous intéresse</label>
+        <label for="c-formule">Formule qui vous intéresse</label>
         <select id="c-formule">
           <option value="">- Choisir -</option>
           <option>Essentiel - 490€</option>
@@ -821,8 +873,9 @@
         </select>
       </div>
       <div class="form-group full">
-        <label>Votre message *</label>
+        <label for="c-message">Votre message *</label>
         <textarea placeholder="Décrivez votre activité et ce que vous souhaitez en quelques lignes..." id="c-message"></textarea>
+        <span class="field-error">Décrivez votre projet en quelques mots.</span>
       </div>
       <!-- Honeypot anti-spam : invisible pour les humains, les bots le remplissent -->
       <div class="form-group" style="position:absolute; left:-9999px;" aria-hidden="true">
@@ -830,7 +883,7 @@
         <input type="text" id="c-website" name="website" tabindex="-1" autocomplete="off" />
       </div>
       <div class="form-submit full">
-        <button class="btn-submit" onclick="submitContact()">Envoyer le message →</button>
+        <button class="btn-submit" onclick="submitContact(this)">Envoyer le message →</button>
         <span class="form-note">Réponse rapide · Sans engagement</span>
       </div>
       <div class="form-success" id="success-contact">✅ Message envoyé ! Je vous réponds rapidement.</div>
@@ -917,14 +970,45 @@
       try { sessionStorage.setItem('abiweb_pricing_selection', JSON.stringify(selection)); } catch (e) {}
       window.location.href = '/devis';
     });
+
+    // Les boutons "Choisir X" préselectionnent la formule sur /devis
+    document.querySelectorAll('.plan-btn[data-formule]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        try { sessionStorage.setItem('abiweb_pricing_selection', JSON.stringify({ formule: btn.dataset.formule })); } catch (e) {}
+      });
+    });
+
+    // Menu mobile
+    var burger = document.getElementById('navBurger');
+    var menu = document.getElementById('navMenu');
+    burger.addEventListener('click', function () {
+      var open = menu.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        menu.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+      });
+    });
   })();
 
-  function switchTab(tab) {
+  function switchTab(tab, btn) {
     document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('tab-' + tab).classList.add('active');
-    event.target.classList.add('active');
+    btn.classList.add('active');
   }
+
+  function markError(id, hasError) {
+    document.getElementById(id).closest('.form-group').classList.toggle('has-error', hasError);
+    return hasError;
+  }
+
+  // Efface l'erreur du champ dès que le visiteur le corrige
+  document.querySelectorAll('#tab-contact input, #tab-contact textarea').forEach(el => {
+    el.addEventListener('input', () => el.closest('.form-group').classList.remove('has-error'));
+  });
 
   function mailtoFallbackContact(data) {
     const subject = encodeURIComponent('Demande de devis AbiWeb - ' + data.nom);
@@ -938,18 +1022,21 @@
     window.location.href = 'mailto:contact@abiweb.fr?subject=' + subject + '&body=' + body;
   }
 
-  async function submitContact() {
+  async function submitContact(btn) {
     const nom = document.getElementById('c-nom').value.trim();
     const email = document.getElementById('c-email').value.trim();
     const message = document.getElementById('c-message').value.trim();
-    if (!nom || !email || !message) { alert('Merci de remplir au moins votre nom, email et message.'); return; }
+    let invalid = false;
+    invalid = markError('c-nom', nom.length < 2) || invalid;
+    invalid = markError('c-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) || invalid;
+    invalid = markError('c-message', message.length < 5) || invalid;
+    if (invalid) return;
     const data = {
       nom, email, message,
       formule: document.getElementById('c-formule').value,
       tel: document.getElementById('c-tel').value,
       website: document.getElementById('c-website').value,
     };
-    const btn = event.target;
     const originalLabel = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'Envoi en cours…';
@@ -962,6 +1049,8 @@
       });
       if (!resp.ok) throw new Error('send_failed');
       document.getElementById('success-contact').style.display = 'block';
+      ['c-nom', 'c-email', 'c-tel', 'c-message'].forEach(id => { document.getElementById(id).value = ''; });
+      document.getElementById('c-formule').value = '';
     } catch (e) {
       const fallback = confirm("L'envoi automatique a échoué. Voulez-vous ouvrir votre messagerie pour envoyer le message par email à la place ?");
       if (fallback) mailtoFallbackContact(data);
