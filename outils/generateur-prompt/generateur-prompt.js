@@ -67,7 +67,7 @@ const TEMPLATES = {
 // ---- 2. Règles générales AbiWeb ----
 
 const REGLES_GENERALES = `
-Stack : React + Vite, déploiement Vercel, DNS/domaine via Infomaniak, emailing via Brevo.
+Stack : HTML/CSS/JS vanilla, sans build ni framework (moteur partagé site-engine.js, contenu dans site-content.js), déploiement Vercel, DNS/domaine via Infomaniak, emailing via Brevo.
 Respecte la structure de dossiers habituelle du repo Abudara25/abiweb-templates.
 Utilise le système de tiers window.FORMULE pour activer/désactiver les modules selon la formule choisie.
 Code propre, composants réutilisables, pas de dépendances inutiles.
