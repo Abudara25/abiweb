@@ -314,6 +314,32 @@ ${data.infos || 'Aucune'}
       console.error('Brevo contact upsert error:', err);
     }
 
+    if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+      try {
+        const supabaseRes = await fetch(`${process.env.SUPABASE_URL}/rest/v1/briefs`, {
+          method: 'POST',
+          headers: {
+            apikey: process.env.SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+            Prefer: 'return=minimal',
+          },
+          body: JSON.stringify({
+            nom: data.nom,
+            email: data.email,
+            type: data.type,
+            data,
+          }),
+        });
+
+        if (!supabaseRes.ok) {
+          console.error('Supabase insert failed:', await supabaseRes.text());
+        }
+      } catch (err) {
+        console.error('Supabase insert error:', err);
+      }
+    }
+
     res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Server error:', err);
