@@ -274,7 +274,7 @@ ${data.infos || 'Aucune'}
         subject: `Brief AbiWeb - ${data.nom} (${tarifLabel})`,
         textContent: text,
         htmlContent: html,
-        attachment: [{ content: briefJsonBase64, name: 'brief.json' }],
+        attachment: [{ content: briefJsonBase64, name: 'brief.txt' }],
       }),
     });
 
