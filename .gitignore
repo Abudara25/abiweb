@@ -1,1 +1,3 @@
 .vercel
+node_modules/
+outils/generateur-prompt/prompt_final.md
