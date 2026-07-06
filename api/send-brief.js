@@ -256,6 +256,10 @@ ${data.infos || 'Aucune'}
 </body>
 </html>`;
 
+  // Piece jointe JSON du brief brut, pour scripts/generateur-prompt/generateur-prompt.js
+  // dans abiweb-templates (evite de retranscrire le brief a la main).
+  const briefJsonBase64 = Buffer.from(JSON.stringify(data, null, 2), 'utf8').toString('base64');
+
   try {
     const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
@@ -270,6 +274,7 @@ ${data.infos || 'Aucune'}
         subject: `Brief AbiWeb - ${data.nom} (${tarifLabel})`,
         textContent: text,
         htmlContent: html,
+        attachment: [{ content: briefJsonBase64, name: 'brief.json' }],
       }),
     });
 
