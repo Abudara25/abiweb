@@ -1,5 +1,12 @@
 {
+  "scripts": {
+    "dev": "vercel dev",
+    "lint": "eslint ."
+  },
   "dependencies": {
     "@vercel/analytics": "^2.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^10.6.0"
   }
 }
