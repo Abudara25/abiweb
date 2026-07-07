@@ -1,3 +1,15 @@
+import {
+  EMAIL_RE,
+  clean,
+  normalizeFrenchPhone,
+  esc,
+  escMultiline,
+  htmlRow,
+  sendBrevoEmail,
+  upsertBrevoContact,
+  sendFailureAlert,
+} from './_lib/email-utils.js';
+
 const LIMITS = {
   nom: 100,
   email: 254,
@@ -6,39 +18,8 @@ const LIMITS = {
   message: 5000,
 };
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-function clean(value, max) {
-  if (typeof value !== 'string') return '';
-  return value.trim().slice(0, max);
-}
-
-function normalizeFrenchPhone(tel) {
-  if (!tel) return '';
-  const digits = tel.replace(/[^0-9]/g, '');
-  if (digits.startsWith('0')) return '33' + digits.slice(1);
-  return digits;
-}
-
-// Les données client sont échappées avant insertion dans le HTML de l'email.
-function esc(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function escMultiline(value) {
-  return esc(value).replace(/\n/g, '<br />');
-}
-
-function htmlRow(label, valueHtml) {
-  return `<tr>
-    <td style="padding:7px 16px 7px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b6b72;vertical-align:top;width:140px;">${label}</td>
-    <td style="padding:7px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#0f0f11;line-height:1.5;">${valueHtml}</td>
-  </tr>`;
-}
+// Un humain ne peut pas remplir ce formulaire en moins de 3s - filtre les bots qui postent direct.
+const MIN_FILL_MS = 3000;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -51,6 +32,12 @@ export default async function handler(req, res) {
   // Honeypot : champ invisible pour les humains - rempli, c'est un bot.
   // On répond un faux succès pour ne pas lui signaler le rejet.
   if (typeof body.website === 'string' && body.website.trim() !== '') {
+    res.status(200).json({ ok: true });
+    return;
+  }
+
+  const elapsed = Date.now() - Number(body.ts);
+  if (!Number.isFinite(elapsed) || elapsed < MIN_FILL_MS) {
     res.status(200).json({ ok: true });
     return;
   }
@@ -114,20 +101,12 @@ ${data.message}
 </html>`;
 
   try {
-    const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'api-key': process.env.BREVO_API_KEY,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
-        to: [{ email: 'contact@abiweb.fr' }],
-        replyTo: { email: data.email },
-        subject: `Demande de devis AbiWeb - ${data.nom}`,
-        textContent: text,
-        htmlContent: html,
-      }),
+    const brevoRes = await sendBrevoEmail({
+      to: 'contact@abiweb.fr',
+      replyTo: data.email,
+      subject: `Demande de devis AbiWeb - ${data.nom}`,
+      textContent: text,
+      htmlContent: html,
     });
 
     if (!brevoRes.ok) {
@@ -145,19 +124,7 @@ ${data.message}
       const sms = normalizeFrenchPhone(data.tel);
       if (sms) attributes.SMS = sms;
 
-      const contactRes = await fetch('https://api.brevo.com/v3/contacts', {
-        method: 'POST',
-        headers: {
-          'api-key': process.env.BREVO_API_KEY,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: data.email,
-          attributes,
-          listIds: [2],
-          updateEnabled: true,
-        }),
-      });
+      const contactRes = await upsertBrevoContact({ email: data.email, attributes });
 
       if (!contactRes.ok) {
         console.error('Brevo contact upsert failed:', await contactRes.text());
@@ -169,6 +136,7 @@ ${data.message}
     res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Server error:', err);
+    await sendFailureAlert('send-contact - erreur serveur inattendue', err && err.message ? err.message : err);
     res.status(500).json({ error: 'server_error' });
   }
 }

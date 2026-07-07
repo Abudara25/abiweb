@@ -1,3 +1,17 @@
+import {
+  EMAIL_RE,
+  clean,
+  cleanList,
+  normalizeFrenchPhone,
+  esc,
+  escMultiline,
+  htmlRow,
+  sendBrevoEmail,
+  upsertBrevoContact,
+  sendFailureAlert,
+} from './_lib/email-utils.js';
+import { moduleByKey, moduleLabels, alaCarteTotal } from './_lib/pricing.js';
+
 const LIMITS = {
   nom: 120,
   type: 60,
@@ -30,40 +44,8 @@ const LIMITS = {
   infos: 3000,
 };
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-function clean(value, max) {
-  if (typeof value !== 'string') return '';
-  return value.trim().slice(0, max);
-}
-
-function cleanList(value, maxItems, maxLen) {
-  if (!Array.isArray(value)) return [];
-  return value
-    .filter((s) => typeof s === 'string')
-    .slice(0, maxItems)
-    .map((s) => s.trim().slice(0, maxLen));
-}
-
-function normalizeFrenchPhone(tel) {
-  if (!tel) return '';
-  const digits = tel.replace(/[^0-9]/g, '');
-  if (digits.startsWith('0')) return '33' + digits.slice(1);
-  return digits;
-}
-
-// Les données client sont échappées avant insertion dans le HTML de l'email.
-function esc(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function escMultiline(value) {
-  return esc(value).replace(/\n/g, '<br />');
-}
+// Un humain ne peut pas remplir les 5 étapes du brief en moins de 5s - filtre les bots qui postent direct.
+const MIN_FILL_MS = 5000;
 
 function safeColor(value) {
   return /^#[0-9a-fA-F]{3,8}$/.test(value) ? value : '';
@@ -74,13 +56,6 @@ function htmlLink(url) {
   return /^https?:\/\//i.test(url)
     ? `<a href="${esc(url)}" style="color:#3b5bdb;">${esc(url)}</a>`
     : esc(url);
-}
-
-function htmlRow(label, valueHtml) {
-  return `<tr>
-    <td style="padding:7px 16px 7px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b6b72;vertical-align:top;width:170px;">${label}</td>
-    <td style="padding:7px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#0f0f11;line-height:1.5;">${valueHtml}</td>
-  </tr>`;
 }
 
 function htmlSection(title, rows) {
@@ -111,16 +86,24 @@ export default async function handler(req, res) {
     return;
   }
 
+  const elapsed = Date.now() - Number(body.ts);
+  if (!Number.isFinite(elapsed) || elapsed < MIN_FILL_MS) {
+    res.status(200).json({ ok: true });
+    return;
+  }
+
   const data = {};
   for (const [field, max] of Object.entries(LIMITS)) {
     data[field] = clean(body[field], max);
   }
   data.siteExistant = body.siteExistant === 'oui' ? 'oui' : 'non';
   data.sections = cleanList(body.sections, 20, 100);
-  data.modulesChoisis = cleanList(body.modulesChoisis, 20, 100);
-  data.totalEstime = Number.isFinite(Number(body.totalEstime))
-    ? Math.max(0, Math.min(100000, Math.round(Number(body.totalEstime))))
-    : 0;
+
+  // Le total et les libellés de modules sont recalculés côté serveur à partir des clés
+  // envoyées par le client - on ne fait jamais confiance à un total/libellé fourni tel quel.
+  const moduleKeys = cleanList(body.moduleKeys, 20, 30).filter((key) => moduleByKey(key));
+  data.modulesChoisis = moduleLabels(moduleKeys);
+  data.totalEstime = data.tarifMode === 'alacarte' ? alaCarteTotal(moduleKeys) : 0;
 
   if (!data.nom || !data.contact || !data.activite || !EMAIL_RE.test(data.email)) {
     res.status(400).json({ error: 'invalid_input' });
@@ -182,49 +165,49 @@ ${data.infos || 'Aucune'}
 `;
 
   const contactRows = [
-    htmlRow('Structure', `<strong>${esc(data.nom)}</strong>`),
-    htmlRow('Type', esc(data.type) || 'Non précisé'),
-    htmlRow('Contact', esc(data.contact)),
-    htmlRow('Email', `<a href="mailto:${esc(data.email)}" style="color:#3b5bdb;">${esc(data.email)}</a>`),
-    htmlRow('Téléphone', esc(data.tel) || 'Non renseigné'),
-    htmlRow('Ville', esc(data.ville) || 'Non renseignée'),
-    htmlRow('Activité', escMultiline(data.activite)),
+    htmlRow('Structure', `<strong>${esc(data.nom)}</strong>`, 170),
+    htmlRow('Type', esc(data.type) || 'Non précisé', 170),
+    htmlRow('Contact', esc(data.contact), 170),
+    htmlRow('Email', `<a href="mailto:${esc(data.email)}" style="color:#3b5bdb;">${esc(data.email)}</a>`, 170),
+    htmlRow('Téléphone', esc(data.tel) || 'Non renseigné', 170),
+    htmlRow('Ville', esc(data.ville) || 'Non renseignée', 170),
+    htmlRow('Activité', escMultiline(data.activite), 170),
     htmlRow('Site existant', data.siteExistant === 'oui'
       ? 'Oui - refonte' + (data.siteUrl ? ' (' + htmlLink(data.siteUrl) + ')' : '')
-      : 'Non - 1er site'),
+      : 'Non - 1er site', 170),
   ];
 
   const tarifRows = [
-    htmlRow('Mode', esc(tarifMode)),
+    htmlRow('Mode', esc(tarifMode), 170),
     data.tarifMode === 'alacarte'
-      ? htmlRow('Modules', esc(data.modulesChoisis.length ? data.modulesChoisis.join(', ') : 'Base seule'))
-      : htmlRow('Formule', esc(data.formule) || 'Non précisé'),
+      ? htmlRow('Modules', esc(data.modulesChoisis.length ? data.modulesChoisis.join(', ') : 'Base seule'), 170)
+      : htmlRow('Formule', esc(data.formule) || 'Non précisé', 170),
   ];
   if (data.tarifMode === 'alacarte') {
-    tarifRows.push(htmlRow('Total estimé', `<strong>${data.totalEstime}&nbsp;€</strong>`));
+    tarifRows.push(htmlRow('Total estimé', `<strong>${data.totalEstime}&nbsp;€</strong>`, 170));
   }
-  tarifRows.push(htmlRow('Maintenance', esc(data.maintenance) || 'Non précisé'));
-  tarifRows.push(htmlRow('Domaine', esc(domaineLabel) + (data.domaineNom ? ' - ' + esc(data.domaineNom) : '')));
+  tarifRows.push(htmlRow('Maintenance', esc(data.maintenance) || 'Non précisé', 170));
+  tarifRows.push(htmlRow('Domaine', esc(domaineLabel) + (data.domaineNom ? ' - ' + esc(data.domaineNom) : ''), 170));
 
   const contenuRows = [
-    htmlRow('Sections', esc(data.sections.length ? data.sections.join(', ') : 'Non précisé')),
-    htmlRow('Photos', (esc(data.photos) || 'Non précisé') + (data.photosNb ? ' - ' + esc(data.photosNb) : '')),
-    htmlRow('Vidéos', esc(data.videos) || 'Non précisé'),
-    htmlRow('Logo', esc(data.logo) || 'Non précisé'),
-    htmlRow('Textes', esc(data.textes) || 'Non précisé'),
-    htmlRow('Facebook', htmlLink(data.fbLink) || 'Aucun'),
-    htmlRow('Instagram', htmlLink(data.igLink) || 'Aucun'),
-    htmlRow('YouTube', htmlLink(data.ytLink) || 'Aucun'),
-    htmlRow('Autre lien', htmlLink(data.autreLink) || 'Aucun'),
+    htmlRow('Sections', esc(data.sections.length ? data.sections.join(', ') : 'Non précisé'), 170),
+    htmlRow('Photos', (esc(data.photos) || 'Non précisé') + (data.photosNb ? ' - ' + esc(data.photosNb) : ''), 170),
+    htmlRow('Vidéos', esc(data.videos) || 'Non précisé', 170),
+    htmlRow('Logo', esc(data.logo) || 'Non précisé', 170),
+    htmlRow('Textes', esc(data.textes) || 'Non précisé', 170),
+    htmlRow('Facebook', htmlLink(data.fbLink) || 'Aucun', 170),
+    htmlRow('Instagram', htmlLink(data.igLink) || 'Aucun', 170),
+    htmlRow('YouTube', htmlLink(data.ytLink) || 'Aucun', 170),
+    htmlRow('Autre lien', htmlLink(data.autreLink) || 'Aucun', 170),
   ];
 
   const designRows = [
-    htmlRow('Style', esc(data.style) || 'Non précisé'),
-    htmlRow('Couleur principale', colorChip(data.couleur1)),
-    htmlRow('Couleur secondaire', colorChip(data.couleur2)),
-    htmlRow('Précisions couleurs', esc(data.couleursTexte) || 'Aucune'),
-    htmlRow('Références', esc(data.refs) || 'Aucune'),
-    htmlRow('À éviter', esc(data.refNon) || 'Aucun'),
+    htmlRow('Style', esc(data.style) || 'Non précisé', 170),
+    htmlRow('Couleur principale', colorChip(data.couleur1), 170),
+    htmlRow('Couleur secondaire', colorChip(data.couleur2), 170),
+    htmlRow('Précisions couleurs', esc(data.couleursTexte) || 'Aucune', 170),
+    htmlRow('Références', esc(data.refs) || 'Aucune', 170),
+    htmlRow('À éviter', esc(data.refNon) || 'Aucun', 170),
   ];
 
   const html = `<!DOCTYPE html>
@@ -245,7 +228,7 @@ ${data.infos || 'Aucune'}
         ${htmlSection('Tarification', tarifRows)}
         ${htmlSection('Contenu', contenuRows)}
         ${htmlSection('Design', designRows)}
-        ${htmlSection('Infos complémentaires', [htmlRow('Message', escMultiline(data.infos) || 'Aucune')])}
+        ${htmlSection('Infos complémentaires', [htmlRow('Message', escMultiline(data.infos) || 'Aucune', 170)])}
         <tr><td style="padding:26px 28px 30px;">
           <a href="mailto:${esc(data.email)}?subject=${encodeURIComponent('Re : votre projet ' + data.nom + ' - AbiWeb')}" style="display:inline-block;background-color:#3b5bdb;color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:12px 24px;border-radius:8px;">Répondre à ${esc(data.contact)}</a>
         </td></tr>
@@ -261,21 +244,13 @@ ${data.infos || 'Aucune'}
   const briefJsonBase64 = Buffer.from(JSON.stringify(data, null, 2), 'utf8').toString('base64');
 
   try {
-    const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'api-key': process.env.BREVO_API_KEY,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sender: { name: 'AbiWeb', email: 'contact@abiweb.fr' },
-        to: [{ email: 'contact@abiweb.fr' }],
-        replyTo: { email: data.email },
-        subject: `Brief AbiWeb - ${data.nom} (${tarifLabel})`,
-        textContent: text,
-        htmlContent: html,
-        attachment: [{ content: briefJsonBase64, name: 'brief.txt' }],
-      }),
+    const brevoRes = await sendBrevoEmail({
+      to: 'contact@abiweb.fr',
+      replyTo: data.email,
+      subject: `Brief AbiWeb - ${data.nom} (${tarifLabel})`,
+      textContent: text,
+      htmlContent: html,
+      attachment: [{ content: briefJsonBase64, name: 'brief.txt' }],
     });
 
     if (!brevoRes.ok) {
@@ -293,19 +268,7 @@ ${data.infos || 'Aucune'}
       const sms = normalizeFrenchPhone(data.tel);
       if (sms) attributes.SMS = sms;
 
-      const contactRes = await fetch('https://api.brevo.com/v3/contacts', {
-        method: 'POST',
-        headers: {
-          'api-key': process.env.BREVO_API_KEY,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: data.email,
-          attributes,
-          listIds: [2],
-          updateEnabled: true,
-        }),
-      });
+      const contactRes = await upsertBrevoContact({ email: data.email, attributes });
 
       if (!contactRes.ok) {
         console.error('Brevo contact upsert failed:', await contactRes.text());
@@ -333,16 +296,22 @@ ${data.infos || 'Aucune'}
         });
 
         if (!supabaseRes.ok) {
-          console.error('Supabase insert failed:', await supabaseRes.text());
+          const detail = await supabaseRes.text();
+          console.error('Supabase insert failed:', detail);
+          // Le lead est déjà bien arrivé par email à ce stade - on alerte juste que
+          // l'enregistrement Supabase (dossier structuré) n'a pas été sauvegardé.
+          await sendFailureAlert(`Supabase insert (send-brief) - ${data.nom}`, detail);
         }
       } catch (err) {
         console.error('Supabase insert error:', err);
+        await sendFailureAlert(`Supabase insert (send-brief) - ${data.nom}`, err && err.message ? err.message : err);
       }
     }
 
     res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Server error:', err);
+    await sendFailureAlert('send-brief - erreur serveur inattendue', err && err.message ? err.message : err);
     res.status(500).json({ error: 'server_error' });
   }
 }

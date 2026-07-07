@@ -1,9 +1,19 @@
+import { timingSafeEqual } from 'node:crypto';
+
 function esc(value) {
   return String(value)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function secretMatches(provided, expected) {
+  if (typeof provided !== 'string' || !expected) return false;
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
 }
 
 export default async function handler(req, res) {
@@ -14,7 +24,7 @@ export default async function handler(req, res) {
 
   const body = req.body && typeof req.body === 'object' ? req.body : {};
 
-  if (!process.env.NOTIFY_SECRET || body.secret !== process.env.NOTIFY_SECRET) {
+  if (!secretMatches(body.secret, process.env.NOTIFY_SECRET)) {
     res.status(401).json({ error: 'unauthorized' });
     return;
   }
