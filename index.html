@@ -1,26 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <!-- GTM + GA chargés uniquement après consentement (bannière cookies en bas de page) -->
-  <script>
-    function abiwebLoadAnalytics() {
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-N439P2KJ');
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-S2QVJFM4L5';
-      document.head.appendChild(s);
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ window.dataLayer.push(arguments); }
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', 'G-S2QVJFM4L5');
-    }
-    if (localStorage.getItem('abiweb-consent') === 'granted') abiwebLoadAnalytics();
-  </script>
+  <script src="/js/analytics-loader.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -865,8 +846,8 @@
     <p class="form-subtitle">Remplissez le formulaire - je l'étudie et vous réponds avec un devis clair, sans engagement.</p>
 
     <div class="form-tabs">
-      <button class="form-tab active" onclick="switchTab('contact', this)">✉️ Contact rapide</button>
-      <button class="form-tab" onclick="switchTab('brief', this)">📋 Présenter mon projet</button>
+      <button class="form-tab active" data-tab="contact">✉️ Contact rapide</button>
+      <button class="form-tab" data-tab="brief">📋 Présenter mon projet</button>
     </div>
 
     <!-- ONGLET CONTACT -->
@@ -907,7 +888,7 @@
         <input type="text" id="c-website" name="website" tabindex="-1" autocomplete="off" />
       </div>
       <div class="form-submit full">
-        <button class="btn-submit" onclick="submitContact(this)">Envoyer le message →</button>
+        <button class="btn-submit" id="contactSubmitBtn" type="button">Envoyer le message →</button>
         <span class="form-note">Réponse rapide · Sans engagement</span>
       </div>
       <div class="form-success" id="success-contact">✅ Message envoyé ! Je vous réponds rapidement.</div>
@@ -940,166 +921,7 @@
 </footer>
 
 <script src="/js/pricing-data.js"></script>
-<script>
-  (function () {
-    var pricing = window.AbiWebPricing;
-    var selectedModules = [];
-
-    var listEl = document.getElementById('simulatorModules');
-    document.getElementById('simulatorBaseDesc').textContent = pricing.BASE_LABEL;
-    document.getElementById('simulatorBasePrice').textContent = pricing.BASE_PRICE + ' €';
-
-    pricing.MODULES.forEach(function (mod) {
-      var item = document.createElement('label');
-      item.className = 'sim-module-item';
-      item.innerHTML =
-        '<span class="sim-module-check"><input type="checkbox" value="' + mod.key + '" />' + mod.label + '</span>' +
-        '<span class="sim-module-price">+' + mod.price + ' €</span>';
-      listEl.appendChild(item);
-    });
-
-    function updateTotal() {
-      var checkboxes = listEl.querySelectorAll('input[type="checkbox"]');
-      selectedModules = Array.prototype.filter.call(checkboxes, function (c) { return c.checked; })
-        .map(function (c) { return c.value; });
-
-      checkboxes.forEach(function (c) { c.closest('.sim-module-item').classList.toggle('checked', c.checked); });
-
-      var total = pricing.alaCarteTotal(selectedModules);
-      document.getElementById('simulatorTotal').textContent = total + ' €';
-
-      var suggestionEl = document.getElementById('simulatorSuggestion');
-      var suggestion = pricing.bestPackSuggestion(selectedModules);
-      if (suggestion) {
-        suggestionEl.classList.add('visible');
-        suggestionEl.innerHTML = 'Vous avez sélectionné l\'équivalent de la formule <strong>' + suggestion.formule.name +
-          '</strong>, économisez <strong>' + suggestion.savings + ' €</strong> en prenant le pack (' + suggestion.packTotal + ' € au lieu de ' + total + ' €).';
-      } else {
-        suggestionEl.classList.remove('visible');
-        suggestionEl.innerHTML = '';
-      }
-    }
-
-    listEl.addEventListener('change', updateTotal);
-    updateTotal();
-
-    document.getElementById('simulatorCta').addEventListener('click', function () {
-      var total = pricing.alaCarteTotal(selectedModules);
-      var suggestion = pricing.bestPackSuggestion(selectedModules);
-      var selection = {
-        modules: selectedModules,
-        total: total,
-        suggestion: suggestion ? { formule: suggestion.formule.key, packTotal: suggestion.packTotal, savings: suggestion.savings } : null,
-      };
-      try { sessionStorage.setItem('abiweb_pricing_selection', JSON.stringify(selection)); } catch (e) {}
-      window.location.href = '/devis';
-    });
-
-    // Les boutons "Choisir X" préselectionnent la formule sur /devis
-    document.querySelectorAll('.plan-btn[data-formule]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        try { sessionStorage.setItem('abiweb_pricing_selection', JSON.stringify({ formule: btn.dataset.formule })); } catch (e) {}
-      });
-    });
-
-    // Menu mobile
-    var burger = document.getElementById('navBurger');
-    var menu = document.getElementById('navMenu');
-    burger.addEventListener('click', function () {
-      var open = menu.classList.toggle('open');
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    menu.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        menu.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-      });
-    });
-
-    // Apparition douce des cartes au scroll
-    if ('IntersectionObserver' in window) {
-      var revealEls = document.querySelectorAll('.plan, .step, .included-item, .integ-group, .hosting-card, .realisation-card');
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); }
-        });
-      }, { threshold: 0.12 });
-      revealEls.forEach(function (el, i) {
-        el.classList.add('reveal');
-        el.style.transitionDelay = (i % 3) * 60 + 'ms';
-        io.observe(el);
-      });
-    }
-  })();
-
-  function switchTab(tab, btn) {
-    document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('tab-' + tab).classList.add('active');
-    btn.classList.add('active');
-  }
-
-  function markError(id, hasError) {
-    document.getElementById(id).closest('.form-group').classList.toggle('has-error', hasError);
-    return hasError;
-  }
-
-  // Efface l'erreur du champ dès que le visiteur le corrige
-  document.querySelectorAll('#tab-contact input, #tab-contact textarea').forEach(el => {
-    el.addEventListener('input', () => el.closest('.form-group').classList.remove('has-error'));
-  });
-
-  function mailtoFallbackContact(data) {
-    const subject = encodeURIComponent('Demande de devis AbiWeb - ' + data.nom);
-    const body = encodeURIComponent(
-      'Nom : ' + data.nom + '\n' +
-      'Email : ' + data.email + '\n' +
-      (data.tel ? 'Téléphone : ' + data.tel + '\n' : '') +
-      (data.formule ? 'Formule : ' + data.formule + '\n' : '') +
-      '\nMessage :\n' + data.message
-    );
-    window.location.href = 'mailto:contact@abiweb.fr?subject=' + subject + '&body=' + body;
-  }
-
-  async function submitContact(btn) {
-    const nom = document.getElementById('c-nom').value.trim();
-    const email = document.getElementById('c-email').value.trim();
-    const message = document.getElementById('c-message').value.trim();
-    let invalid = false;
-    invalid = markError('c-nom', nom.length < 2) || invalid;
-    invalid = markError('c-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) || invalid;
-    invalid = markError('c-message', message.length < 5) || invalid;
-    if (invalid) return;
-    const data = {
-      nom, email, message,
-      formule: document.getElementById('c-formule').value,
-      tel: document.getElementById('c-tel').value,
-      website: document.getElementById('c-website').value,
-    };
-    const originalLabel = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Envoi en cours…';
-
-    try {
-      const resp = await fetch('/api/send-contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (!resp.ok) throw new Error('send_failed');
-      document.getElementById('success-contact').style.display = 'block';
-      ['c-nom', 'c-email', 'c-tel', 'c-message'].forEach(id => { document.getElementById(id).value = ''; });
-      document.getElementById('c-formule').value = '';
-    } catch (e) {
-      const fallback = confirm("L'envoi automatique a échoué. Voulez-vous ouvrir votre messagerie pour envoyer le message par email à la place ?");
-      if (fallback) mailtoFallbackContact(data);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = originalLabel;
-    }
-  }
-
-</script>
+<script src="/js/home.js"></script>
   <div class="cookie-banner" id="cookieBanner" hidden>
     <p>Ce site utilise des cookies de mesure d'audience (Google Analytics), déposés uniquement avec votre accord. <a href="/politique-de-confidentialite">En savoir plus</a></p>
     <div class="cookie-actions">
@@ -1107,22 +929,6 @@
       <button id="cookieAccept">Accepter</button>
     </div>
   </div>
-  <script>
-    (function () {
-      var banner = document.getElementById('cookieBanner');
-      function choose(value) {
-        localStorage.setItem('abiweb-consent', value);
-        banner.hidden = true;
-        if (value === 'granted') abiwebLoadAnalytics();
-      }
-      document.getElementById('cookieAccept').addEventListener('click', function () { choose('granted'); });
-      document.getElementById('cookieRefuse').addEventListener('click', function () { choose('denied'); });
-      if (!localStorage.getItem('abiweb-consent')) banner.hidden = false;
-      window.abiwebCookieChoice = function () {
-        localStorage.removeItem('abiweb-consent');
-        banner.hidden = false;
-      };
-    })();
-  </script>
+  <script src="/js/cookie-banner.js"></script>
 </body>
 </html>
