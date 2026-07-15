@@ -210,13 +210,40 @@
     .style-card {
       border: 2px solid var(--line); border-radius: 10px;
       padding: 0.9rem 1rem; transition: all .2s;
-      display: flex; align-items: flex-start; gap: 0.7rem;
+      display: flex; flex-direction: column; gap: 0.7rem;
     }
     .style-option:hover .style-card { border-color: var(--accent); }
     .style-option input:checked + .style-card { border-color: var(--accent); background: var(--accent2); }
+    .style-info { display: flex; align-items: flex-start; gap: 0.7rem; }
     .style-icon { font-size: 1.4rem; flex-shrink: 0; }
     .style-name { font-weight: 600; font-size: 0.875rem; color: var(--ink); }
     .style-desc { font-size: 0.75rem; color: var(--mid); margin-top: 0.15rem; }
+
+    /* MINI APERÇU VISUEL PAR STYLE (démo, pas de vraie capture) */
+    .style-preview {
+      height: 44px; padding: 0.5rem 0.65rem;
+      display: flex; flex-direction: column; justify-content: center; gap: 0.28rem;
+      overflow: hidden;
+    }
+    .sp-bar { display: block; height: 7px; width: 34%; border-radius: 2px; }
+    .sp-line { display: block; height: 4px; width: 72%; border-radius: 2px; }
+    .sp-line-short { width: 46%; }
+    /* Moderne & épuré : fond blanc, bordure fine, un seul accent, beaucoup de vide */
+    .style-preview-moderne { background: #ffffff; border: 1px solid var(--line); border-radius: 4px; }
+    .style-preview-moderne .sp-bar { background: #0f0f11; width: 26%; }
+    .style-preview-moderne .sp-line { background: #0f0f11; opacity: 0.35; }
+    /* Coloré & dynamique : dégradé vif, fort contraste */
+    .style-preview-colore { background: linear-gradient(135deg, #7c3aed, #db2777 55%, #f59e0b); border-radius: 8px; }
+    .style-preview-colore .sp-bar { background: #ffffff; width: 46%; }
+    .style-preview-colore .sp-line { background: #ffffff; opacity: 0.85; }
+    /* Classique & sérieux : marine + or, coins nets, sobre */
+    .style-preview-classique { background: #10213f; border-radius: 2px; }
+    .style-preview-classique .sp-bar { background: #d4af6a; width: 36%; }
+    .style-preview-classique .sp-line { background: #ffffff; opacity: 0.55; }
+    /* Convivial & accessible : tons chauds, très arrondi */
+    .style-preview-convivial { background: #fdf1e3; border: 1px solid #f3ddb8; border-radius: 14px; }
+    .style-preview-convivial .sp-bar { background: #d97706; width: 40%; border-radius: 4px; }
+    .style-preview-convivial .sp-line { background: #92400e; opacity: 0.55; border-radius: 4px; }
 
     /* CHECKBOX SECTIONS */
     .check-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
@@ -760,40 +787,68 @@
         <label class="style-option">
           <input type="radio" name="style" value="Moderne et épuré" checked />
           <div class="style-card">
-            <span class="style-icon">✦</span>
-            <div>
-              <div class="style-name">Moderne & épuré</div>
-              <div class="style-desc">Lignes claires, beaucoup d'espace, pro et sobre</div>
+            <div class="style-preview style-preview-moderne" aria-hidden="true">
+              <span class="sp-bar"></span>
+              <span class="sp-line"></span>
+              <span class="sp-line sp-line-short"></span>
+            </div>
+            <div class="style-info">
+              <span class="style-icon">✦</span>
+              <div>
+                <div class="style-name">Moderne & épuré</div>
+                <div class="style-desc">Lignes claires, beaucoup d'espace, pro et sobre</div>
+              </div>
             </div>
           </div>
         </label>
         <label class="style-option">
           <input type="radio" name="style" value="Coloré et dynamique" />
           <div class="style-card">
-            <span class="style-icon">🎉</span>
-            <div>
-              <div class="style-name">Coloré & dynamique</div>
-              <div class="style-desc">Energie, contrastes vifs, accrocheur et vivant</div>
+            <div class="style-preview style-preview-colore" aria-hidden="true">
+              <span class="sp-bar"></span>
+              <span class="sp-line"></span>
+              <span class="sp-line sp-line-short"></span>
+            </div>
+            <div class="style-info">
+              <span class="style-icon">🎉</span>
+              <div>
+                <div class="style-name">Coloré & dynamique</div>
+                <div class="style-desc">Energie, contrastes vifs, accrocheur et vivant</div>
+              </div>
             </div>
           </div>
         </label>
         <label class="style-option">
           <input type="radio" name="style" value="Classique et sérieux" />
           <div class="style-card">
-            <span class="style-icon">🏛️</span>
-            <div>
-              <div class="style-name">Classique & sérieux</div>
-              <div class="style-desc">Sobre, rassurant, adapté aux pros et institutions</div>
+            <div class="style-preview style-preview-classique" aria-hidden="true">
+              <span class="sp-bar"></span>
+              <span class="sp-line"></span>
+              <span class="sp-line sp-line-short"></span>
+            </div>
+            <div class="style-info">
+              <span class="style-icon">🏛️</span>
+              <div>
+                <div class="style-name">Classique & sérieux</div>
+                <div class="style-desc">Sobre, rassurant, adapté aux pros et institutions</div>
+              </div>
             </div>
           </div>
         </label>
         <label class="style-option">
           <input type="radio" name="style" value="Convivial et accessible" />
           <div class="style-card">
-            <span class="style-icon">🤝</span>
-            <div>
-              <div class="style-name">Convivial & accessible</div>
-              <div class="style-desc">Chaleureux, simple, proche des gens</div>
+            <div class="style-preview style-preview-convivial" aria-hidden="true">
+              <span class="sp-bar"></span>
+              <span class="sp-line"></span>
+              <span class="sp-line sp-line-short"></span>
+            </div>
+            <div class="style-info">
+              <span class="style-icon">🤝</span>
+              <div>
+                <div class="style-name">Convivial & accessible</div>
+                <div class="style-desc">Chaleureux, simple, proche des gens</div>
+              </div>
             </div>
           </div>
         </label>
