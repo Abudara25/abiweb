@@ -252,15 +252,32 @@
     }
     .sim-module-item:hover { border-color: var(--accent); }
     .sim-module-item.checked { border-color: var(--accent); background: var(--accent2); }
-    .sim-module-check { display: flex; align-items: center; gap: 0.65rem; font-size: 0.85rem; color: var(--ink); }
-    .sim-module-check input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
-    .sim-module-price { font-weight: 700; font-size: 0.85rem; color: var(--ink); white-space: nowrap; }
+    .sim-module-check { display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.85rem; color: var(--ink); }
+    .sim-module-check input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; margin-top: 0.15rem; }
+    .sim-module-text { display: flex; flex-direction: column; gap: 0.15rem; }
+    .sim-module-label { font-weight: 600; }
+    .sim-module-desc { font-size: 0.75rem; font-weight: 400; color: var(--mid); line-height: 1.45; }
+    .sim-module-price { font-weight: 700; font-size: 0.85rem; color: var(--ink); white-space: nowrap; flex-shrink: 0; padding-top: 0.05rem; }
     .simulator-suggestion {
       display: none; background: var(--green-bg); color: var(--green);
       border-radius: 10px; padding: 0.8rem 1rem; font-size: 0.78rem; line-height: 1.5;
     }
     .simulator-suggestion.visible { display: block; }
     .simulator-suggestion strong { font-weight: 700; }
+
+    /* SUGGESTION DE FORMULE (auto, à partir des besoins du client) */
+    .tarif-suggestion-box { margin-bottom: 1.25rem; }
+    .tarif-suggestion-inner {
+      display: flex; align-items: flex-start; gap: 0.7rem;
+      background: var(--accent2); border: 1px solid var(--accent);
+      border-radius: 10px; padding: 0.9rem 1.1rem;
+    }
+    .tarif-suggestion-icon { font-size: 1.1rem; flex-shrink: 0; line-height: 1.3; }
+    .tarif-suggestion-inner strong { display: block; font-size: 0.88rem; color: var(--accent); margin-bottom: 0.2rem; }
+    .tarif-suggestion-reason { display: block; font-size: 0.8rem; color: var(--accent); opacity: 0.9; line-height: 1.5; }
+    .tarif-suggestion-touched .tarif-suggestion-inner { background: var(--paper); border-color: var(--line); }
+    .tarif-suggestion-touched .tarif-suggestion-inner strong,
+    .tarif-suggestion-touched .tarif-suggestion-reason { color: var(--mid); opacity: 1; }
 
     /* NAVIGATION BUTTONS */
     .nav-buttons {
@@ -405,11 +422,11 @@
     </div>
     <div class="progress-step" data-step="2">
       <div class="step-circle">2</div>
-      <div class="step-label">Tarif</div>
+      <div class="step-label">Contenu</div>
     </div>
     <div class="progress-step" data-step="3">
       <div class="step-circle">3</div>
-      <div class="step-label">Contenu</div>
+      <div class="step-label">Tarif</div>
     </div>
     <div class="progress-step" data-step="4">
       <div class="step-circle">4</div>
@@ -495,157 +512,22 @@
     </div>
   </div>
 
-  <!-- ===== STEP 2 : TARIFICATION ===== -->
+  <!-- ===== STEP 2 : CONTENU ===== -->
   <div class="step-panel" id="step2">
     <div class="card">
-      <div class="card-title"><span class="icon">💰</span> Tarification</div>
-      <div class="card-subtitle">Choisissez une formule clé en main, ou composez votre offre à la carte. Pas sûr(e) ? On en discutera ensemble.</div>
-
-      <div style="display:flex;align-items:flex-start;gap:0.6rem;background:var(--green-bg);border:1px solid #a7f3d0;border-radius:10px;padding:0.85rem 1rem;margin-bottom:1.25rem;">
-        <span style="font-size:1.1rem;flex-shrink:0">🔑</span>
-        <div style="font-size:0.82rem;color:var(--green);line-height:1.5">
-          <strong>Indépendance après livraison.</strong> Les formules Standard et Premium incluent un accès admin pour modifier vous-même vos textes et photos. Disponible aussi en option à la carte (200€) avec la formule Essentiel.
-        </div>
-      </div>
-
-      <div class="radio-row" style="margin-bottom:1.5rem;">
-        <label class="radio-pill"><input type="radio" name="tarif-mode" value="forfait" checked /><span class="radio-pill-label">📦 Formule clé en main</span></label>
-        <label class="radio-pill"><input type="radio" name="tarif-mode" value="alacarte" /><span class="radio-pill-label">🛠️ Sur mesure à la carte</span></label>
-      </div>
-
-      <!-- MODE FORFAIT -->
-      <div id="tarif-panel-forfait">
-        <div class="formules-grid">
-          <label class="formule-option">
-            <input type="radio" name="formule" value="Essentiel - 490€" />
-            <div class="formule-card">
-              <div class="formule-name">Essentiel</div>
-              <div class="formule-price">490 €</div>
-              <div class="formule-sub">Base seule · livraison 5 jours</div>
-              <ul class="formule-features">
-                <li>Site vitrine 5 sections</li>
-                <li>Formulaire de contact</li>
-                <li>Design responsive</li>
-                <li>SEO de base</li>
-              </ul>
-            </div>
-          </label>
-          <label class="formule-option">
-            <input type="radio" name="formule" value="Standard - 690€" checked />
-            <div class="formule-card">
-              <div class="formule-badge">Populaire</div>
-              <div class="formule-name">Standard</div>
-              <div class="formule-price">690 €</div>
-              <div class="formule-sub">au lieu de 770€ à la carte · livraison 7 jours</div>
-              <ul class="formule-features">
-                <li>Tout Essentiel</li>
-                <li>Système admin client</li>
-                <li>Galerie photos dynamique</li>
-              </ul>
-            </div>
-          </label>
-          <label class="formule-option">
-            <input type="radio" name="formule" value="Premium - 1190€" />
-            <div class="formule-card">
-              <div class="formule-name">Premium</div>
-              <div class="formule-price">1190 €</div>
-              <div class="formule-sub">au lieu de 1510€ à la carte (−320€) · livraison 10 jours</div>
-              <ul class="formule-features">
-                <li>Tout Standard</li>
-                <li>Formulaire d'inscription + PDF</li>
-                <li>Blog / actualités</li>
-                <li>Paiement en ligne + emailing/CRM (ex : HelloAsso, Brevo, Stripe…)</li>
-                <li>SEO avancé</li>
-                <li>Réservation en ligne</li>
-              </ul>
-            </div>
-          </label>
-        </div>
-      </div>
-
-      <!-- MODE À LA CARTE -->
-      <div id="tarif-panel-alacarte" style="display:none;">
-        <div class="sim-module-item" style="cursor:default; margin-bottom:0.85rem;">
-          <span class="sim-module-check" style="gap:0.5rem;">✓ Base - toujours incluse <span class="form-hint" style="margin:0;" id="brief-base-desc"></span></span>
-          <span class="sim-module-price" id="brief-base-price"></span>
-        </div>
-        <div class="simulator-modules-list" id="brief-modules-list"></div>
-        <div class="sep"></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
-          <span class="form-hint" style="font-size:0.85rem;">Total estimé</span>
-          <span class="formule-price" id="brief-alacarte-total">490 €</span>
-        </div>
-        <div class="simulator-suggestion" id="brief-suggestion" style="margin-top:0.85rem;"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">🔧</span> Maintenance mensuelle</div>
-      <div class="card-subtitle">Optionnel - vous pourrez aussi en discuter plus tard.</div>
-      <div class="form-grid">
-        <div class="form-group full">
-          <label>Formule de maintenance souhaitée</label>
-          <select id="maintenance-choix">
-            <option value="Aucune pour l'instant">Aucune pour l'instant</option>
-            <option value="Basique - 25€/mois">Basique - 25€/mois (hébergement, surveillance, 1 modif/mois)</option>
-            <option value="Standard - 45€/mois">Standard - 45€/mois (+ 3 modifs/mois + support email 48h)</option>
-            <option value="Premium - 80€/mois">Premium - 80€/mois (modifs illimitées + support prioritaire 24h)</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">🌐</span> Nom de domaine</div>
-      <div class="card-subtitle">L'adresse web de votre site (ex : monasso.fr)</div>
-
-      <div style="display:flex;align-items:flex-start;gap:0.6rem;background:var(--green-bg);border:1px solid #a7f3d0;border-radius:10px;padding:0.85rem 1rem;margin-bottom:1.25rem;">
-        <span style="font-size:1.1rem;flex-shrink:0">🎁</span>
-        <div style="font-size:0.82rem;color:var(--green);line-height:1.5">
-          <strong>Nom de domaine offert la 1ère année</strong> dans la limite de <strong>15 € TTC</strong> (ex : .fr, .com, .org…). À partir de la 2ème année, le renouvellement annuel est à votre charge (généralement 10–15 €/an). Au-delà de 15 €, le supplément reste à votre charge dès la 1ère année.
-        </div>
-      </div>
-
-      <div class="form-grid">
-        <div class="form-group full">
-          <label>Avez-vous déjà un nom de domaine ?</label>
-          <div class="radio-row">
-            <label class="radio-pill"><input type="radio" name="domaine" value="non" checked /><span class="radio-pill-label">Non, je n'en ai pas</span></label>
-            <label class="radio-pill"><input type="radio" name="domaine" value="oui" /><span class="radio-pill-label">Oui, je l'ai déjà</span></label>
-            <label class="radio-pill"><input type="radio" name="domaine" value="vercel" /><span class="radio-pill-label">Adresse gratuite (vercel.app)</span></label>
-          </div>
-        </div>
-        <div class="form-group full" id="domaine-nom-wrap">
-          <label>Nom de domaine souhaité / existant</label>
-          <input type="text" id="domaine-nom" placeholder="monsite.fr, monasso.com…" />
-          <div class="form-hint">Les extensions courantes (.fr, .com, .org, .net) sont généralement dans la limite offerte. Les extensions premium (.shop, .club, .paris…) peuvent dépasser 15 € - je vous préviens avant achat.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="nav-buttons">
-      <button class="btn-prev" data-goto="1">← Précédent</button>
-      <span class="step-counter"><strong>Étape 2</strong> sur 5</span>
-      <button class="btn-next" data-goto="3">Suivant →</button>
-    </div>
-  </div>
-
-  <!-- ===== STEP 3 : CONTENU ===== -->
-  <div class="step-panel" id="step3">
-    <div class="card">
       <div class="card-title"><span class="icon">📄</span> Sections souhaitées</div>
-      <div class="card-subtitle">Cochez tout ce que vous voulez faire apparaître sur votre site.</div>
+      <div class="card-subtitle">Cochez tout ce que vous voulez faire apparaître sur votre site. Cela nous aide aussi à vous suggérer la formule adaptée à l'étape suivante.</div>
       <div class="check-grid">
         <label class="check-item"><input type="checkbox" name="sections" value="Accueil / présentation" checked /><span>Accueil / présentation</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="À propos / histoire" /><span>À propos / histoire</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="Services / activités" checked /><span>Services / activités</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="Tarifs" /><span>Tarifs / grille tarifaire</span></label>
-        <label class="check-item"><input type="checkbox" name="sections" value="Galerie photos" /><span>Galerie photos</span></label>
+        <label class="check-item"><input type="checkbox" name="sections" value="Galerie photos" data-modules="galerie" /><span>Galerie photos</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="Vidéos" /><span>Vidéos (YouTube / Vimeo)</span></label>
-        <label class="check-item"><input type="checkbox" name="sections" value="Actualités / événements" /><span>Actualités / événements</span></label>
+        <label class="check-item"><input type="checkbox" name="sections" value="Actualités / événements" data-modules="blog" /><span>Actualités / événements</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="Témoignages clients" /><span>Témoignages clients / avis</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="Équipe" /><span>L'équipe / les membres</span></label>
-        <label class="check-item"><input type="checkbox" name="sections" value="Adhésion / inscription" /><span>Adhésion / inscription (ex : HelloAsso…)</span></label>
+        <label class="check-item"><input type="checkbox" name="sections" value="Adhésion / inscription" data-modules="inscription,helloasso" /><span>Adhésion / inscription (ex : HelloAsso…)</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="Plan d'accès / carte" checked /><span>Plan d'accès / carte Google Maps</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="Formulaire de contact" checked /><span>Formulaire de contact</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="Catalogue produits" /><span>Catalogue produits / services</span></label>
@@ -723,6 +605,142 @@
         <div class="form-group"><label>Instagram</label><input type="url" id="link-ig" placeholder="https://instagram.com/…" /></div>
         <div class="form-group"><label>YouTube</label><input type="url" id="link-yt" placeholder="https://youtube.com/…" /></div>
         <div class="form-group"><label>Autre lien (TikTok, LinkedIn…)</label><input type="url" id="link-autre" placeholder="https://…" /></div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" data-goto="1">← Précédent</button>
+      <span class="step-counter"><strong>Étape 2</strong> sur 5</span>
+      <button class="btn-next" data-goto="3">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- ===== STEP 3 : TARIFICATION ===== -->
+  <div class="step-panel" id="step3">
+    <div class="card">
+      <div class="card-title"><span class="icon">💰</span> Tarification</div>
+      <div class="card-subtitle">Voici une suggestion de départ selon votre projet. Choisissez une formule clé en main, ou composez votre offre à la carte, fonction par fonction. Pas sûr(e) ? On en discutera ensemble.</div>
+
+      <div class="tarif-suggestion-box" id="tarifSuggestionBox"></div>
+
+      <div style="display:flex;align-items:flex-start;gap:0.6rem;background:var(--green-bg);border:1px solid #a7f3d0;border-radius:10px;padding:0.85rem 1rem;margin-bottom:1.25rem;">
+        <span style="font-size:1.1rem;flex-shrink:0">🔑</span>
+        <div style="font-size:0.82rem;color:var(--green);line-height:1.5">
+          <strong>Indépendance après livraison.</strong> Les formules Standard et Premium incluent un accès admin pour modifier vous-même vos textes et photos. Disponible aussi en option à la carte (200€) avec la formule Essentiel.
+        </div>
+      </div>
+
+      <div class="radio-row" style="margin-bottom:1.5rem;">
+        <label class="radio-pill"><input type="radio" name="tarif-mode" value="forfait" /><span class="radio-pill-label">📦 Formule clé en main</span></label>
+        <label class="radio-pill"><input type="radio" name="tarif-mode" value="alacarte" checked /><span class="radio-pill-label">🛠️ Sur mesure à la carte</span></label>
+      </div>
+
+      <!-- MODE FORFAIT -->
+      <div id="tarif-panel-forfait" style="display:none;">
+        <div class="formules-grid">
+          <label class="formule-option">
+            <input type="radio" name="formule" value="Essentiel - 490€" checked />
+            <div class="formule-card">
+              <div class="formule-name">Essentiel</div>
+              <div class="formule-price">490 €</div>
+              <div class="formule-sub">Base seule · livraison 5 jours</div>
+              <ul class="formule-features">
+                <li>Site vitrine 5 sections</li>
+                <li>Formulaire de contact</li>
+                <li>Design responsive</li>
+                <li>SEO de base</li>
+              </ul>
+            </div>
+          </label>
+          <label class="formule-option">
+            <input type="radio" name="formule" value="Standard - 690€" />
+            <div class="formule-card">
+              <div class="formule-name">Standard</div>
+              <div class="formule-price">690 €</div>
+              <div class="formule-sub">au lieu de 770€ à la carte · livraison 7 jours</div>
+              <ul class="formule-features">
+                <li>Tout Essentiel</li>
+                <li>Système admin client</li>
+                <li>Galerie photos dynamique</li>
+              </ul>
+            </div>
+          </label>
+          <label class="formule-option">
+            <input type="radio" name="formule" value="Premium - 1190€" />
+            <div class="formule-card">
+              <div class="formule-name">Premium</div>
+              <div class="formule-price">1190 €</div>
+              <div class="formule-sub">au lieu de 1510€ à la carte (−320€) · livraison 10 jours</div>
+              <ul class="formule-features">
+                <li>Tout Standard</li>
+                <li>Formulaire d'inscription + PDF</li>
+                <li>Blog / actualités</li>
+                <li>Paiement en ligne + emailing/CRM (ex : HelloAsso, Brevo, Stripe…)</li>
+                <li>SEO avancé</li>
+                <li>Réservation en ligne</li>
+              </ul>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- MODE À LA CARTE -->
+      <div id="tarif-panel-alacarte">
+        <div class="sim-module-item" style="cursor:default; margin-bottom:0.85rem;">
+          <span class="sim-module-check" style="gap:0.5rem;">✓ Base - toujours incluse <span class="form-hint" style="margin:0;" id="brief-base-desc"></span></span>
+          <span class="sim-module-price" id="brief-base-price"></span>
+        </div>
+        <div class="simulator-modules-list" id="brief-modules-list"></div>
+        <div class="sep"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+          <span class="form-hint" style="font-size:0.85rem;">Total estimé</span>
+          <span class="formule-price" id="brief-alacarte-total">490 €</span>
+        </div>
+        <div class="simulator-suggestion" id="brief-suggestion" style="margin-top:0.85rem;"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔧</span> Maintenance mensuelle</div>
+      <div class="card-subtitle">Optionnel - vous pourrez aussi en discuter plus tard.</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Formule de maintenance souhaitée</label>
+          <select id="maintenance-choix">
+            <option value="Aucune pour l'instant">Aucune pour l'instant</option>
+            <option value="Basique - 25€/mois">Basique - 25€/mois (hébergement, surveillance, 1 modif/mois)</option>
+            <option value="Standard - 45€/mois">Standard - 45€/mois (+ 3 modifs/mois + support email 48h)</option>
+            <option value="Premium - 80€/mois">Premium - 80€/mois (modifs illimitées + support prioritaire 24h)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🌐</span> Nom de domaine</div>
+      <div class="card-subtitle">L'adresse web de votre site (ex : monasso.fr)</div>
+
+      <div style="display:flex;align-items:flex-start;gap:0.6rem;background:var(--green-bg);border:1px solid #a7f3d0;border-radius:10px;padding:0.85rem 1rem;margin-bottom:1.25rem;">
+        <span style="font-size:1.1rem;flex-shrink:0">🎁</span>
+        <div style="font-size:0.82rem;color:var(--green);line-height:1.5">
+          <strong>Nom de domaine offert la 1ère année</strong> dans la limite de <strong>15 € TTC</strong> (ex : .fr, .com, .org…). À partir de la 2ème année, le renouvellement annuel est à votre charge (généralement 10–15 €/an). Au-delà de 15 €, le supplément reste à votre charge dès la 1ère année.
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Avez-vous déjà un nom de domaine ?</label>
+          <div class="radio-row">
+            <label class="radio-pill"><input type="radio" name="domaine" value="non" checked /><span class="radio-pill-label">Non, je n'en ai pas</span></label>
+            <label class="radio-pill"><input type="radio" name="domaine" value="oui" /><span class="radio-pill-label">Oui, je l'ai déjà</span></label>
+            <label class="radio-pill"><input type="radio" name="domaine" value="vercel" /><span class="radio-pill-label">Adresse gratuite (vercel.app)</span></label>
+          </div>
+        </div>
+        <div class="form-group full" id="domaine-nom-wrap">
+          <label>Nom de domaine souhaité / existant</label>
+          <input type="text" id="domaine-nom" placeholder="monsite.fr, monasso.com…" />
+          <div class="form-hint">Les extensions courantes (.fr, .com, .org, .net) sont généralement dans la limite offerte. Les extensions premium (.shop, .club, .paris…) peuvent dépasser 15 € - je vous préviens avant achat.</div>
+        </div>
       </div>
     </div>
 

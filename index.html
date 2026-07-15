@@ -79,7 +79,7 @@
   }
   </script>
 
-  <!-- FAQ SCHEMA (boost SEO Google) -->
+  <!-- FAQ SCHEMA (boost SEO Google) - doit rester identique à la FAQ visible plus bas dans la page -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -87,34 +87,82 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Combien coûte la création d'un site internet avec AbiWeb ?",
+        "name": "Quelle différence entre une formule clé en main et les modules à la carte ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AbiWeb propose une base à 490€ (site vitrine 5 sections, contact, design responsive, SEO de base) à laquelle s'ajoutent des modules à la carte (admin, galerie, blog, paiement en ligne…), ou des formules clé en main : Essentiel 490€, Standard 690€ et Premium 1190€ (tout inclus). Tous les prix sont nets, sans abonnement caché."
+          "text": "Les formules (Essentiel, Standard, Premium) regroupent les modules les plus demandés avec une remise de 80 à 240€. Si vous avez besoin d'une combinaison différente - par exemple la base avec uniquement le paiement en ligne, sans le système admin - le simulateur vous permet de composer exactement ce qu'il vous faut, sans payer pour des options inutiles."
         }
       },
       {
         "@type": "Question",
-        "name": "Combien de temps faut-il pour créer un site internet ?",
+        "name": "Puis-je ajouter un module après la livraison de mon site ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Votre site est livré en 7 jours maximum à compter de la réception de vos contenus (textes et photos)."
+          "text": "Oui, tout à fait. Chaque module peut être ajouté ultérieurement au tarif à la carte en vigueur. La seule contrainte : si vous avez choisi la formule Essentiel (sans système admin) et souhaitez l'ajouter plus tard, cela représente une intervention de développement supplémentaire facturée à 200€."
         }
       },
       {
         "@type": "Question",
-        "name": "Travaillez-vous partout en France ?",
+        "name": "La maintenance mensuelle est-elle obligatoire ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Oui, AbiWeb travaille 100% à distance et peut accompagner des clients partout en France."
+          "text": "Non, elle est entièrement optionnelle. L'hébergement Vercel est gratuit et votre site fonctionne sans aucun abonnement. La maintenance est utile si vous souhaitez déléguer les mises à jour régulières ou avoir un support prioritaire - sinon, vous êtes 100% autonome après la livraison."
         }
       },
       {
         "@type": "Question",
-        "name": "Est-ce que je dois payer avant de voir le site ?",
+        "name": "Qu'est-ce que le SEO de base inclus dans toutes les formules ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Non. Un acompte de 30% est demandé au démarrage. Vous recevez une prévisualisation du site avant de payer le solde. La mise en ligne se fait uniquement après votre validation et votre paiement final."
+          "text": "Le SEO de base couvre les fondamentaux techniques : balises title et meta description optimisées, structure sémantique (H1/H2), temps de chargement rapide, données structurées Schema.org et sitemap. Votre site sera correctement indexé par Google. Pour apparaître sur des mots-clés concurrentiels (ex. \"plombier Paris\"), le module SEO avancé (80€) propose un travail de fond sur le contenu et le maillage."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Est-ce que je dois fournir les textes et photos ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui, idéalement vous me fournissez vos textes et vos photos. Si vous n'en avez pas, je peux vous proposer des visuels libres de droits et rédiger une première version des textes avec vous."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que se passe-t-il si je n'aime pas le résultat ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Avant de payer le solde, vous recevez un lien de prévisualisation. Si le site ne vous convient pas, vous ne payez pas le solde et le projet s'arrête là - vous n'avez perdu que l'acompte de 30%. Pendant 7 jours après la livraison, toutes les retouches sont incluses."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "L'hébergement est-il vraiment gratuit ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui. Votre site est déployé sur un compte gratuit (Vercel ou Cloudflare) créé à votre nom : pour un site vitrine, l'hébergement ne coûte rien, sans limite de durée. Seul le nom de domaine se renouvelle (environ 10 à 15 €/an) - il est offert la 1ère année."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Est-ce que je paye avant ou après ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Un acompte de 30% est demandé au démarrage. Le solde de 70% est réglé après votre validation de la démo, juste avant la mise en ligne. Aucun paiement final sans votre accord explicite."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Mon site sera-t-il trouvable sur Google ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Le site est construit avec les bonnes pratiques techniques (balises, rapidité de chargement). Pour apparaître en première page sur Google, un travail SEO spécifique est nécessaire - ce n'est pas inclus, mais je peux vous orienter."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vous intervenez dans quelle zone géographique ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Tout se fait à distance, je peux accompagner des clients partout en France."
         }
       }
     ]
@@ -198,9 +246,12 @@
     }
     .sim-module-item:hover { border-color: var(--accent); }
     .sim-module-item.checked { border-color: var(--accent); background: var(--accent2); }
-    .sim-module-check { display: flex; align-items: center; gap: 0.7rem; font-size: 0.875rem; color: var(--ink); }
-    .sim-module-check input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
-    .sim-module-price { font-weight: 700; font-size: 0.875rem; color: var(--ink); white-space: nowrap; }
+    .sim-module-check { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.875rem; color: var(--ink); }
+    .sim-module-check input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; margin-top: 0.15rem; }
+    .sim-module-text { display: flex; flex-direction: column; gap: 0.15rem; }
+    .sim-module-label { font-weight: 600; }
+    .sim-module-desc { font-size: 0.76rem; font-weight: 400; color: var(--mid); line-height: 1.45; }
+    .sim-module-price { font-weight: 700; font-size: 0.875rem; color: var(--ink); white-space: nowrap; flex-shrink: 0; padding-top: 0.05rem; }
     .simulator-summary { position: sticky; top: 76px; }
     .simulator-total-card { background: var(--ink); color: var(--white); border-radius: 16px; padding: 1.75rem 1.5rem; }
     .simulator-total-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 0.4rem; }
@@ -265,15 +316,15 @@
     .step-tag { display: inline-block; background: var(--green-bg); color: var(--green); font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; margin-top: 0.3rem; }
     .step-tag-warning { background: #fff3e0; color: #e67e22; }
 
-    /* INCLUS */
-    .included { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-    .included-inner { max-width: 820px; margin: 0 auto; padding: 4rem 2rem; }
-    .included-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 2.5rem; color: var(--ink); }
-    .included-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
-    .included-item { display: flex; gap: 0.85rem; align-items: flex-start; }
-    .included-dot { flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-top: 6px; }
-    .included-item h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--ink); }
-    .included-item p { font-size: 0.8rem; color: var(--mid); line-height: 1.5; }
+    /* INCLUS + POUR QUI (même gabarit visuel, classes distinctes) */
+    .included, .audience { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .included-inner, .audience-inner { max-width: 820px; margin: 0 auto; padding: 4rem 2rem; }
+    .included-inner h2, .audience-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 2.5rem; color: var(--ink); }
+    .included-grid, .audience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    .included-item, .audience-item { display: flex; gap: 0.85rem; align-items: flex-start; }
+    .included-dot, .audience-dot { flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-top: 6px; }
+    .included-item h3, .audience-item h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--ink); }
+    .included-item p, .audience-item p { font-size: 0.8rem; color: var(--mid); line-height: 1.5; }
 
     /* FAQ */
     .faq-section { padding: 4rem 2rem; }
@@ -769,6 +820,19 @@
         <h3>Suivi à J+7</h3>
         <p>Je vérifie que tout fonctionne et je reste disponible pour vos questions. Renouvellement annuel de l'hébergement si option B choisie.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- POUR QUI -->
+<section class="audience">
+  <div class="audience-inner">
+    <p class="section-label">Pour qui</p>
+    <h2>Un site internet pensé pour votre activité</h2>
+    <div class="audience-grid">
+      <div class="audience-item"><div class="audience-dot"></div><div><h3>Site internet pour association</h3><p>Présentez vos activités, gérez les adhésions et centralisez les paiements en ligne (HelloAsso, PayPal…) pour que vos membres et bénévoles trouvent tout au même endroit.</p></div></div>
+      <div class="audience-item"><div class="audience-dot"></div><div><h3>Site internet pour auto-entrepreneur</h3><p>Une vitrine professionnelle pour présenter vos services et être trouvé sur Google, sans les charges fixes d'un abonnement mensuel.</p></div></div>
+      <div class="audience-item"><div class="audience-dot"></div><div><h3>Site internet pour TPE et commerçants</h3><p>Affichez vos horaires, vos produits et votre localisation sur un site clé en main, livré en 7 jours sans compétence technique de votre côté.</p></div></div>
     </div>
   </div>
 </section>

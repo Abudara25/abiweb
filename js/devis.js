@@ -18,7 +18,9 @@ pricing.MODULES.forEach(mod => {
   const item = document.createElement('label');
   item.className = 'sim-module-item';
   item.innerHTML =
-    `<span class="sim-module-check"><input type="checkbox" name="modules" value="${mod.key}" />${mod.label}</span>` +
+    `<span class="sim-module-check"><input type="checkbox" name="modules" value="${mod.key}" />` +
+    `<span class="sim-module-text"><span class="sim-module-label">${mod.label}</span>` +
+    `<span class="sim-module-desc">${mod.desc}</span></span></span>` +
     `<span class="sim-module-price">+${mod.price} €</span>`;
   briefModulesList.appendChild(item);
 });
@@ -52,6 +54,102 @@ document.querySelectorAll('input[name="tarif-mode"]').forEach(r => {
   r.addEventListener('change', () => { if (r.checked) setTarifMode(r.value); });
 });
 
+// ===== SUGGESTION AUTOMATIQUE DE FORMULE =====
+// Déduite des besoins cochés à l'étape Contenu (sections, photos, vidéos). Reste un point de
+// départ : dès que le client touche lui-même la tarification, on ne l'écrase plus jamais.
+const TIER_ORDER = ['essentiel', 'standard', 'premium'];
+let userModifiedTarif = false;
+
+// Le formule qui "couvre" un module = la plus petite formule dont la liste de modules le contient.
+function tierIndexForModule(key) {
+  for (let i = 0; i < TIER_ORDER.length; i++) {
+    if (pricing.formuleByKey(TIER_ORDER[i]).modules.indexOf(key) !== -1) return i;
+  }
+  return TIER_ORDER.length - 1;
+}
+
+function collectInferredModuleKeys() {
+  const keys = [];
+  document.querySelectorAll('input[name="sections"]:checked').forEach(c => {
+    if (c.dataset.modules) keys.push(...c.dataset.modules.split(','));
+  });
+  return keys.filter((k, i) => keys.indexOf(k) === i);
+}
+
+const REASON_LABELS = {
+  galerie: 'une galerie photos',
+  blog: 'une rubrique actualités',
+  inscription: 'un formulaire d’adhésion avec confirmation PDF',
+  helloasso: 'un paiement en ligne pour les adhésions',
+};
+
+function markTarifTouched() {
+  if (userModifiedTarif) return;
+  userModifiedTarif = true;
+  const box = document.getElementById('tarifSuggestionBox');
+  box.classList.add('tarif-suggestion-touched');
+  box.innerHTML = `
+    <div class="tarif-suggestion-inner">
+      <span class="tarif-suggestion-icon">✏️</span>
+      <div><strong>Sélection personnalisée</strong>
+      <span class="tarif-suggestion-reason">Vous avez ajusté la tarification vous-même, on garde votre choix.</span></div>
+    </div>`;
+}
+document.querySelectorAll('input[name="formule"]').forEach(r => r.addEventListener('change', markTarifTouched));
+document.querySelectorAll('input[name="tarif-mode"]').forEach(r => r.addEventListener('change', markTarifTouched));
+briefModulesList.addEventListener('change', markTarifTouched);
+
+function updateTarifSuggestion() {
+  const box = document.getElementById('tarifSuggestionBox');
+  if (!box || userModifiedTarif) return;
+
+  const inferredKeys = collectInferredModuleKeys();
+  const videos = document.querySelector('input[name="videos"]:checked')?.value;
+  const photosNb = document.getElementById('photos-nb').value;
+
+  let idx = 0;
+  const reasons = [];
+  inferredKeys.forEach(k => {
+    idx = Math.max(idx, tierIndexForModule(k));
+    if (REASON_LABELS[k] && !reasons.includes(REASON_LABELS[k])) reasons.push(REASON_LABELS[k]);
+  });
+  if (videos && videos !== 'non') { idx = Math.max(idx, 1); reasons.push('l’intégration de vidéos'); }
+  if (photosNb === 'Plus de 20 (Premium uniquement)') { idx = Math.max(idx, 2); reasons.push('une galerie de plus de 20 photos'); }
+
+  const formule = pricing.formuleByKey(TIER_ORDER[idx]);
+  const reasonText = reasons.length
+    ? `D’après votre projet (${reasons.join(', ')}).`
+    : 'D’après votre projet, aucun besoin spécifique n’a encore été signalé.';
+
+  box.innerHTML = `
+    <div class="tarif-suggestion-inner">
+      <span class="tarif-suggestion-icon">💡</span>
+      <div><strong>Suggestion pour vous : formule ${formule.name} (${formule.price} €)</strong>
+      <span class="tarif-suggestion-reason">${reasonText} C’est un point de départ : cochez ou décochez librement chaque fonction ci-dessous.</span></div>
+    </div>`;
+
+  // Pré-coche uniquement les fonctions réellement demandées, jamais tout le pack par défaut
+  // (objectif : éviter qu'un client se retrouve avec des fonctions Premium inutiles).
+  briefModulesList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.checked = inferredKeys.includes(cb.value);
+  });
+  updateAlaCarteTotal();
+
+  // Présélectionne + badge la formule correspondante, pour le client qui préfère un forfait fixe
+  document.querySelectorAll('.formule-suggested-badge').forEach(b => b.remove());
+  const radio = document.querySelector(`input[name="formule"][value="${formule.name} - ${formule.price}€"]`);
+  if (radio) {
+    radio.checked = true;
+    const card = radio.nextElementSibling;
+    if (card) {
+      const badge = document.createElement('div');
+      badge.className = 'formule-badge formule-suggested-badge';
+      badge.textContent = 'Suggéré pour vous';
+      card.insertBefore(badge, card.firstChild);
+    }
+  }
+}
+
 // Prefill from the homepage simulator, if the visitor came from "Demander un devis"
 (function prefillFromSimulator() {
   let raw;
@@ -60,13 +158,14 @@ document.querySelectorAll('input[name="tarif-mode"]').forEach(r => {
   try {
     const selection = JSON.parse(raw);
     if (selection.formule) {
-      // Arrivée depuis un bouton "Choisir X" de l'accueil
+      // Arrivée depuis un bouton "Choisir X" de l'accueil : ce choix explicite prime sur la suggestion auto
       const f = pricing.formuleByKey(selection.formule);
       const radio = f && document.querySelector(`input[name="formule"][value="${f.name} - ${f.price}€"]`);
       if (radio) {
         radio.checked = true;
         document.querySelector('input[name="tarif-mode"][value="forfait"]').checked = true;
         setTarifMode('forfait');
+        userModifiedTarif = true;
       }
     } else if (selection.modules && selection.modules.length) {
       document.querySelector('input[name="tarif-mode"][value="alacarte"]').checked = true;
@@ -76,6 +175,7 @@ document.querySelectorAll('input[name="tarif-mode"]').forEach(r => {
         if (cb) cb.checked = true;
       });
       updateAlaCarteTotal();
+      userModifiedTarif = true;
     }
   } catch (e) {}
   sessionStorage.removeItem('abiweb_pricing_selection');
@@ -130,6 +230,7 @@ function validate(step) {
 
 function goStep(n) {
   if (n > currentStep && !validate(currentStep)) return;
+  if (n === 3) updateTarifSuggestion();
   if (n === 5) buildRecap();
   document.getElementById('step' + currentStep).classList.remove('active');
   document.getElementById('step' + n).classList.add('active');

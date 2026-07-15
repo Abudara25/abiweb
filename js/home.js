@@ -11,7 +11,9 @@
     var item = document.createElement('label');
     item.className = 'sim-module-item';
     item.innerHTML =
-      '<span class="sim-module-check"><input type="checkbox" value="' + mod.key + '" />' + mod.label + '</span>' +
+      '<span class="sim-module-check"><input type="checkbox" value="' + mod.key + '" />' +
+      '<span class="sim-module-text"><span class="sim-module-label">' + mod.label + '</span>' +
+      '<span class="sim-module-desc">' + mod.desc + '</span></span></span>' +
       '<span class="sim-module-price">+' + mod.price + ' €</span>';
     listEl.appendChild(item);
   });

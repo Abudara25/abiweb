@@ -5,15 +5,24 @@
   var BASE_LABEL = 'Site vitrine 5 sections, formulaire de contact, design responsive, SEO de base';
 
   var MODULES = [
-    { key: 'admin', label: 'Système admin client (modifier textes/photos seul)', price: 200 },
-    { key: 'galerie', label: 'Galerie photos dynamique', price: 80 },
-    { key: 'inscription', label: 'Formulaire d\'inscription + génération PDF', price: 150 },
-    { key: 'blog', label: 'Blog / actualités', price: 120 },
-    { key: 'helloasso', label: 'Paiement en ligne (ex : HelloAsso, PayPal…)', price: 80 },
-    { key: 'brevo', label: 'Emailing / CRM (ex : Brevo…)', price: 80 },
-    { key: 'stripe', label: 'Paiement sécurisé avancé (ex : Stripe…)', price: 150 },
-    { key: 'seo', label: 'SEO avancé + référencement Google', price: 80 },
-    { key: 'resa', label: 'Prise de rendez-vous en ligne (ex : Calendly, Doctolib, Planity…)', price: 80 },
+    { key: 'admin', label: 'Système admin client (modifier textes/photos seul)', price: 200,
+      desc: 'Un espace privé pour modifier vous-même vos textes, photos et tarifs après la livraison, sans dépendre de moi.' },
+    { key: 'galerie', label: 'Galerie photos dynamique', price: 80,
+      desc: 'Une galerie que vous alimentez vous-même, pour montrer vos réalisations, locaux ou événements.' },
+    { key: 'inscription', label: 'Formulaire d\'inscription + génération PDF', price: 150,
+      desc: 'Vos visiteurs s\'inscrivent en ligne (adhésion, atelier, événement) et reçoivent une confirmation en PDF.' },
+    { key: 'blog', label: 'Blog / actualités', price: 120,
+      desc: 'Publiez vous-même des articles ou actualités pour montrer que votre activité est vivante et améliorer votre référencement.' },
+    { key: 'helloasso', label: 'Paiement en ligne (ex : HelloAsso, PayPal…)', price: 80,
+      desc: 'Vos clients ou adhérents paient directement en ligne, sans rendez-vous ni virement à organiser.' },
+    { key: 'brevo', label: 'Emailing / CRM (ex : Brevo…)', price: 80,
+      desc: 'Centralisez les contacts récoltés sur votre site et envoyez-leur des emails (newsletter, relances) depuis un seul outil.' },
+    { key: 'stripe', label: 'Paiement sécurisé avancé (ex : Stripe…)', price: 150,
+      desc: 'Encaissez des paiements par carte bancaire directement sur votre site, de façon sécurisée et automatisée.' },
+    { key: 'seo', label: 'SEO avancé + référencement Google', price: 80,
+      desc: 'Un travail approfondi sur vos contenus et mots-clés pour mieux apparaître dans les résultats Google.' },
+    { key: 'resa', label: 'Prise de rendez-vous en ligne (ex : Calendly, Doctolib, Planity…)', price: 80,
+      desc: 'Vos clients réservent un créneau directement en ligne, sans échange de messages pour trouver une date.' },
   ];
 
   var FORMULES = [
