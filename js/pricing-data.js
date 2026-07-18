@@ -1,7 +1,7 @@
 (function (global) {
   'use strict';
 
-  var BASE_PRICE = 490;
+  var BASE_PRICE = 590;
   var BASE_LABEL = 'Site vitrine 5 sections, formulaire de contact, design responsive, SEO de base';
 
   var MODULES = [
@@ -27,7 +27,7 @@
 
   var FORMULES = [
     {
-      key: 'essentiel', name: 'Essentiel', price: 490, modules: [],
+      key: 'essentiel', name: 'Essentiel', price: 590, modules: [],
       delaiJours: 5,
       desc: 'La base seule - vitrine simple et efficace.',
     },
