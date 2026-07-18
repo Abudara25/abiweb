@@ -5,7 +5,7 @@
   var BASE_LABEL = 'Site vitrine 5 sections, formulaire de contact, design responsive, SEO de base';
 
   var MODULES = [
-    { key: 'admin', label: 'Système admin client (modifier textes/photos seul)', price: 200,
+    { key: 'admin', label: 'Système admin client (modifier textes/photos seul)', price: 300,
       desc: 'Un espace privé pour modifier vous-même vos textes, photos et tarifs après la livraison, sans dépendre de moi.' },
     { key: 'galerie', label: 'Galerie photos dynamique', price: 80,
       desc: 'Une galerie que vous alimentez vous-même, pour montrer vos réalisations, locaux ou événements.' },
@@ -32,13 +32,13 @@
       desc: 'La base seule - vitrine simple et efficace.',
     },
     {
-      key: 'standard', name: 'Standard', price: 690, modules: ['admin', 'galerie'],
+      key: 'standard', name: 'Standard', price: 790, modules: ['admin', 'galerie'],
       delaiJours: 7,
       desc: 'Base + accès admin + galerie photos.',
       badge: 'Populaire',
     },
     {
-      key: 'premium', name: 'Premium', price: 1190, modules: ['admin', 'galerie', 'inscription', 'blog', 'helloasso', 'brevo', 'stripe', 'seo', 'resa'],
+      key: 'premium', name: 'Premium', price: 1290, modules: ['admin', 'galerie', 'inscription', 'blog', 'helloasso', 'brevo', 'stripe', 'seo', 'resa'],
       delaiJours: 10,
       desc: 'Tout inclus - base + les 8 modules à la carte.',
     },
