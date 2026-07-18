@@ -222,7 +222,7 @@
     .style-name { font-weight: 600; font-size: 0.85rem; color: var(--ink); }
     .style-desc { font-size: 0.73rem; color: var(--mid); margin-top: 0.15rem; }
 
-    /* MINI MOCKUP "VRAI SITE" PAR STYLE (demo CSS, pas une vraie capture) */
+    /* MINI MOCKUP "VRAI SITE" PAR STYLE (photo + CSS, illustratif) */
     .style-preview { border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,0.06); }
     .sp-bar { display: flex; align-items: center; gap: 0.3rem; padding: 0.45rem 0.6rem; background: rgba(0,0,0,0.04); }
     .sp-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,0.15); }
@@ -231,6 +231,7 @@
     .sp-logo { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
     .sp-navlink { height: 4px; width: 18px; border-radius: 2px; opacity: 0.4; }
     .sp-navlink:last-of-type { margin-left: auto; }
+    .sp-photo { display: block; width: 100%; height: 62px; object-fit: cover; border-radius: 5px; margin-bottom: 0.75rem; }
     .sp-heading { display: block; height: 9px; width: 62%; border-radius: 2px; margin-bottom: 0.5rem; }
     .sp-text { display: block; height: 4px; width: 82%; border-radius: 2px; opacity: 0.45; margin-bottom: 0.25rem; }
     .sp-text-short { width: 52%; }
@@ -254,12 +255,10 @@
     .style-preview-colore .sp-btn { background: #ffffff; border-radius: 20px; }
 
     /* Classique & sérieux : marine + or, centre, symetrique, coins nets */
-    .style-preview-classique .sp-body { background: #10213f; text-align: center; }
-    .style-preview-classique .sp-nav { justify-content: center; }
-    .style-preview-classique .sp-navlink:last-of-type { margin-left: 0; }
+    .style-preview-classique .sp-body { background: #10213f; }
     .style-preview-classique .sp-logo, .style-preview-classique .sp-navlink { background: #d4af6a; }
-    .style-preview-classique .sp-heading { background: #f2e6c9; margin-left: auto; margin-right: auto; }
-    .style-preview-classique .sp-text { background: #ffffff; opacity: 0.4; margin-left: auto; margin-right: auto; }
+    .style-preview-classique .sp-heading { background: #f2e6c9; }
+    .style-preview-classique .sp-text { background: #ffffff; opacity: 0.4; }
     .style-preview-classique .sp-btn { background: #d4af6a; border-radius: 2px; }
 
     /* Convivial & accessible : tons chauds, tres arrondi */
@@ -820,6 +819,7 @@
                 <div class="sp-bar"><span class="sp-dot"></span><span class="sp-dot"></span><span class="sp-dot"></span></div>
                 <div class="sp-body">
                   <div class="sp-nav"><span class="sp-logo"></span><span class="sp-navlink"></span><span class="sp-navlink"></span></div>
+                  <img class="sp-photo" src="/images/devis/style-moderne.jpg" alt="" loading="lazy" width="640" height="200" />
                   <span class="sp-heading"></span>
                   <span class="sp-text"></span>
                   <span class="sp-text sp-text-short"></span>
@@ -842,6 +842,7 @@
                 <div class="sp-bar"><span class="sp-dot"></span><span class="sp-dot"></span><span class="sp-dot"></span></div>
                 <div class="sp-body">
                   <div class="sp-nav"><span class="sp-logo"></span><span class="sp-navlink"></span><span class="sp-navlink"></span></div>
+                  <img class="sp-photo" src="/images/devis/style-colore.jpg" alt="" loading="lazy" width="640" height="200" />
                   <span class="sp-heading"></span>
                   <span class="sp-text"></span>
                   <span class="sp-text sp-text-short"></span>
@@ -864,6 +865,7 @@
                 <div class="sp-bar"><span class="sp-dot"></span><span class="sp-dot"></span><span class="sp-dot"></span></div>
                 <div class="sp-body">
                   <div class="sp-nav"><span class="sp-logo"></span><span class="sp-navlink"></span><span class="sp-navlink"></span></div>
+                  <img class="sp-photo" src="/images/devis/style-classique.jpg" alt="" loading="lazy" width="640" height="200" />
                   <span class="sp-heading"></span>
                   <span class="sp-text"></span>
                   <span class="sp-text sp-text-short"></span>
@@ -886,6 +888,7 @@
                 <div class="sp-bar"><span class="sp-dot"></span><span class="sp-dot"></span><span class="sp-dot"></span></div>
                 <div class="sp-body">
                   <div class="sp-nav"><span class="sp-logo"></span><span class="sp-navlink"></span><span class="sp-navlink"></span></div>
+                  <img class="sp-photo" src="/images/devis/style-convivial.jpg" alt="" loading="lazy" width="640" height="200" />
                   <span class="sp-heading"></span>
                   <span class="sp-text"></span>
                   <span class="sp-text sp-text-short"></span>
