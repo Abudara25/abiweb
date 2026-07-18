@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Cœur de Quartier — Association de solidarité (exemple AbiWeb)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #fdf1e3;
+    --white: #ffffff;
+    --ink: #7c2d12;
+    --ink-soft: #9a3412;
+    --accent: #d97706;
+    --accent2: #fed7aa;
+    --line: #f3d9b8;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--white); color: var(--ink); line-height: 1.6; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .demo-bar { background: #1c1c1e; color: #fff; text-align: center; font-size: 0.78rem; padding: 0.5rem 1rem; }
+  .demo-bar a { color: #ffd8a8; text-decoration: underline; font-weight: 600; }
+
+  header { background: var(--white); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
+  nav { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.5rem; }
+  .logo { font-size: 1.25rem; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 0.5rem; }
+  .logo-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; font-size: 0.9rem; font-weight: 600; }
+  .nav-links a { text-decoration: none; }
+  .nav-cta { background: var(--accent); color: #fff !important; padding: 0.6rem 1.3rem; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 0.85rem; }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  .hero { position: relative; }
+  .hero-photo { width: 100%; height: 420px; object-fit: cover; }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(124,45,18,0.15), rgba(124,45,18,0.75)); display: flex; align-items: flex-end; }
+  .hero-content { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3rem; color: #fff; width: 100%; }
+  .hero-tag { display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); padding: 0.3rem 0.9rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.5rem; font-weight: 800; max-width: 620px; margin-bottom: 0.9rem; letter-spacing: -0.02em; }
+  .hero p { max-width: 520px; opacity: 0.95; margin-bottom: 1.5rem; font-size: 1.02rem; }
+  .hero-btns { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 0.85rem 1.6rem; border-radius: 999px; font-weight: 700; font-size: 0.92rem; text-decoration: none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.6); }
+
+  section { padding: 4.5rem 1.5rem; }
+  .inner { max-width: 1100px; margin: 0 auto; }
+  .section-label { color: var(--accent); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.6rem; }
+  h2 { font-size: 1.9rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+  .section-desc { color: var(--ink-soft); max-width: 560px; margin-bottom: 2.5rem; }
+
+  .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  @media (max-width: 800px) { .actions-grid { grid-template-columns: 1fr; } }
+  .action-card { background: var(--bg); border-radius: 20px; padding: 2rem; }
+  .action-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .action-card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; }
+  .action-card p { font-size: 0.9rem; color: var(--ink-soft); }
+
+  .stats-section { background: var(--ink); color: #fff; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; text-align: center; }
+  @media (max-width: 700px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  .stat-num { font-size: 2.1rem; font-weight: 800; color: var(--accent2); }
+  .stat-label { font-size: 0.85rem; opacity: 0.85; margin-top: 0.3rem; }
+
+  .quote-block { max-width: 700px; margin: 0 auto; text-align: center; }
+  .quote-block p { font-size: 1.3rem; font-weight: 600; font-style: italic; margin-bottom: 1rem; }
+  .quote-block span { font-size: 0.85rem; color: var(--ink-soft); font-weight: 700; }
+
+  .cta-banner { background: var(--accent2); border-radius: 24px; padding: 3rem 2rem; text-align: center; margin: 0 1.5rem 4rem; }
+  .cta-banner h2 { margin-bottom: 0.6rem; }
+  .cta-banner p { color: var(--ink-soft); margin-bottom: 1.5rem; }
+
+  footer { background: var(--ink); color: rgba(255,255,255,0.75); padding: 2.5rem 1.5rem; font-size: 0.85rem; text-align: center; }
+  footer strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="demo-bar">🎨 Exemple de démonstration signé AbiWeb — entreprise fictive à but illustratif · <a href="/#realisations">Voir le site AbiWeb →</a></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-dot"></span> Cœur de Quartier</div>
+    <ul class="nav-links">
+      <li><a href="#actions">Nos actions</a></li>
+      <li><a href="#benevoles">Bénévoles</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Faire un don</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <img class="hero-photo" src="/images/demos/hero-association.jpg" alt="" />
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <span class="hero-tag">Association loi 1901</span>
+      <h1>Ensemble, on va plus loin</h1>
+      <p>Aide alimentaire, soutien scolaire et lien social dans le quartier. Depuis 2014, une équipe de bénévoles au service des familles.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn btn-primary">Faire un don</a>
+        <a href="#benevoles" class="btn btn-ghost">Devenir bénévole</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="actions">
+  <div class="inner">
+    <div class="section-label">Nos actions</div>
+    <h2>Trois missions, une même énergie</h2>
+    <p class="section-desc">Toute l'année, nos bénévoles se mobilisent pour répondre aux besoins du quartier.</p>
+    <div class="actions-grid">
+      <div class="action-card">
+        <div class="action-icon">🥖</div>
+        <h3>Aide alimentaire</h3>
+        <p>Distribution hebdomadaire de colis alimentaires pour une trentaine de familles.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon">📚</div>
+        <h3>Soutien scolaire</h3>
+        <p>Accompagnement aux devoirs deux soirs par semaine, du CP à la 3ème.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-icon">☕</div>
+        <h3>Ateliers seniors</h3>
+        <p>Rencontres conviviales pour rompre l'isolement des personnes âgées du quartier.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="inner">
+    <div class="stats-grid">
+      <div><div class="stat-num">10 ans</div><div class="stat-label">d'engagement</div></div>
+      <div><div class="stat-num">120+</div><div class="stat-label">familles aidées</div></div>
+      <div><div class="stat-num">45</div><div class="stat-label">bénévoles actifs</div></div>
+      <div><div class="stat-num">3</div><div class="stat-label">actions hebdomadaires</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="benevoles">
+  <div class="inner">
+    <div class="quote-block">
+      <p>« Rejoindre l'association, c'est donner un peu de son temps pour beaucoup de sourires. »</p>
+      <span>— Nadia, bénévole depuis 3 ans</span>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner" id="contact">
+  <h2>Envie d'agir à nos côtés ?</h2>
+  <p>Bénévolat, don ponctuel ou mécénat : chaque geste compte.</p>
+  <a href="tel:0123456789" class="btn btn-primary">01 23 45 67 89</a>
+</div>
+
+<footer>
+  <p><strong>Cœur de Quartier</strong> — Association loi 1901 · contact@coeurdequartier-exemple.fr</p>
+  <p style="margin-top:0.4rem;">Site fictif de démonstration, réalisé par AbiWeb.</p>
+</footer>
+
+</body>
+</html>

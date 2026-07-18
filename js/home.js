@@ -91,6 +91,24 @@
     });
   }
 
+  // Onglets "Exemples par secteur" (bascule l'iframe de démo)
+  var secteurIframe = document.getElementById('secteurIframe');
+  if (secteurIframe) {
+    var secteurUrl = document.getElementById('secteurUrl');
+    var secteurOpenLink = document.getElementById('secteurOpenLink');
+    document.querySelectorAll('.secteur-tab').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.secteur-tab').forEach(function (t) { t.classList.remove('active'); });
+        btn.classList.add('active');
+        var demo = btn.dataset.demo;
+        secteurIframe.src = '/demos/' + demo + '/';
+        secteurIframe.title = 'Exemple de site pour ' + btn.dataset.label;
+        secteurUrl.textContent = 'abiweb.fr/demos/' + demo;
+        secteurOpenLink.href = '/demos/' + demo + '/';
+      });
+    });
+  }
+
   // Onglets du formulaire (contact rapide / brief)
   document.querySelectorAll('.form-tab').forEach(function (btn) {
     btn.addEventListener('click', function () { switchTab(btn.dataset.tab, btn); });

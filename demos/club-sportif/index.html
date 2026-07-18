@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Dojo Shotokan — Club de karaté (exemple AbiWeb)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #150a24;
+    --white: #ffffff;
+    --bg-soft: #f6f2fb;
+    --purple: #7c3aed;
+    --pink: #db2777;
+    --orange: #f59e0b;
+    --line: #e9e0f7;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--white); color: var(--ink); line-height: 1.6; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .demo-bar { background: #1c1c1e; color: #fff; text-align: center; font-size: 0.78rem; padding: 0.5rem 1rem; }
+  .demo-bar a { color: #f5b8db; text-decoration: underline; font-weight: 600; }
+
+  header { background: var(--white); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
+  nav { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.5rem; }
+  .logo { font-size: 1.25rem; font-weight: 900; display: flex; align-items: center; gap: 0.5rem; }
+  .logo-badge { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--pink) 55%, var(--orange)); }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; font-size: 0.9rem; font-weight: 700; }
+  .nav-links a { text-decoration: none; }
+  .nav-cta { background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff !important; padding: 0.6rem 1.4rem; border-radius: 999px; text-decoration: none; font-weight: 800; font-size: 0.85rem; }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  .hero { position: relative; }
+  .hero-photo { width: 100%; height: 440px; object-fit: cover; }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(124,58,237,0.75), rgba(219,39,119,0.7) 55%, rgba(245,158,11,0.65)); display: flex; align-items: center; }
+  .hero-content { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; color: #fff; width: 100%; }
+  .hero-tag { display: inline-block; background: rgba(255,255,255,0.25); padding: 0.3rem 0.9rem; border-radius: 999px; font-size: 0.78rem; font-weight: 800; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.9rem; font-weight: 900; max-width: 620px; margin-bottom: 0.9rem; letter-spacing: -0.02em; }
+  .hero p { max-width: 480px; opacity: 0.97; margin-bottom: 1.5rem; font-size: 1.05rem; }
+  .hero-btns { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 0.9rem 1.7rem; border-radius: 999px; font-weight: 800; font-size: 0.92rem; text-decoration: none; }
+  .btn-primary { background: #fff; color: var(--purple); }
+  .btn-ghost { background: rgba(255,255,255,0.18); color: #fff; border: 1.5px solid rgba(255,255,255,0.7); }
+
+  section { padding: 4.5rem 1.5rem; }
+  .inner { max-width: 1100px; margin: 0 auto; }
+  .section-label { color: var(--pink); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.6rem; }
+  h2 { font-size: 1.9rem; font-weight: 900; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+  .section-desc { color: #5b4a75; max-width: 560px; margin-bottom: 2.5rem; }
+
+  .courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  @media (max-width: 800px) { .courses-grid { grid-template-columns: 1fr; } }
+  .course-card { background: var(--bg-soft); border-radius: 20px; padding: 2rem; border: 2px solid transparent; transition: border-color .15s; }
+  .course-card:hover { border-color: var(--pink); }
+  .course-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .course-card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; }
+  .course-card p { font-size: 0.9rem; color: #5b4a75; }
+
+  .stats-section { background: linear-gradient(135deg, var(--purple), var(--pink) 55%, var(--orange)); color: #fff; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; text-align: center; }
+  @media (max-width: 700px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  .stat-num { font-size: 2.2rem; font-weight: 900; }
+  .stat-label { font-size: 0.85rem; opacity: 0.9; margin-top: 0.3rem; }
+
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  @media (max-width: 800px) { .pricing-grid { grid-template-columns: 1fr; } }
+  .price-card { border: 2px solid var(--line); border-radius: 20px; padding: 2rem; text-align: center; }
+  .price-card.featured { border-color: var(--pink); background: var(--bg-soft); }
+  .price-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+  .price-amount { font-size: 2rem; font-weight: 900; color: var(--purple); margin-bottom: 0.5rem; }
+  .price-amount span { font-size: 0.9rem; color: #5b4a75; font-weight: 600; }
+  .price-card p { font-size: 0.85rem; color: #5b4a75; }
+
+  .cta-banner { background: var(--bg-soft); border-radius: 24px; padding: 3rem 2rem; text-align: center; margin: 0 1.5rem 4rem; }
+  .cta-banner h2 { margin-bottom: 0.6rem; }
+  .cta-banner p { color: #5b4a75; margin-bottom: 1.5rem; }
+  .cta-banner .btn-primary { background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff; }
+
+  footer { background: var(--ink); color: rgba(255,255,255,0.75); padding: 2.5rem 1.5rem; font-size: 0.85rem; text-align: center; }
+  footer strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="demo-bar">🎨 Exemple de démonstration signé AbiWeb — entreprise fictive à but illustratif · <a href="/#realisations">Voir le site AbiWeb →</a></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-badge"></span> Dojo Shotokan</div>
+    <ul class="nav-links">
+      <li><a href="#cours">Nos cours</a></li>
+      <li><a href="#tarifs">Tarifs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Cours d'essai</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <img class="hero-photo" src="/images/demos/hero-club-sportif.jpg" alt="" />
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <span class="hero-tag">Karaté traditionnel · dès 6 ans</span>
+      <h1>Devenez ceinture noire</h1>
+      <p>Un club familial pour apprendre la discipline, la confiance en soi et le respect, à travers l'enseignement du karaté Shotokan.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn btn-primary">Cours d'essai gratuit</a>
+        <a href="#cours" class="btn btn-ghost">Voir les cours</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="cours">
+  <div class="inner">
+    <div class="section-label">Nos cours</div>
+    <h2>Un cours pour chaque âge</h2>
+    <p class="section-desc">Des groupes adaptés au niveau et à l'âge de chacun, encadrés par des ceintures noires diplômées d'État.</p>
+    <div class="courses-grid">
+      <div class="course-card">
+        <div class="course-icon">🥋</div>
+        <h3>Enfants (6-11 ans)</h3>
+        <p>Apprentissage ludique des bases, discipline et respect des règles.</p>
+      </div>
+      <div class="course-card">
+        <div class="course-icon">🔥</div>
+        <h3>Ados & adultes</h3>
+        <p>Technique, self-défense et préparation physique à tous les niveaux.</p>
+      </div>
+      <div class="course-card">
+        <div class="course-icon">🏆</div>
+        <h3>Compétition</h3>
+        <p>Entraînement intensif pour les licenciés souhaitant concourir en kumite et kata.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="inner">
+    <div class="stats-grid">
+      <div><div class="stat-num">25 ans</div><div class="stat-label">d'existence</div></div>
+      <div><div class="stat-num">180</div><div class="stat-label">licenciés</div></div>
+      <div><div class="stat-num">12</div><div class="stat-label">ceintures noires</div></div>
+      <div><div class="stat-num">5</div><div class="stat-label">cours par semaine</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="tarifs">
+  <div class="inner">
+    <div class="section-label">Tarifs</div>
+    <h2>Une formule pour chaque pratiquant</h2>
+    <p class="section-desc">Licence FFKDA incluse dans toutes les formules.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Enfants</h3>
+        <div class="price-amount">180€ <span>/ an</span></div>
+        <p>1 cours par semaine, tenue non incluse.</p>
+      </div>
+      <div class="price-card featured">
+        <h3>Ados & adultes</h3>
+        <div class="price-amount">260€ <span>/ an</span></div>
+        <p>Accès illimité à tous les cours de la semaine.</p>
+      </div>
+      <div class="price-card">
+        <h3>Famille</h3>
+        <div class="price-amount">420€ <span>/ an</span></div>
+        <p>2 licences ou plus au sein du même foyer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner" id="contact">
+  <h2>Prêt à monter sur le tatami ?</h2>
+  <p>Le premier cours d'essai est offert, sans engagement.</p>
+  <a href="tel:0123456789" class="btn btn-primary">01 23 45 67 89</a>
+</div>
+
+<footer>
+  <p><strong>Dojo Shotokan</strong> — Club affilié FFKDA · contact@dojoshotokan-exemple.fr</p>
+  <p style="margin-top:0.4rem;">Site fictif de démonstration, réalisé par AbiWeb.</p>
+</footer>
+
+</body>
+</html>

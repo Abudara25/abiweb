@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Cabinet Lumen Conseil — Expertise-comptable (exemple AbiWeb)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --navy: #10213f;
+    --white: #ffffff;
+    --bg-soft: #f4f6fb;
+    --gold: #d4af6a;
+    --cream: #f2e6c9;
+    --line: #dfe4ee;
+  }
+  body { font-family: Georgia, "Times New Roman", serif; background: var(--white); color: var(--navy); line-height: 1.65; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .demo-bar { background: #1c1c1e; color: #fff; text-align: center; font-size: 0.78rem; padding: 0.5rem 1rem; font-family: -apple-system, sans-serif; }
+  .demo-bar a { color: var(--gold); text-decoration: underline; font-weight: 600; }
+
+  header { background: var(--white); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
+  nav { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.5rem; }
+  .logo { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 0.6rem; }
+  .logo-badge { width: 30px; height: 30px; background: var(--navy); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; font-size: 0.88rem; font-family: -apple-system, sans-serif; }
+  .nav-links a { text-decoration: none; }
+  .nav-cta { background: var(--navy); color: var(--gold) !important; padding: 0.6rem 1.3rem; text-decoration: none; font-size: 0.85rem; font-family: -apple-system, sans-serif; font-weight: 600; }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  .hero { position: relative; }
+  .hero-photo { width: 100%; height: 400px; object-fit: cover; filter: saturate(0.85); }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(16,33,63,0.55), rgba(16,33,63,0.92)); display: flex; align-items: center; text-align: center; }
+  .hero-content { max-width: 700px; margin: 0 auto; padding: 0 1.5rem; color: #fff; width: 100%; }
+  .hero-tag { display: inline-block; border: 1px solid var(--gold); color: var(--gold); padding: 0.3rem 0.9rem; font-size: 0.75rem; margin-bottom: 1.1rem; font-family: -apple-system, sans-serif; letter-spacing: 0.05em; }
+  .hero h1 { font-size: 2.3rem; font-weight: 700; margin-bottom: 0.9rem; }
+  .hero p { opacity: 0.9; margin-bottom: 1.5rem; font-size: 1rem; max-width: 560px; margin-left: auto; margin-right: auto; }
+  .btn { display: inline-block; padding: 0.85rem 1.7rem; font-weight: 600; font-size: 0.9rem; text-decoration: none; font-family: -apple-system, sans-serif; }
+  .btn-primary { background: var(--gold); color: var(--navy); }
+
+  section { padding: 4.5rem 1.5rem; text-align: center; }
+  .inner { max-width: 1000px; margin: 0 auto; }
+  .section-label { color: var(--gold); background: var(--navy); display: inline-block; padding: 0.25rem 0.9rem; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.9rem; font-family: -apple-system, sans-serif; }
+  h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .section-desc { color: #445068; max-width: 560px; margin: 0 auto 2.5rem; font-family: -apple-system, sans-serif; font-size: 0.95rem; }
+
+  .domains-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; text-align: left; }
+  @media (max-width: 800px) { .domains-grid { grid-template-columns: 1fr; } }
+  .domain-card { background: var(--bg-soft); border-top: 3px solid var(--gold); padding: 1.8rem; }
+  .domain-card h3 { font-size: 1.05rem; margin-bottom: 0.6rem; }
+  .domain-card p { font-size: 0.88rem; color: #445068; font-family: -apple-system, sans-serif; }
+
+  .why-section { background: var(--navy); color: #fff; }
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: left; }
+  @media (max-width: 800px) { .why-grid { grid-template-columns: 1fr; } }
+  .why-grid h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--gold); }
+  .why-grid p { font-size: 0.87rem; opacity: 0.85; font-family: -apple-system, sans-serif; }
+
+  .cta-banner { background: var(--bg-soft); padding: 3.5rem 2rem; margin: 0 1.5rem 4rem; }
+  .cta-banner h2 { margin-bottom: 0.6rem; }
+  .cta-banner p { color: #445068; margin-bottom: 1.5rem; font-family: -apple-system, sans-serif; }
+  .cta-banner .btn-primary { background: var(--navy); color: var(--gold); }
+
+  footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 2.5rem 1.5rem; font-size: 0.85rem; text-align: center; font-family: -apple-system, sans-serif; }
+  footer strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="demo-bar">🎨 Exemple de démonstration signé AbiWeb — entreprise fictive à but illustratif · <a href="/#realisations">Voir le site AbiWeb →</a></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-badge">LC</span> Lumen Conseil</div>
+    <ul class="nav-links">
+      <li><a href="#services">Nos services</a></li>
+      <li><a href="#pourquoi">Le cabinet</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Prendre rendez-vous</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <img class="hero-photo" src="/images/demos/hero-tpe-pme.jpg" alt="" />
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <span class="hero-tag">EXPERTISE-COMPTABLE & CONSEIL</span>
+      <h1>Un cabinet à taille humaine, une expertise sans compromis</h1>
+      <p>Comptabilité, fiscalité et accompagnement à la création d'entreprise pour les TPE et PME.</p>
+      <a href="#contact" class="btn btn-primary">Prendre rendez-vous</a>
+    </div>
+  </div>
+</div>
+
+<section id="services">
+  <div class="inner">
+    <div class="section-label">Nos domaines</div>
+    <h2>Un accompagnement sur-mesure</h2>
+    <p class="section-desc">Chaque client dispose d'un interlocuteur unique, disponible tout au long de l'année.</p>
+    <div class="domains-grid">
+      <div class="domain-card">
+        <h3>Comptabilité</h3>
+        <p>Tenue et révision comptable, bilans et liasses fiscales.</p>
+      </div>
+      <div class="domain-card">
+        <h3>Fiscalité</h3>
+        <p>Optimisation fiscale et accompagnement lors des contrôles.</p>
+      </div>
+      <div class="domain-card">
+        <h3>Création d'entreprise</h3>
+        <p>Choix du statut, business plan et démarches administratives.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why-section" id="pourquoi">
+  <div class="inner">
+    <div class="section-label" style="background: transparent; color: var(--gold); padding: 0;">Pourquoi Lumen</div>
+    <h2 style="color:#fff;">Un cabinet qui vous ressemble</h2>
+    <div class="why-grid">
+      <div><h3>15 ans d'expérience</h3><p>Auprès de plus de 200 TPE et PME dans la région.</p></div>
+      <div><h3>Interlocuteur unique</h3><p>Le même expert-comptable vous suit toute l'année.</p></div>
+      <div><h3>Outils en ligne</h3><p>Accès à vos documents comptables 24h/24 depuis votre espace client.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner" id="contact">
+  <h2>Discutons de votre projet</h2>
+  <p>Premier rendez-vous de diagnostic offert, sans engagement.</p>
+  <a href="tel:0123456789" class="btn btn-primary">01 23 45 67 89</a>
+</div>
+
+<footer>
+  <p><strong>Cabinet Lumen Conseil</strong> — Expert-comptable · contact@lumenconseil-exemple.fr</p>
+  <p style="margin-top:0.4rem;">Site fictif de démonstration, réalisé par AbiWeb.</p>
+</footer>
+
+</body>
+</html>

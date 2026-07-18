@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Atelier Belle Récolte — Concept store (exemple AbiWeb)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #0f2a28;
+    --white: #ffffff;
+    --bg-soft: #fff1ec;
+    --coral: #ff6b5b;
+    --teal: #0aa39c;
+    --line: #ffe0d6;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--white); color: var(--ink); line-height: 1.6; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .demo-bar { background: #1c1c1e; color: #fff; text-align: center; font-size: 0.78rem; padding: 0.5rem 1rem; }
+  .demo-bar a { color: #ffb4a6; text-decoration: underline; font-weight: 600; }
+
+  header { background: var(--white); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
+  nav { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.5rem; }
+  .logo { font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; }
+  .logo-badge { width: 28px; height: 28px; border-radius: 8px; background: var(--coral); }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; font-size: 0.9rem; font-weight: 700; }
+  .nav-links a { text-decoration: none; }
+  .nav-cta { background: var(--teal); color: #fff !important; padding: 0.6rem 1.4rem; border-radius: 999px; text-decoration: none; font-weight: 800; font-size: 0.85rem; }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  .hero { position: relative; }
+  .hero-photo { width: 100%; height: 420px; object-fit: cover; }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(15,42,40,0.8), rgba(15,42,40,0.15)); display: flex; align-items: flex-end; }
+  .hero-content { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3rem; color: #fff; width: 100%; }
+  .hero-tag { display: inline-block; background: var(--coral); padding: 0.3rem 0.9rem; border-radius: 999px; font-size: 0.78rem; font-weight: 800; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.6rem; font-weight: 800; max-width: 600px; margin-bottom: 0.9rem; letter-spacing: -0.02em; }
+  .hero p { max-width: 500px; opacity: 0.95; margin-bottom: 1.5rem; font-size: 1.02rem; }
+  .hero-btns { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 0.85rem 1.6rem; border-radius: 999px; font-weight: 800; font-size: 0.92rem; text-decoration: none; }
+  .btn-primary { background: var(--coral); color: #fff; }
+  .btn-ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.7); }
+
+  section { padding: 4.5rem 1.5rem; }
+  .inner { max-width: 1100px; margin: 0 auto; }
+  .section-label { color: var(--teal); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.6rem; }
+  h2 { font-size: 1.9rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+  .section-desc { color: #4a6663; max-width: 560px; margin-bottom: 2.5rem; }
+
+  .univers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  @media (max-width: 800px) { .univers-grid { grid-template-columns: 1fr; } }
+  .univers-card { background: var(--bg-soft); border-radius: 20px; padding: 2rem; }
+  .univers-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .univers-card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; }
+  .univers-card p { font-size: 0.9rem; color: #4a6663; }
+
+  .why-section { background: var(--teal); color: #fff; }
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  @media (max-width: 800px) { .why-grid { grid-template-columns: 1fr; } }
+  .why-grid h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+  .why-grid p { font-size: 0.88rem; opacity: 0.9; }
+
+  .info-block { display: flex; gap: 3rem; flex-wrap: wrap; }
+  .info-item h3 { font-size: 1rem; margin-bottom: 0.4rem; color: var(--coral); }
+  .info-item p { font-size: 0.9rem; color: #4a6663; }
+
+  .cta-banner { background: var(--bg-soft); border-radius: 24px; padding: 3rem 2rem; text-align: center; margin: 0 1.5rem 4rem; }
+  .cta-banner h2 { margin-bottom: 0.6rem; }
+  .cta-banner p { color: #4a6663; margin-bottom: 1.5rem; }
+  .cta-banner .btn-primary { background: var(--teal); }
+
+  footer { background: var(--ink); color: rgba(255,255,255,0.75); padding: 2.5rem 1.5rem; font-size: 0.85rem; text-align: center; }
+  footer strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="demo-bar">🎨 Exemple de démonstration signé AbiWeb — entreprise fictive à but illustratif · <a href="/#realisations">Voir le site AbiWeb →</a></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-badge"></span> Belle Récolte</div>
+    <ul class="nav-links">
+      <li><a href="#univers">La boutique</a></li>
+      <li><a href="#infos">Infos pratiques</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Nous trouver</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <img class="hero-photo" src="/images/demos/hero-commerce.jpg" alt="" />
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <span class="hero-tag">Concept store · déco & artisanat local</span>
+      <h1>Des trouvailles qui ont une âme</h1>
+      <p>Une sélection de créateurs français et d'objets chinés, dans une boutique pensée comme un cabinet de curiosités.</p>
+      <div class="hero-btns">
+        <a href="#univers" class="btn btn-primary">Découvrir la boutique</a>
+        <a href="#infos" class="btn btn-ghost">Horaires & accès</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="univers">
+  <div class="inner">
+    <div class="section-label">Nos univers</div>
+    <h2>Trois univers à explorer</h2>
+    <p class="section-desc">Chaque coin de la boutique raconte une histoire différente.</p>
+    <div class="univers-grid">
+      <div class="univers-card">
+        <div class="univers-icon">🏺</div>
+        <h3>Déco & céramique</h3>
+        <p>Pièces uniques ou petites séries, façonnées par des artisans locaux.</p>
+      </div>
+      <div class="univers-card">
+        <div class="univers-icon">💍</div>
+        <h3>Bijoux</h3>
+        <p>Créations en argent et pierres naturelles, fabriquées à la main.</p>
+      </div>
+      <div class="univers-card">
+        <div class="univers-icon">✉️</div>
+        <h3>Papeterie</h3>
+        <p>Carnets, cartes et papiers d'exception, imprimés en petites quantités.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why-section">
+  <div class="inner">
+    <div class="why-grid">
+      <div><h3>🌱 100% local</h3><p>Tous nos créateurs sont basés en France, à moins de 300km.</p></div>
+      <div><h3>♻️ Petites séries</h3><p>Pas de surproduction, des objets pensés pour durer.</p></div>
+      <div><h3>🎁 Emballage cadeau</h3><p>Offert sur simple demande, toute l'année.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="infos">
+  <div class="inner">
+    <div class="section-label">Infos pratiques</div>
+    <h2>Venez nous rendre visite</h2>
+    <div class="info-block">
+      <div class="info-item">
+        <h3>Horaires</h3>
+        <p>Mardi - Samedi<br>10h - 19h</p>
+      </div>
+      <div class="info-item">
+        <h3>Ateliers</h3>
+        <p>Initiation céramique<br>un samedi par mois</p>
+      </div>
+      <div class="info-item">
+        <h3>Newsletter</h3>
+        <p>Nouveautés et ateliers<br>chaque mois dans votre boîte mail</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner" id="contact">
+  <h2>Une question sur un produit ?</h2>
+  <p>L'équipe de la boutique vous répond avec plaisir.</p>
+  <a href="tel:0123456789" class="btn btn-primary">01 23 45 67 89</a>
+</div>
+
+<footer>
+  <p><strong>Atelier Belle Récolte</strong> — Concept store · contact@bellerecolte-exemple.fr</p>
+  <p style="margin-top:0.4rem;">Site fictif de démonstration, réalisé par AbiWeb.</p>
+</footer>
+
+</body>
+</html>

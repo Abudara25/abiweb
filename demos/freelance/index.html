@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Camille Dubois — Graphiste freelance (exemple AbiWeb)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #0f0f11;
+    --white: #ffffff;
+    --bg-soft: #f5f5f5;
+    --line: #e5e5e5;
+  }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; background: var(--white); color: var(--ink); line-height: 1.65; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .demo-bar { background: var(--ink); color: #fff; text-align: center; font-size: 0.78rem; padding: 0.5rem 1rem; }
+  .demo-bar a { color: #fff; text-decoration: underline; font-weight: 600; }
+
+  header { background: var(--white); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
+  nav { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1.3rem 1.5rem; }
+  .logo { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; font-size: 0.85rem; }
+  .nav-links a { text-decoration: none; }
+  .nav-cta { background: var(--ink); color: #fff !important; padding: 0.6rem 1.4rem; text-decoration: none; font-size: 0.82rem; font-weight: 600; }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  .hero { position: relative; }
+  .hero-photo { width: 100%; height: 460px; object-fit: cover; }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(15,15,17,0.75), rgba(15,15,17,0.05)); display: flex; align-items: flex-end; }
+  .hero-content { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3.5rem; color: #fff; width: 100%; }
+  .hero-tag { display: block; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.7rem; font-weight: 700; max-width: 640px; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .hero p { max-width: 480px; opacity: 0.9; margin-bottom: 1.6rem; font-size: 1rem; }
+  .btn { display: inline-block; padding: 0.85rem 1.7rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; }
+  .btn-primary { background: #fff; color: var(--ink); }
+
+  section { padding: 5rem 1.5rem; }
+  .inner { max-width: 1100px; margin: 0 auto; }
+  .section-label { color: #888; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+  h2 { font-size: 1.85rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+  .section-desc { color: #555; max-width: 560px; margin-bottom: 3rem; }
+
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); }
+  @media (max-width: 800px) { .services-grid { grid-template-columns: 1fr; } }
+  .service-card { background: var(--white); padding: 2.2rem 1.8rem; }
+  .service-num { font-size: 0.78rem; color: #999; margin-bottom: 1rem; }
+  .service-card h3 { font-size: 1.05rem; margin-bottom: 0.6rem; }
+  .service-card p { font-size: 0.88rem; color: #555; }
+
+  .about-section { background: var(--bg-soft); }
+  .about-inner { max-width: 700px; }
+  .about-inner p { font-size: 1.05rem; color: #333; margin-bottom: 1rem; }
+
+  .clients-strip { display: flex; gap: 2.5rem; flex-wrap: wrap; align-items: center; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .clients-strip span { font-size: 0.85rem; font-weight: 600; color: #999; letter-spacing: 0.02em; }
+
+  .cta-banner { background: var(--ink); color: #fff; padding: 3.5rem 2rem; text-align: center; margin: 0 1.5rem 4rem; }
+  .cta-banner h2 { margin-bottom: 0.6rem; color: #fff; }
+  .cta-banner p { color: rgba(255,255,255,0.7); margin-bottom: 1.6rem; }
+
+  footer { background: var(--ink); color: rgba(255,255,255,0.6); padding: 2.5rem 1.5rem; font-size: 0.85rem; text-align: center; }
+  footer strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="demo-bar">🎨 Exemple de démonstration signé AbiWeb — personne fictive à but illustratif · <a href="/#realisations">Voir le site AbiWeb →</a></div>
+
+<header>
+  <nav>
+    <div class="logo">Camille Dubois</div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#apropos">À propos</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Me contacter</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <img class="hero-photo" src="/images/demos/hero-freelance.jpg" alt="" />
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <span class="hero-tag">Graphiste freelance — identité visuelle</span>
+      <h1>Un design qui a du sens</h1>
+      <p>J'accompagne les marques indépendantes dans la création de leur identité visuelle, du logo au site web.</p>
+      <a href="#contact" class="btn btn-primary">Discutons de votre projet</a>
+    </div>
+  </div>
+</div>
+
+<section id="services">
+  <div class="inner">
+    <div class="section-label">Ce que je propose</div>
+    <h2>Trois façons de travailler ensemble</h2>
+    <p class="section-desc">Chaque projet démarre par un échange pour comprendre votre univers et vos besoins.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <h3>Identité de marque</h3>
+        <p>Logo, charte graphique, déclinaisons print et digital.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <h3>Web design</h3>
+        <p>Maquettes de sites vitrines, cohérentes avec votre identité.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <h3>Print</h3>
+        <p>Cartes de visite, packaging, supports de communication.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-section" id="apropos">
+  <div class="inner about-inner">
+    <div class="section-label">À propos</div>
+    <h2>Bonjour, moi c'est Camille</h2>
+    <p>Diplômée en design graphique, j'accompagne depuis 6 ans des indépendants et petites marques dans la construction d'une identité visuelle forte et cohérente.</p>
+    <p>Basée en France, je travaille à distance avec des clients partout dans le pays.</p>
+    <div class="clients-strip">
+      <span>Studio Ancrage</span>
+      <span>Maison Verdier</span>
+      <span>Klara & Co</span>
+      <span>Atelier Nomade</span>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner" id="contact">
+  <h2>Un projet à me confier ?</h2>
+  <p>Réponse sous 48h, premier échange sans engagement.</p>
+  <a href="tel:0123456789" class="btn btn-primary">01 23 45 67 89</a>
+</div>
+
+<footer>
+  <p><strong>Camille Dubois</strong> — Graphiste freelance · contact@camilledubois-exemple.fr</p>
+  <p style="margin-top:0.4rem;">Site fictif de démonstration, réalisé par AbiWeb.</p>
+</footer>
+
+</body>
+</html>
