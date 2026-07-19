@@ -2,10 +2,10 @@
 // front statique et les fonctions serverless : garder ces deux fichiers synchronisés
 // si les modules ou les prix changent.
 
-export const BASE_PRICE = 490;
+export const BASE_PRICE = 590;
 
 export const MODULES = [
-  { key: 'admin', label: "Système admin client (modifier textes/photos seul)", price: 200 },
+  { key: 'admin', label: "Système admin client (modifier textes/photos seul)", price: 300 },
   { key: 'galerie', label: 'Galerie photos dynamique', price: 80 },
   { key: 'inscription', label: "Formulaire d'inscription + génération PDF", price: 150 },
   { key: 'blog', label: 'Blog / actualités', price: 120 },
