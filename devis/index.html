@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <script src="/js/analytics-loader.js"></script>
   <meta charset="UTF-8" />
+  <script src="/js/analytics-loader.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Devis gratuit - Création de site internet | AbiWeb</title>
   <meta name="description" content="Présentez votre projet de site internet en 5 étapes guidées (activité, formule ou tarification à la carte, contenu, design) et recevez un devis gratuit et personnalisé, sans engagement." />
@@ -22,22 +22,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/shared.css" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --ink: #0f0f11;
-      --paper: #f8f7f4;
-      --mid: #6b6b72;
-      --accent: #3b5bdb;
-      --accent2: #e8f0ff;
-      --line: #e2e1de;
-      --white: #ffffff;
-      --green: #1e7a48;
-      --green-bg: #e8f5ee;
       --red: #dc2626;
       --red-bg: #fef2f2;
     }
-    html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; font-size: 16px; min-height: 100vh; overflow-x: hidden; }
 
     /* NAV */
@@ -47,7 +37,6 @@
       border-bottom: 1px solid var(--line);
       padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px;
     }
-    .nav-logo { height: 28px; display: block; }
     .nav-sub { font-size: 0.8rem; color: var(--mid); }
 
     /* HEADER */
@@ -365,6 +354,12 @@
     .btn-submit-final:hover { background: #166038; }
     .btn-submit-final:disabled { opacity: 0.6; cursor: not-allowed; }
 
+    .form-error-brief { display: none; background: var(--red-bg); border: 1px solid var(--red); border-radius: 10px; padding: 1.25rem 1.5rem; margin-top: 1.25rem; }
+    .form-error-brief.visible { display: block; }
+    .form-error-brief p { color: var(--red); font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; }
+    .form-error-actions { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+    .form-error-mailto { color: var(--red); font-size: 0.875rem; font-weight: 600; text-decoration: underline; }
+
     /* STEP COUNTER */
     .step-counter { font-size: 0.8rem; color: var(--mid); }
     .step-counter strong { color: var(--ink); }
@@ -406,10 +401,6 @@
     .success-screen h2 { font-family: 'Poppins', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
     .success-screen p { font-size: 0.9rem; color: var(--mid); line-height: 1.6; }
 
-    /* FOOTER */
-    footer { border-top: 1px solid var(--line); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--mid); }
-    footer a { color: var(--mid); text-decoration: underline; }
-
     /* SEPARATOR */
     .sep { height: 1px; background: var(--line); margin: 1.25rem 0; }
 
@@ -423,20 +414,6 @@
       max-width: 200px; white-space: normal; text-align: center;
     }
     .tooltip-wrap:hover .tooltip-text { display: block; }
-    .cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; }
-    .cookie-banner p { color: rgba(255,255,255,0.85); font-size: 0.85rem; max-width: none; margin: 0 0 0.75rem; }
-    .cookie-banner a { color: #9db1f5; }
-    .cookie-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-    .cookie-actions button { font-family: inherit; font-size: 0.85rem; font-weight: 600; border-radius: 7px; padding: 0.5rem 1rem; cursor: pointer; }
-    #cookieAccept { background: var(--accent); color: #fff; border: none; }
-    #cookieRefuse { background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.3); }
-
-    /* Accessibilité : focus clavier visible + mouvement réduit */
-    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition: none !important; animation: none !important; }
-    }
   </style>
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -990,6 +967,13 @@
       <button class="btn-prev" data-goto="4">← Modifier</button>
       <span class="step-counter"><strong>Étape 5</strong> sur 5</span>
       <button class="btn-submit-final" id="submitBriefBtn" type="button">✅ Envoyer mon projet →</button>
+    </div>
+    <div class="form-error-brief" id="error-brief">
+      <p>⚠️ L'envoi automatique a échoué. Réessayez, ou envoyez votre brief directement par email.</p>
+      <div class="form-error-actions">
+        <button type="button" class="btn-submit-final" id="retryBriefBtn">Réessayer</button>
+        <a href="#" id="mailtoBriefLink" class="form-error-mailto">Ouvrir ma messagerie →</a>
+      </div>
     </div>
   </div>
 

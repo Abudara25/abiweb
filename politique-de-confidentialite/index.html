@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <script src="/js/analytics-loader.js"></script>
   <meta charset="UTF-8" />
+  <script src="/js/analytics-loader.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Politique de confidentialité - AbiWeb</title>
   <meta name="description" content="Politique de confidentialité d'AbiWeb : données collectées via les formulaires, finalités, destinataires, durée de conservation, vos droits RGPD et cookies." />
@@ -12,9 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/shared.css" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --ink: #0f0f11; --paper: #f8f7f4; --mid: #6b6b72; --accent: #3b5bdb; }
     body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; }
     .wrap { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
     .logo { height: 36px; margin-bottom: 2.5rem; }
@@ -27,20 +26,6 @@
     a:hover { text-decoration: underline; }
     .back { display: inline-block; margin-top: 3rem; font-size: 0.9rem; }
     .updated { font-size: 0.82rem; color: var(--mid); margin-bottom: 2rem; }
-    .cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; }
-    .cookie-banner p { color: rgba(255,255,255,0.85); font-size: 0.85rem; max-width: none; margin: 0 0 0.75rem; }
-    .cookie-banner a { color: #9db1f5; }
-    .cookie-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-    .cookie-actions button { font-family: inherit; font-size: 0.85rem; font-weight: 600; border-radius: 7px; padding: 0.5rem 1rem; cursor: pointer; }
-    #cookieAccept { background: var(--accent); color: #fff; border: none; }
-    #cookieRefuse { background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.3); }
-
-    /* Accessibilité : focus clavier visible + mouvement réduit */
-    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition: none !important; animation: none !important; }
-    }
   </style>
   <script defer src="/_vercel/insights/script.js"></script>
 </head>

@@ -441,15 +441,31 @@ async function submitBrief() {
     });
     if (!resp.ok) throw new Error('send_failed');
 
+    document.getElementById('error-brief').classList.remove('visible');
     document.getElementById('step5').classList.remove('active');
     document.getElementById('successScreen').classList.add('visible');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (e) {
     btn.disabled = false;
     btn.textContent = originalLabel;
-    const fallback = confirm("L'envoi automatique a échoué. Voulez-vous ouvrir votre messagerie pour envoyer le brief par email à la place ?");
-    if (fallback) mailtoFallback(data);
+    document.getElementById('error-brief').classList.add('visible');
   }
+}
+
+var retryBriefBtn = document.getElementById('retryBriefBtn');
+if (retryBriefBtn) {
+  retryBriefBtn.addEventListener('click', function () {
+    document.getElementById('error-brief').classList.remove('visible');
+    submitBrief();
+  });
+}
+
+var mailtoBriefLink = document.getElementById('mailtoBriefLink');
+if (mailtoBriefLink) {
+  mailtoBriefLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    mailtoFallback(collectData());
+  });
 }
 
 // Navigation par étapes + envoi final (attributs data-* pour rester compatible avec la CSP sans 'unsafe-inline')

@@ -9,9 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/shared.css" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --ink: #0f0f11; --paper: #f8f7f4; --mid: #6b6b72; --accent: #3b5bdb; --line: #e2e1de; }
     body {
       font-family: 'Inter', sans-serif;
       background: var(--paper);
@@ -32,13 +31,6 @@
     .btn-primary:hover { background: #2f4ec4; }
     .btn-secondary { background: transparent; color: var(--ink); text-decoration: none; padding: 0.8rem 1.75rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; border: 1.5px solid var(--line); }
     .btn-secondary:hover { border-color: var(--ink); }
-
-    /* Accessibilité : focus clavier visible + mouvement réduit */
-    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition: none !important; animation: none !important; }
-    }
   </style>
 </head>
 <body>

@@ -1,0 +1,35 @@
+/* Design tokens et styles de base communs a toutes les pages du site.
+   Cree pour eviter la derive : ces regles etaient dupliquees a l'identique
+   dans chaque page (index, devis, cgv, mentions-legales,
+   politique-de-confidentialite, 404). Toute modification ici s'applique
+   partout - les styles propres a une seule page restent dans son <style>. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0f0f11; --paper: #f8f7f4; --mid: #6b6b72;
+  --accent: #3b5bdb; --accent2: #e8f0ff; --line: #e2e1de;
+  --white: #ffffff; --green: #1e7a48; --green-bg: #e8f5ee;
+}
+
+html { scroll-behavior: smooth; }
+
+.nav-logo { height: 28px; display: block; }
+
+footer { border-top: 1px solid var(--line); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--mid); }
+footer a { color: var(--mid); text-decoration: underline; }
+
+.cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; }
+.cookie-banner p { color: rgba(255,255,255,0.85); font-size: 0.85rem; max-width: none; margin: 0 0 0.75rem; }
+.cookie-banner a { color: #9db1f5; }
+.cookie-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.cookie-actions button { font-family: inherit; font-size: 0.85rem; font-weight: 600; border-radius: 7px; padding: 0.5rem 1rem; cursor: pointer; }
+#cookieAccept { background: var(--accent); color: #fff; border: none; }
+#cookieRefuse { background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.3); }
+
+/* Accessibilite : focus clavier visible + mouvement reduit */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

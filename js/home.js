@@ -137,6 +137,28 @@ document.querySelectorAll('#tab-contact input, #tab-contact textarea').forEach(e
   el.addEventListener('input', () => el.closest('.form-group').classList.remove('has-error'));
 });
 
+var retryContactBtn = document.getElementById('retryContactBtn');
+if (retryContactBtn) {
+  retryContactBtn.addEventListener('click', function () {
+    document.getElementById('error-contact').classList.remove('visible');
+    submitContact(document.getElementById('contactSubmitBtn'));
+  });
+}
+
+var mailtoContactLink = document.getElementById('mailtoContactLink');
+if (mailtoContactLink) {
+  mailtoContactLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    mailtoFallbackContact({
+      nom: document.getElementById('c-nom').value.trim(),
+      email: document.getElementById('c-email').value.trim(),
+      message: document.getElementById('c-message').value.trim(),
+      tel: document.getElementById('c-tel').value,
+      formule: document.getElementById('c-formule').value,
+    });
+  });
+}
+
 function mailtoFallbackContact(data) {
   const subject = encodeURIComponent('Demande de devis AbiWeb - ' + data.nom);
   const body = encodeURIComponent(
@@ -176,12 +198,12 @@ async function submitContact(btn) {
       body: JSON.stringify(data),
     });
     if (!resp.ok) throw new Error('send_failed');
+    document.getElementById('error-contact').classList.remove('visible');
     document.getElementById('success-contact').style.display = 'block';
     ['c-nom', 'c-email', 'c-tel', 'c-message'].forEach(id => { document.getElementById(id).value = ''; });
     document.getElementById('c-formule').value = '';
   } catch (e) {
-    const fallback = confirm("L'envoi automatique a échoué. Voulez-vous ouvrir votre messagerie pour envoyer le message par email à la place ?");
-    if (fallback) mailtoFallbackContact(data);
+    document.getElementById('error-contact').classList.add('visible');
   } finally {
     btn.disabled = false;
     btn.textContent = originalLabel;
