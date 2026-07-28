@@ -101,10 +101,10 @@
         document.querySelectorAll('.secteur-tab').forEach(function (t) { t.classList.remove('active'); });
         btn.classList.add('active');
         var demo = btn.dataset.demo;
-        secteurIframe.src = '/demos/' + demo + '/';
+        secteurIframe.src = '/demos/' + demo;
         secteurIframe.title = 'Exemple de site pour ' + btn.dataset.label;
         secteurUrl.textContent = 'abiweb.fr/demos/' + demo;
-        secteurOpenLink.href = '/demos/' + demo + '/';
+        secteurOpenLink.href = '/demos/' + demo;
       });
     });
   }
