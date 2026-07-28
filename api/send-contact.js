@@ -9,6 +9,7 @@ import {
   upsertBrevoContact,
   sendFailureAlert,
 } from './_lib/email-utils.js';
+import { enforceRateLimit } from './_lib/rate-limit.js';
 
 const LIMITS = {
   nom: 100,
@@ -26,6 +27,10 @@ export default async function handler(req, res) {
     res.status(405).json({ error: 'method_not_allowed' });
     return;
   }
+
+  // Plafonne les envois avant tout traitement : un abus ne doit pas consommer
+  // le quota Brevo ni noyer la boite contact@abiweb.fr.
+  if (enforceRateLimit(req, res)) return;
 
   const body = req.body && typeof req.body === 'object' ? req.body : {};
 

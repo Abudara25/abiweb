@@ -51,14 +51,14 @@
       total: total,
       suggestion: suggestion ? { formule: suggestion.formule.key, packTotal: suggestion.packTotal, savings: suggestion.savings } : null,
     };
-    try { sessionStorage.setItem('abiweb_pricing_selection', JSON.stringify(selection)); } catch (e) {}
+    try { sessionStorage.setItem('abiweb_pricing_selection', JSON.stringify(selection)); } catch {}
     window.location.href = '/devis';
   });
 
   // Les boutons "Choisir X" préselectionnent la formule sur /devis
   document.querySelectorAll('.plan-btn[data-formule]').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      try { sessionStorage.setItem('abiweb_pricing_selection', JSON.stringify({ formule: btn.dataset.formule })); } catch (e) {}
+      try { sessionStorage.setItem('abiweb_pricing_selection', JSON.stringify({ formule: btn.dataset.formule })); } catch {}
     });
   });
 
@@ -197,12 +197,19 @@ async function submitContact(btn) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
+    if (resp.status === 429) throw new Error('rate_limited');
     if (!resp.ok) throw new Error('send_failed');
     document.getElementById('error-contact').classList.remove('visible');
     document.getElementById('success-contact').style.display = 'block';
     ['c-nom', 'c-email', 'c-tel', 'c-message'].forEach(id => { document.getElementById(id).value = ''; });
     document.getElementById('c-formule').value = '';
-  } catch (e) {
+  } catch (err) {
+    const msg = document.getElementById('error-contact-text');
+    if (msg) {
+      msg.textContent = err.message === 'rate_limited'
+        ? "⚠️ Trop d'envois en peu de temps. Patientez quelques minutes, ou écrivez-moi directement par email."
+        : "⚠️ L'envoi automatique a échoué. Réessayez, ou écrivez-moi directement par email.";
+    }
     document.getElementById('error-contact').classList.add('visible');
   } finally {
     btn.disabled = false;

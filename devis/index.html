@@ -19,9 +19,8 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://www.abiweb.fr/images/og-image.png" />
   <link rel="icon" type="image/svg+xml" href="/images/logo/abiweb-favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/poppins-800.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/css/shared.css" />
   <style>
     :root {
@@ -122,10 +121,11 @@
     .form-group textarea {
       background: var(--paper); border: 1.5px solid var(--line);
       border-radius: 8px; padding: 0.7rem 0.9rem;
-      font-size: 0.875rem; color: var(--ink);
+      /* 16px minimum : en dessous, Safari iOS zoome la page a chaque focus. */
+      font-size: 1rem; color: var(--ink);
       font-family: 'Inter', sans-serif;
       transition: border-color .15s, background .15s;
-      outline: none; width: 100%;
+      outline: none; width: 100%; min-height: 44px;
     }
     .form-group input::placeholder,
     .form-group textarea::placeholder { color: #b0b0b8; }
@@ -968,7 +968,7 @@
       <span class="step-counter"><strong>Étape 5</strong> sur 5</span>
       <button class="btn-submit-final" id="submitBriefBtn" type="button">✅ Envoyer mon projet →</button>
     </div>
-    <div class="form-error-brief" id="error-brief">
+    <div class="form-error-brief" id="error-brief" role="alert" aria-live="assertive">
       <p>⚠️ L'envoi automatique a échoué. Réessayez, ou envoyez votre brief directement par email.</p>
       <div class="form-error-actions">
         <button type="button" class="btn-submit-final" id="retryBriefBtn">Réessayer</button>

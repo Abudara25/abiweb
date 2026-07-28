@@ -153,7 +153,7 @@ function updateTarifSuggestion() {
 // Prefill from the homepage simulator, if the visitor came from "Demander un devis"
 (function prefillFromSimulator() {
   let raw;
-  try { raw = sessionStorage.getItem('abiweb_pricing_selection'); } catch (e) { return; }
+  try { raw = sessionStorage.getItem('abiweb_pricing_selection'); } catch { return; }
   if (!raw) return;
   try {
     const selection = JSON.parse(raw);
@@ -177,7 +177,7 @@ function updateTarifSuggestion() {
       updateAlaCarteTotal();
       userModifiedTarif = true;
     }
-  } catch (e) {}
+  } catch {}
   sessionStorage.removeItem('abiweb_pricing_selection');
 })();
 
@@ -445,7 +445,7 @@ async function submitBrief() {
     document.getElementById('step5').classList.remove('active');
     document.getElementById('successScreen').classList.add('visible');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  } catch (e) {
+  } catch {
     btn.disabled = false;
     btn.textContent = originalLabel;
     document.getElementById('error-brief').classList.add('visible');

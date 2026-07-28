@@ -177,9 +177,8 @@
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/poppins-800.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/css/shared.css" />
   <style>
     body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; font-size: 16px; }
@@ -369,7 +368,7 @@
     .secteurs-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: var(--ink); }
     .secteurs-subtitle { font-size: 0.9rem; color: var(--mid); margin-bottom: 2rem; max-width: 620px; }
     .secteurs-tabs { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
-    .secteur-tab { padding: 0.6rem 1.1rem; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--mid); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .secteur-tab { padding: 0.6rem 1.1rem; min-height: 44px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--mid); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all .15s; }
     .secteur-tab:hover { border-color: var(--accent); color: var(--ink); }
     .secteur-tab.active { background: var(--accent); color: var(--white); border-color: var(--accent); }
     .secteur-open-row { margin-bottom: 0.9rem; }
@@ -399,12 +398,14 @@
       border: 1px solid rgba(255,255,255,0.15);
       border-radius: 7px;
       padding: 0.7rem 0.9rem;
-      font-size: 0.875rem;
+      /* 16px minimum : en dessous, Safari iOS zoome la page a chaque focus. */
+      font-size: 1rem;
       color: var(--white);
       font-family: 'Inter', sans-serif;
       transition: border-color .15s;
       outline: none;
       width: 100%;
+      min-height: 44px;
     }
     .form-group input::placeholder,
     .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
@@ -442,7 +443,7 @@
 
     /* TABS */
     .form-tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
-    .form-tab { padding: 0.55rem 1.1rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif; }
+    .form-tab { padding: 0.55rem 1.1rem; min-height: 44px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif; }
     .form-tab.active { background: var(--accent); color: var(--white); border-color: var(--accent); }
     .form-panel { display: none; }
     .form-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -524,10 +525,11 @@
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#tarifs">Aller au contenu principal</a>
 
 <!-- NAV -->
 <nav>
-  <a href="#"><img class="nav-logo" src="/images/logo/abiweb-logo.svg" alt="AbiWeb" /></a>
+  <a href="/"><img class="nav-logo" src="/images/logo/abiweb-logo.svg" alt="AbiWeb" width="112" height="28" /></a>
   <div class="nav-links">
     <a class="nav-link" href="#tarifs">Tarifs</a>
     <a class="nav-link" href="#simulateur">Simulateur</a>
@@ -998,9 +1000,9 @@
         <button class="btn-submit" id="contactSubmitBtn" type="button">Envoyer le message →</button>
         <span class="form-note">Réponse rapide · Sans engagement</span>
       </div>
-      <div class="form-success" id="success-contact">✅ Message envoyé ! Je vous réponds rapidement.</div>
-      <div class="form-error" id="error-contact">
-        <p>⚠️ L'envoi automatique a échoué. Réessayez, ou écrivez-moi directement par email.</p>
+      <div class="form-success" id="success-contact" role="status" aria-live="polite">✅ Message envoyé ! Je vous réponds rapidement.</div>
+      <div class="form-error" id="error-contact" role="alert" aria-live="assertive">
+        <p id="error-contact-text">⚠️ L'envoi automatique a échoué. Réessayez, ou écrivez-moi directement par email.</p>
         <div class="form-error-actions">
           <button type="button" class="btn-submit" id="retryContactBtn">Réessayer</button>
           <a href="#" id="mailtoContactLink" class="form-error-mailto">Ouvrir ma messagerie →</a>

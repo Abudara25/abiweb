@@ -4,6 +4,53 @@
    politique-de-confidentialite, 404). Toute modification ici s'applique
    partout - les styles propres a une seule page restent dans son <style>. */
 
+/* Polices auto-hebergees (licence SIL Open Font License 1.1).
+   Servies depuis /fonts plutot que depuis fonts.gstatic.com : evite deux
+   connexions tierces au chargement, et surtout evite de transmettre l'IP de
+   chaque visiteur a Google avant meme le consentement cookies. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900; /* fichier variable : couvre 400/500/600 utilises */
+  font-display: swap;
+  src: url('/fonts/inter-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/poppins-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/poppins-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/poppins-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/poppins-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/poppins-800.woff2') format('woff2');
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -18,16 +65,25 @@ html { scroll-behavior: smooth; }
 
 footer { border-top: 1px solid var(--line); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--mid); }
 footer a { color: var(--mid); text-decoration: underline; }
+/* Les liens de pied de page sont des liens texte en ligne : on ne peut pas les
+   passer en blocs de 44px sans casser la phrase. On elargit la zone cliquable
+   verticalement, ce qui suffit a les rendre confortables au pouce. */
+footer a { display: inline-block; padding: 0.6rem 0.2rem; }
 
-.cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; }
+/* Bandeau cookies : sur iPhone, bottom:1rem seul place le bandeau dans la zone
+   du home indicator, ou le geste de retour intercepte les taps. */
+.cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; }
 .cookie-banner p { color: rgba(255,255,255,0.85); font-size: 0.85rem; max-width: none; margin: 0 0 0.75rem; }
 .cookie-banner a { color: #9db1f5; }
 .cookie-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-.cookie-actions button { font-family: inherit; font-size: 0.85rem; font-weight: 600; border-radius: 7px; padding: 0.5rem 1rem; cursor: pointer; }
+.cookie-actions button { font-family: inherit; font-size: 0.85rem; font-weight: 600; border-radius: 7px; padding: 0.5rem 1rem; cursor: pointer; min-height: 44px; }
 #cookieAccept { background: var(--accent); color: #fff; border: none; }
 #cookieRefuse { background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.3); }
 
-/* Accessibilite : focus clavier visible + mouvement reduit */
+/* Accessibilite : lien d'evitement, focus clavier visible, mouvement reduit */
+.skip-link { position: absolute; left: -9999px; top: 0; z-index: 1000; background: var(--ink); color: #fff; padding: 0.75rem 1.25rem; border-radius: 0 0 8px 0; font-size: 0.9rem; text-decoration: none; }
+.skip-link:focus { left: 0; }
+
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
