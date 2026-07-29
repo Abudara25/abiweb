@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SEO TITLE & META -->
-  <title>AbiWeb - Création site internet pas cher | Associations, TPE, Auto-entrepreneurs</title>
+  <title>AbiWeb - Création site internet pas cher | Val-d'Oise, Île-de-France, associations et TPE</title>
   <link rel="icon" type="image/svg+xml" href="/images/logo/abiweb-favicon.svg" />
-  <meta name="description" content="Création de site internet clé en main à partir de 590€. Sites vitrines pour associations, commerçants et auto-entrepreneurs. Livraison en 7 jours, 100% à distance, partout en France. Devis gratuit." />
+  <meta name="description" content="Création de site internet clé en main à partir de 590€ pour associations, commerçants et auto-entrepreneurs. Basé dans le Val-d'Oise, j'interviens en Île-de-France et partout en France, 100% à distance. Livraison en 7 jours, devis gratuit." />
   <meta name="author" content="AbiWeb" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.abiweb.fr/" />
@@ -17,7 +17,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.abiweb.fr/" />
   <meta property="og:title" content="AbiWeb - Création site internet pas cher à partir de 590€" />
-  <meta property="og:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Livraison en 7 jours, partout en France, 100% à distance. Devis gratuit." />
+  <meta property="og:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Val-d'Oise, Île-de-France et partout en France, 100% à distance. Livraison en 7 jours, devis gratuit." />
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:image" content="https://www.abiweb.fr/images/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -27,7 +27,7 @@
   <!-- TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AbiWeb - Création site internet pas cher à partir de 590€" />
-  <meta name="twitter:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Livraison en 7 jours, partout en France." />
+  <meta name="twitter:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Val-d'Oise, Île-de-France et partout en France. Livraison en 7 jours." />
   <meta name="twitter:image" content="https://www.abiweb.fr/images/og-image.png" />
 
   <!-- SCHEMA.ORG - ProfessionalService (entité locale + offres) -->
@@ -39,16 +39,17 @@
     "url": "https://www.abiweb.fr",
     "image": "https://www.abiweb.fr/images/og-image.png",
     "email": "contact@abiweb.fr",
-    "description": "Création de sites internet clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Livraison en 7 jours, 100% à distance, partout en France.",
+    "description": "Création de sites internet clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Basé dans le Val-d'Oise, j'interviens en Île-de-France et partout en France, 100% à distance. Livraison en 7 jours.",
     "priceRange": "590€ - 1290€",
     "founder": {
       "@type": "Person",
       "name": "Abdallah Gherari"
     },
-    "areaServed": {
-      "@type": "Country",
-      "name": "France"
-    },
+    "areaServed": [
+      { "@type": "AdministrativeArea", "name": "Val-d'Oise" },
+      { "@type": "AdministrativeArea", "name": "Île-de-France" },
+      { "@type": "Country", "name": "France" }
+    ],
     "knowsAbout": ["Création de site internet", "Site vitrine", "Référencement naturel", "Design responsive"],
     "makesOffer": [
       {
@@ -170,7 +171,7 @@
         "name": "Vous intervenez dans quelle zone géographique ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Tout se fait à distance, je peux accompagner des clients partout en France."
+          "text": "Je suis basé dans le Val-d'Oise et j'accompagne beaucoup de clients en Île-de-France. Comme tout se fait à distance, je travaille aussi avec des clients partout en France."
         }
       }
     ]
@@ -502,7 +503,10 @@
     ::selection { background: var(--accent2); color: var(--ink); }
 
     .hero { position: relative; }
-    .hero::before { content: ''; position: absolute; left: 50%; top: -60px; transform: translateX(-50%); width: min(900px, 100vw); height: 460px; background: radial-gradient(ellipse 55% 55% at 50% 0%, rgba(59,91,219,0.12), transparent 70%); pointer-events: none; z-index: -1; }
+    /* 100% et non 100vw : 100vw inclut la barre de defilement, ce qui rendait
+       ce halo 15px plus large que le contenu et faisait defiler la page
+       horizontalement de 8px sur les fenetres etroites. */
+    .hero::before { content: ''; position: absolute; left: 50%; top: -60px; transform: translateX(-50%); width: min(900px, 100%); height: 460px; background: radial-gradient(ellipse 55% 55% at 50% 0%, rgba(59,91,219,0.12), transparent 70%); pointer-events: none; z-index: -1; }
     .hero h1 em { background: linear-gradient(180deg, transparent 64%, var(--accent2) 64%); border-radius: 3px; padding: 0 0.06em; }
 
     .plan { border-radius: 16px; }
@@ -553,7 +557,7 @@
 
 <!-- HERO -->
 <section class="hero">
-  <span class="hero-eyebrow">Création de sites internet · Partout en France · 100% à distance</span>
+  <span class="hero-eyebrow">Val-d'Oise, Île-de-France et toute la France · 100% à distance</span>
   <h1>Création de site internet pas cher qui <em>représente</em> votre activité</h1>
   <p>Sites vitrines clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Livraison en 7 jours, sans jargon, sans abonnement caché.</p>
   <p class="hero-note"><a href="#garantie" style="color:var(--mid);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;">Retouches offertes 7 jours*</a> · Acompte 30 %, solde à la livraison · Modules à la carte</p>
@@ -940,7 +944,7 @@
     </details>
     <details class="faq-item">
       <summary class="faq-q">Vous intervenez dans quelle zone géographique ?</summary>
-      <p class="faq-a">Tout se fait à distance, je peux accompagner des clients partout en France.</p>
+      <p class="faq-a">Je suis basé dans le Val-d'Oise et j'accompagne beaucoup de clients en Île-de-France. Comme tout se fait à distance, je travaille aussi avec des clients partout en France.</p>
     </details>
   </div>
 </section>
