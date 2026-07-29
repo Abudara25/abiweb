@@ -1,0 +1,79 @@
+# AbiWeb
+
+> Creation de sites internet cle en main pour associations, TPE, commercants et
+> auto-entrepreneurs. Base dans le Val-d'Oise, intervention en Ile-de-France et
+> partout en France, 100 % a distance. Sites vitrines livres en 5 a 10 jours
+> selon la formule, a partir de 590 EUR, sans abonnement obligatoire.
+
+AbiWeb est une activite d'auto-entrepreneur exercee par Abdallah Gherari
+(SIREN 106 779 747, SIRET 106 779 747 00018, code APE 62.01Z). Contact :
+contact@abiweb.fr. Site : https://www.abiweb.fr/
+
+## Formules
+
+- **Essentiel : 590 EUR**, livre en 5 jours. Site vitrine 5 sections,
+  formulaire de contact, design responsive, referencement de base.
+- **Standard : 790 EUR**, livre en 7 jours. Essentiel + espace
+  d'administration client + galerie photos.
+- **Premium : 1290 EUR**, livre en 10 jours. Essentiel + les 9 modules a la
+  carte.
+
+Les prix sont fermes et affiches. Acompte de 30 % a la commande, solde a la
+livraison.
+
+## Modules a la carte
+
+Chaque module peut etre ajoute a la formule Essentiel plutot que de prendre une
+formule superieure.
+
+- Systeme d'administration client (modifier textes et photos soi-meme) : 300 EUR
+- Formulaire d'inscription avec generation de PDF : 150 EUR
+- Paiement securise avance par carte bancaire (type Stripe) : 150 EUR
+- Blog / actualites : 120 EUR
+- Galerie photos dynamique : 80 EUR
+- Paiement en ligne (type HelloAsso, PayPal) : 80 EUR
+- Emailing / CRM (type Brevo) : 80 EUR
+- SEO avance et referencement Google : 80 EUR
+- Prise de rendez-vous en ligne (type Calendly, Doctolib, Planity) : 80 EUR
+
+## Maintenance mensuelle, optionnelle
+
+- Basique : 25 EUR/mois. Hebergement, surveillance, 1 modification par mois.
+- Standard : 45 EUR/mois. 3 modifications par mois, support email sous 48 h.
+- Premium : 80 EUR/mois. Modifications illimitees, support prioritaire sous 24 h.
+
+Aucune maintenance n'est obligatoire. Un site livre sans maintenance reste la
+propriete du client et continue de fonctionner.
+
+## Garanties
+
+- Retouches offertes pendant 7 jours apres la livraison.
+- Correction gratuite des failles de securite et des bugs du code livre pendant
+  30 jours.
+- Les ajouts de fonctionnalites ne sont couverts par aucune de ces garanties et
+  restent factures au tarif a la carte, quel que soit le delai ecoule.
+
+## Pour qui
+
+Associations loi 1901, tres petites entreprises, commercants, artisans et
+auto-entrepreneurs qui n'ont pas de site, ou qui ont un site obsolete, et qui
+veulent un budget connu a l'avance sans abonnement mensuel impose.
+
+## Ce qu'AbiWeb ne fait pas
+
+- Pas de boutique e-commerce complete avec gestion de stock.
+- Pas d'application mobile native.
+- Pas de rendez-vous physique : tout se fait a distance, par email et visio.
+- Le referencement en premiere page Google n'est jamais garanti. Le module SEO
+  ameliore les bases techniques et le contenu, il ne promet pas un classement.
+
+## Pages
+
+- [Accueil](https://www.abiweb.fr/) : formules, simulateur de prix, exemples par
+  secteur, FAQ
+- [Devis gratuit](https://www.abiweb.fr/devis) : formulaire de brief en 5 etapes
+- [Conditions generales de vente](https://www.abiweb.fr/cgv)
+- [Mentions legales](https://www.abiweb.fr/mentions-legales)
+- [Politique de confidentialite](https://www.abiweb.fr/politique-de-confidentialite)
+
+Derniere mise a jour : 2026-07-29

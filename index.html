@@ -43,14 +43,29 @@
     "priceRange": "590€ - 1290€",
     "founder": {
       "@type": "Person",
-      "name": "Abdallah Gherari"
+      "name": "Abdallah Gherari",
+      "jobTitle": "Developpeur web independant"
     },
     "areaServed": [
-      { "@type": "AdministrativeArea", "name": "Val-d'Oise" },
-      { "@type": "AdministrativeArea", "name": "Île-de-France" },
-      { "@type": "Country", "name": "France" }
+      {
+        "@type": "AdministrativeArea",
+        "name": "Val-d'Oise"
+      },
+      {
+        "@type": "AdministrativeArea",
+        "name": "Île-de-France"
+      },
+      {
+        "@type": "Country",
+        "name": "France"
+      }
     ],
-    "knowsAbout": ["Création de site internet", "Site vitrine", "Référencement naturel", "Design responsive"],
+    "knowsAbout": [
+      "Création de site internet",
+      "Site vitrine",
+      "Référencement naturel",
+      "Design responsive"
+    ],
     "makesOffer": [
       {
         "@type": "Offer",
@@ -58,7 +73,18 @@
         "price": "590",
         "priceCurrency": "EUR",
         "description": "Site vitrine 5 sections, formulaire de contact, design responsive, SEO de base",
-        "itemOffered": { "@type": "Service", "name": "Création de site vitrine - Essentiel", "serviceType": "Création de site internet" }
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Création de site vitrine - Essentiel",
+          "serviceType": "Création de site internet"
+        },
+        "deliveryLeadTime": {
+          "@type": "QuantitativeValue",
+          "value": 5,
+          "unitCode": "DAY"
+        },
+        "availability": "https://schema.org/InStock",
+        "businessFunction": "https://schema.org/Sell"
       },
       {
         "@type": "Offer",
@@ -66,7 +92,18 @@
         "price": "790",
         "priceCurrency": "EUR",
         "description": "Base + système admin client + galerie photos dynamique",
-        "itemOffered": { "@type": "Service", "name": "Création de site vitrine - Standard", "serviceType": "Création de site internet" }
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Création de site vitrine - Standard",
+          "serviceType": "Création de site internet"
+        },
+        "deliveryLeadTime": {
+          "@type": "QuantitativeValue",
+          "value": 7,
+          "unitCode": "DAY"
+        },
+        "availability": "https://schema.org/InStock",
+        "businessFunction": "https://schema.org/Sell"
       },
       {
         "@type": "Offer",
@@ -74,9 +111,159 @@
         "price": "1290",
         "priceCurrency": "EUR",
         "description": "Tout inclus - base + 9 modules (admin, galerie, inscription, blog, paiement en ligne, emailing/CRM, paiement sécurisé avancé, SEO avancé, réservation en ligne)",
-        "itemOffered": { "@type": "Service", "name": "Création de site vitrine - Premium", "serviceType": "Création de site internet" }
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Création de site vitrine - Premium",
+          "serviceType": "Création de site internet"
+        },
+        "deliveryLeadTime": {
+          "@type": "QuantitativeValue",
+          "value": 10,
+          "unitCode": "DAY"
+        },
+        "availability": "https://schema.org/InStock",
+        "businessFunction": "https://schema.org/Sell"
       }
-    ]
+    ],
+    "slogan": "Des sites internet cle en main, a prix affiche, sans abonnement obligatoire.",
+    "termsOfService": "https://www.abiweb.fr/cgv",
+    "paymentAccepted": "Virement bancaire",
+    "currenciesAccepted": "EUR",
+    "identifier": {
+      "@type": "PropertyValue",
+      "name": "SIRET",
+      "value": "10677974700018"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Service commercial",
+      "email": "contact@abiweb.fr",
+      "areaServed": "FR",
+      "availableLanguage": "French"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Modules a la carte",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "name": "Systeme d'administration client",
+          "price": "300",
+          "priceCurrency": "EUR",
+          "description": "Modifier soi-meme textes, photos et tarifs apres la livraison.",
+          "businessFunction": "https://schema.org/Sell",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Systeme d'administration client",
+            "serviceType": "Developpement web"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Formulaire d'inscription avec generation de PDF",
+          "price": "150",
+          "priceCurrency": "EUR",
+          "description": "Inscription en ligne avec confirmation en PDF.",
+          "businessFunction": "https://schema.org/Sell",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Formulaire d'inscription avec generation de PDF",
+            "serviceType": "Developpement web"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Paiement securise avance par carte bancaire",
+          "price": "150",
+          "priceCurrency": "EUR",
+          "description": "Encaissement par carte directement sur le site.",
+          "businessFunction": "https://schema.org/Sell",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Paiement securise avance par carte bancaire",
+            "serviceType": "Developpement web"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Blog / actualites",
+          "price": "120",
+          "priceCurrency": "EUR",
+          "description": "Publier soi-meme articles et actualites.",
+          "businessFunction": "https://schema.org/Sell",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Blog / actualites",
+            "serviceType": "Developpement web"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Galerie photos dynamique",
+          "price": "80",
+          "priceCurrency": "EUR",
+          "description": "Galerie alimentee par le client.",
+          "businessFunction": "https://schema.org/Sell",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Galerie photos dynamique",
+            "serviceType": "Developpement web"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Paiement en ligne",
+          "price": "80",
+          "priceCurrency": "EUR",
+          "description": "Paiement via HelloAsso, PayPal ou equivalent.",
+          "businessFunction": "https://schema.org/Sell",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Paiement en ligne",
+            "serviceType": "Developpement web"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Emailing / CRM",
+          "price": "80",
+          "priceCurrency": "EUR",
+          "description": "Centralisation des contacts et envoi d'emails.",
+          "businessFunction": "https://schema.org/Sell",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Emailing / CRM",
+            "serviceType": "Developpement web"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "SEO avance et referencement Google",
+          "price": "80",
+          "priceCurrency": "EUR",
+          "description": "Travail sur les contenus et les mots-cles.",
+          "businessFunction": "https://schema.org/Sell",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "SEO avance et referencement Google",
+            "serviceType": "Developpement web"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Prise de rendez-vous en ligne",
+          "price": "80",
+          "priceCurrency": "EUR",
+          "description": "Reservation de creneaux en ligne.",
+          "businessFunction": "https://schema.org/Sell",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Prise de rendez-vous en ligne",
+            "serviceType": "Developpement web"
+          }
+        }
+      ]
+    }
   }
   </script>
 

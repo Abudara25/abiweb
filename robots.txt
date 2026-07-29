@@ -1,4 +1,51 @@
 User-agent: *
 Allow: /
 
+# Moteurs de reponse IA.
+# Ces declarations sont explicites plutot que fonctionnelles : la regle
+# "User-agent: *" ci-dessus les autorise deja. Elles documentent une intention
+# et evitent qu'un futur Disallow global les exclue par accident.
+
+# Robots qui explorent pour repondre en citant la source. Ce sont ceux qui
+# comptent pour apparaitre dans les reponses generees.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Robots qui explorent pour l'entrainement des modeles. Ils ne citent pas la
+# source. Les autoriser fait entrer la marque dans la connaissance des modeles,
+# au prix de contenus reutilises sans lien retour. Choix assume : le contenu de
+# ce site est du marketing public, il n'y a rien a proteger.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
 Sitemap: https://www.abiweb.fr/sitemap.xml
