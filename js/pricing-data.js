@@ -21,6 +21,8 @@
       desc: 'Encaissez des paiements par carte bancaire directement sur votre site, de façon sécurisée et automatisée.' },
     { key: 'seo', label: 'SEO avancé + référencement Google', price: 80,
       desc: 'Un travail approfondi sur vos contenus et mots-clés pour mieux apparaître dans les résultats Google.' },
+    { key: 'geo', label: 'Visibilité IA (ChatGPT, Perplexity, AI Overviews)', price: 80,
+      desc: 'Rend votre site exploitable par les moteurs de réponse IA : fiche llms.txt, données structurées complètes, FAQ rédigée pour être citée, et un rapport de contrôle avant/après. La citation par un moteur IA reste aléatoire, jamais garantie.' },
     { key: 'resa', label: 'Prise de rendez-vous en ligne (ex : Calendly, Doctolib, Planity…)', price: 80,
       desc: 'Vos clients réservent un créneau directement en ligne, sans échange de messages pour trouver une date.' },
   ];
@@ -38,9 +40,9 @@
       badge: 'Populaire',
     },
     {
-      key: 'premium', name: 'Premium', price: 1290, modules: ['admin', 'galerie', 'inscription', 'blog', 'helloasso', 'brevo', 'stripe', 'seo', 'resa'],
+      key: 'premium', name: 'Premium', price: 1290, modules: ['admin', 'galerie', 'inscription', 'blog', 'helloasso', 'brevo', 'stripe', 'seo', 'geo', 'resa'],
       delaiJours: 10,
-      desc: 'Tout inclus - base + les 8 modules à la carte.',
+      desc: 'Tout inclus - base + les 10 modules à la carte.',
     },
   ];
 

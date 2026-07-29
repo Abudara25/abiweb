@@ -13,6 +13,7 @@ export const MODULES = [
   { key: 'brevo', label: 'Emailing / CRM (ex : Brevo…)', price: 80 },
   { key: 'stripe', label: 'Paiement sécurisé avancé (ex : Stripe…)', price: 150 },
   { key: 'seo', label: 'SEO avancé + référencement Google', price: 80 },
+  { key: 'geo', label: 'Visibilité IA (ChatGPT, Perplexity, AI Overviews)', price: 80 },
   { key: 'resa', label: 'Prise de rendez-vous en ligne (ex : Calendly, Doctolib, Planity…)', price: 80 },
 ];
 
