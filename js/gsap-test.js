@@ -44,16 +44,21 @@
       scrollTrigger: { trigger: '.steps', start: 'top 70%', end: 'bottom 70%', scrub: 0.5 },
     });
   }
-  gsap.fromTo('.step',
-    { opacity: 0, x: -50 },
-    {
-      opacity: 1, x: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'back.out(1.6)',
-      scrollTrigger: { trigger: '.steps', start: 'top 75%' },
-    }
-  );
+  // Chaque etape se revele individuellement quand elle arrive a l'ecran,
+  // en phase avec la ligne (scrub) qui la rejoint au meme moment. Pas de
+  // rebond ici : sur du texte lu en sequence, l'overshoot horizontal
+  // (back.out) donnait un effet "vibrant" desagreable a la lecture.
+  document.querySelectorAll('.step').forEach(function (step) {
+    gsap.fromTo(step,
+      { opacity: 0, y: 24 },
+      {
+        opacity: 1, y: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: step, start: 'top 85%' },
+      }
+    );
+  });
 
   // 4. Bouton magnetique sur le CTA principal du hero
   var magneticBtn = document.querySelector('.hero .btn-primary');
