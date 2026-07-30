@@ -515,7 +515,10 @@
     .section-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); margin-bottom: 0.6rem; }
     .process-section h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.5rem; color: var(--ink); }
     .process-subtitle { font-size: 0.9rem; color: var(--mid); margin-bottom: 2.5rem; }
-    .steps { display: flex; flex-direction: column; gap: 0; }
+    .steps { position: relative; display: flex; flex-direction: column; gap: 0; }
+    .steps-line { position: absolute; left: 17px; top: 22px; bottom: 22px; width: 2px; background: var(--line); z-index: 0; }
+    .steps-line-fill { position: absolute; left: 0; top: 0; width: 100%; height: 0%; background: var(--accent); }
+    .step { position: relative; z-index: 1; }
     .step { display: flex; gap: 1.25rem; align-items: flex-start; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
     .step:last-child { border-bottom: none; }
     .step-num { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--white); display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 0.85rem; margin-top: 2px; }
@@ -1042,6 +1045,7 @@
   <h2>Création de votre site internet en 6 étapes</h2>
   <p class="process-subtitle">De la demande à la mise en ligne - clair, rapide, sans mauvaise surprise.</p>
   <div class="steps">
+    <div class="steps-line"><div class="steps-line-fill" id="stepsLineFill"></div></div>
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-body">
@@ -1252,6 +1256,10 @@
 
 <script src="/js/pricing-data.js"></script>
 <script src="/js/home.js"></script>
+<!-- TEST GSAP (branche test-animations, local uniquement, a retirer avant merge) -->
+<script src="/js/vendor/gsap.min.js"></script>
+<script src="/js/vendor/ScrollTrigger.min.js"></script>
+<script src="/js/gsap-test.js"></script>
   <div class="cookie-banner" id="cookieBanner" hidden>
     <p>Ce site utilise des cookies de mesure d'audience (Google Analytics), déposés uniquement avec votre accord. <a href="/politique-de-confidentialite">En savoir plus</a></p>
     <div class="cookie-actions">

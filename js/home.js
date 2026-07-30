@@ -78,7 +78,8 @@
 
   // Apparition douce des cartes au scroll
   if ('IntersectionObserver' in window) {
-    var revealEls = document.querySelectorAll('.plan, .step, .included-item, .integ-group, .hosting-card, .realisation-card');
+    // .plan et .step retires temporairement : GSAP gere seul leur animation sur la branche test-animations (voir gsap-test.js)
+    var revealEls = document.querySelectorAll('.included-item, .integ-group, .hosting-card, .realisation-card');
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); }
