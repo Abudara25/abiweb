@@ -118,6 +118,25 @@
   if (contactSubmitBtn) {
     contactSubmitBtn.addEventListener('click', function () { submitContact(contactSubmitBtn); });
   }
+
+  // Mot rotatif du H1 (associations / artisans / auto-entrepreneurs...)
+  var rotator = document.getElementById('wordRotator');
+  if (rotator && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var rotatorItems = rotator.querySelectorAll('.word-rotator-item');
+    var rotatorIndex = 0;
+    if (rotatorItems.length > 1) {
+      setInterval(function () {
+        var next = (rotatorIndex + 1) % rotatorItems.length;
+        rotatorItems[rotatorIndex].classList.remove('is-active');
+        rotatorItems[rotatorIndex].classList.add('is-leaving');
+        rotatorItems[next].classList.add('is-active');
+        (function (leaving) {
+          setTimeout(function () { leaving.classList.remove('is-leaving'); }, 450);
+        })(rotatorItems[rotatorIndex]);
+        rotatorIndex = next;
+      }, 2400);
+    }
+  }
 })();
 
 function switchTab(tab, btn) {
