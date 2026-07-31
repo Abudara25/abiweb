@@ -1,0 +1,100 @@
+name: Update status.json
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!main'
+      - '!preview'
+  # Adapter le nom "preview" ci-dessous si la branche de demo client s'appelle autrement.
+
+jobs:
+  developpement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Met a jour status.json (developpement)
+        run: |
+          node -e "
+            const fs = require('fs');
+            let current = { avancement: 0 };
+            try { current = JSON.parse(fs.readFileSync('status.json', 'utf8')); } catch (e) {}
+            const nouvelAvancement = 30;
+            if ((current.avancement || 0) >= nouvelAvancement) { console.log('Deja a ce stade ou au-dela, rien a faire.'); process.exit(0); }
+            const status = {
+              client: current.client || 'Nom du client',
+              etape: 'developpement',
+              avancement: nouvelAvancement,
+              derniere_maj: new Date().toISOString().slice(0, 10),
+              message: 'Votre site est en cours de developpement'
+            };
+            fs.writeFileSync('status.json', JSON.stringify(status, null, 2) + '\n');
+          "
+      - name: Commit status.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add status.json
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: statut developpement (auto)"
+          git push
+
+  preview:
+    if: github.ref == 'refs/heads/preview'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Met a jour status.json (preview)
+        run: |
+          node -e "
+            const fs = require('fs');
+            let current = { avancement: 0 };
+            try { current = JSON.parse(fs.readFileSync('status.json', 'utf8')); } catch (e) {}
+            const nouvelAvancement = 75;
+            if ((current.avancement || 0) >= nouvelAvancement) { console.log('Deja a ce stade ou au-dela, rien a faire.'); process.exit(0); }
+            const status = {
+              client: current.client || 'Nom du client',
+              etape: 'preview',
+              avancement: nouvelAvancement,
+              derniere_maj: new Date().toISOString().slice(0, 10),
+              message: 'Une premiere version est disponible pour relecture'
+            };
+            fs.writeFileSync('status.json', JSON.stringify(status, null, 2) + '\n');
+          "
+      - name: Commit status.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add status.json
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: statut preview (auto)"
+          git push
+
+  mise_en_ligne:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Met a jour status.json (mise en ligne)
+        run: |
+          node -e "
+            const fs = require('fs');
+            let current = { avancement: 0 };
+            try { current = JSON.parse(fs.readFileSync('status.json', 'utf8')); } catch (e) {}
+            const status = {
+              client: current.client || 'Nom du client',
+              etape: 'mise_en_ligne',
+              avancement: 100,
+              derniere_maj: new Date().toISOString().slice(0, 10),
+              message: 'Votre site est en ligne'
+            };
+            fs.writeFileSync('status.json', JSON.stringify(status, null, 2) + '\n');
+          "
+      - name: Commit status.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add status.json
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: statut mise en ligne (auto)"
+          git push
