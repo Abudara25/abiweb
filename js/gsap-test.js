@@ -8,8 +8,9 @@
   gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.4 } })
     .from('.hero-eyebrow', { opacity: 0, y: 60, scale: 0.7 })
     .from('.hero h1', { opacity: 0, y: 90 }, '-=1.05')
-    .from('.hero > p, .hero-note', { opacity: 0, y: 60 }, '-=1.0')
-    .from('.hero .cta-group', { opacity: 0, y: 50, scale: 0.85 }, '-=0.9');
+    .from('.hero-content > p, .hero-note', { opacity: 0, y: 60 }, '-=1.0')
+    .from('.hero .cta-group', { opacity: 0, y: 50, scale: 0.85 }, '-=0.9')
+    .from('.hero-illustration', { opacity: 0, scale: 0.8, rotate: -6, ease: 'back.out(1.6)', duration: 1.2 }, '-=1.1');
 
   // 2. Cartes "Pour qui" : cascade au scroll, avec rebond net
   gsap.fromTo('.audience-item',

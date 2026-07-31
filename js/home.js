@@ -125,12 +125,17 @@
   if (rotator && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var rotatorItems = rotator.querySelectorAll('.word-rotator-item');
     var rotatorIndex = 0;
+    // La largeur du conteneur suit le mot actuellement affiche (pas toujours
+    // celle du mot le plus long), pour que "pour TPE" reste colle au mot
+    // precedent au lieu de laisser un grand vide.
+    rotator.style.width = rotatorItems[rotatorIndex].offsetWidth + 'px';
     if (rotatorItems.length > 1) {
       setInterval(function () {
         var next = (rotatorIndex + 1) % rotatorItems.length;
         rotatorItems[rotatorIndex].classList.remove('is-active');
         rotatorItems[rotatorIndex].classList.add('is-leaving');
         rotatorItems[next].classList.add('is-active');
+        rotator.style.width = rotatorItems[next].offsetWidth + 'px';
         (function (leaving) {
           setTimeout(function () { leaving.classList.remove('is-leaving'); }, 450);
         })(rotatorItems[rotatorIndex]);
