@@ -9,6 +9,15 @@ const ETAPES = {
   garantie_retouches: 'Garantie retouches en cours',
 };
 
+const ETAPES_ORDER = [
+  'paiement_recu',
+  'developpement',
+  'preview',
+  'corrections',
+  'mise_en_ligne',
+  'garantie_retouches',
+];
+
 const ETAPES_COMPLETES = new Set(['mise_en_ligne', 'garantie_retouches']);
 
 function getRepoParam() {
@@ -61,11 +70,40 @@ function isValidStatus(data) {
   );
 }
 
+function buildStepper(currentEtape) {
+  const complete = ETAPES_COMPLETES.has(currentEtape);
+  const currentIndex = ETAPES_ORDER.indexOf(currentEtape);
+
+  const stepper = document.createElement('ol');
+  stepper.className = 'stepper';
+
+  ETAPES_ORDER.forEach((etape, index) => {
+    const li = document.createElement('li');
+    let state = 'upcoming';
+    if (index < currentIndex) state = 'done';
+    else if (index === currentIndex) state = complete ? 'done' : 'current';
+    li.className = 'step is-' + state;
+
+    const marker = document.createElement('span');
+    marker.className = 'step-marker';
+    marker.textContent = state === 'done' ? '✓' : '';
+    marker.setAttribute('aria-hidden', 'true');
+
+    const label = document.createElement('span');
+    label.className = 'step-label';
+    label.textContent = ETAPES[etape];
+
+    li.append(marker, label);
+    stepper.appendChild(li);
+  });
+
+  return stepper;
+}
+
 function renderStatus(card, data) {
   card.innerHTML = '';
 
   const complete = ETAPES_COMPLETES.has(data.etape);
-  const avancement = Math.max(0, Math.min(100, data.avancement));
 
   const clientEl = document.createElement('p');
   clientEl.className = 'client-name';
@@ -75,16 +113,7 @@ function renderStatus(card, data) {
   etapeEl.className = 'etape-label';
   etapeEl.textContent = ETAPES[data.etape];
 
-  const track = document.createElement('div');
-  track.className = 'progress-track';
-  const fill = document.createElement('div');
-  fill.className = 'progress-fill' + (complete ? ' is-complete' : '');
-  fill.style.width = avancement + '%';
-  track.appendChild(fill);
-
-  const percentEl = document.createElement('p');
-  percentEl.className = 'progress-percent';
-  percentEl.textContent = avancement + '%';
+  const stepper = buildStepper(data.etape);
 
   const messageEl = document.createElement('div');
   messageEl.className = 'message-box' + (complete ? ' is-complete' : '');
@@ -94,7 +123,7 @@ function renderStatus(card, data) {
   updatedEl.className = 'updated-at';
   updatedEl.textContent = 'Dernière mise à jour : ' + formatDate(data.derniere_maj);
 
-  card.append(clientEl, etapeEl, track, percentEl, messageEl, updatedEl);
+  card.append(clientEl, etapeEl, stepper, messageEl, updatedEl);
 }
 
 async function init() {
