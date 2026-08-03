@@ -2,8 +2,8 @@ import { clientIp } from './rate-limit.js';
 
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
-function rejection() {
-  return new Response(JSON.stringify({ error: 'turnstile_failed' }), {
+function rejection(debug) {
+  return new Response(JSON.stringify({ error: 'turnstile_failed', debug }), {
     status: 403,
     headers: { 'Content-Type': 'application/json' },
   });
@@ -17,7 +17,7 @@ export async function enforceTurnstile(request, env, token, expectedAction) {
     .filter(Boolean);
 
   if (typeof token !== 'string' || token.length === 0 || token.length > 2048 || hostnames.length === 0) {
-    return rejection();
+    return rejection({ stage: 'pre-check', tokenType: typeof token, tokenLen: token && token.length, hostnames });
   }
 
   let result;
@@ -34,12 +34,12 @@ export async function enforceTurnstile(request, env, token, expectedAction) {
     });
     if (!r.ok) throw new Error(`siteverify ${r.status}`);
     result = await r.json();
-  } catch {
-    return rejection();
+  } catch (err) {
+    return rejection({ stage: 'fetch', message: err && err.message });
   }
 
   if (!result.success || result.action !== expectedAction || !hostnames.includes(result.hostname)) {
-    return rejection();
+    return rejection({ stage: 'check', result, expectedAction, hostnames });
   }
 
   return null;
