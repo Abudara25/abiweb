@@ -26,6 +26,15 @@ export default {
       return handler({ request, env, ctx });
     }
 
+    // suivi.abiweb.fr n'a pas son propre projet : le contenu vit dans
+    // /suivi-abiweb sur ce meme Worker. On reecrit le chemin pour ce host
+    // uniquement, les liens relatifs (style.css, script.js) suivent.
+    if (url.hostname === 'suivi.abiweb.fr') {
+      const rewritten = new URL(request.url);
+      rewritten.pathname = `/suivi-abiweb${url.pathname}`;
+      return env.ASSETS.fetch(new Request(rewritten, request));
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
