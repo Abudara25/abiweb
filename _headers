@@ -1,21 +1,20 @@
 # Equivalent Cloudflare Pages/Workers de vercel.json (headers).
 # Cloudflare accumule les regles qui matchent une meme requete et, si un meme
-# header est fixe par plusieurs regles, les valeurs sont jointes par une virgule
-# (pas d'ecrasement automatique par specificite). D'ou le `! Header` sur les
-# regles plus specifiques : ca retire la valeur heritee de `/*` avant de la
-# refixer avec la valeur propre a ce chemin.
+# header est fixe par plusieurs regles, les valeurs sont jointes/dupliquees -
+# constate en prod : `! Header` + reset marche pour /demos/* (plus specifique
+# que /*) mais PAS pour `/` (meme specificite apparente que /*, ordre
+# d'application incoherent). D'ou le choix de ne pas dupliquer le CSP sur `/` :
+# frame-src est directement 'self' par defaut (l'iframe #secteurIframe du
+# homepage vers /demos/* en a besoin), un assouplissement mineur et sans risque
+# reel puisque ca n'autorise que l'auto-embarquement same-origin.
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'self'; upgrade-insecure-requests
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=63072000; includeSubDomains
-
-/
-  ! Content-Security-Policy
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'self'; upgrade-insecure-requests
 
 /demos/*
   ! Content-Security-Policy
