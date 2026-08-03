@@ -1,0 +1,12 @@
+# Fichiers/dossiers a ne pas uploader comme assets statiques publics.
+# assets.directory = "." (racine du repo) dans wrangler.jsonc, donc tout ce qui
+# n'est pas du contenu du site doit etre exclu explicitement.
+node_modules/
+.git/
+.wrangler/
+_worker.js
+functions/
+api/
+package.json
+package-lock.json
+wrangler.jsonc

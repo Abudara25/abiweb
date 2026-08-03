@@ -1,0 +1,3 @@
+# Equivalent Cloudflare Pages/Workers de vercel.json (redirects).
+/coming-soon.html / 301
+/coming-soon / 301
