@@ -4,6 +4,9 @@
   "compatibility_date": "2026-08-03",
   "compatibility_flags": ["nodejs_compat"],
   "main": "./_worker.js",
+  "vars": {
+    "TURNSTILE_HOSTNAMES": "www.abiweb.fr,abiweb.fr"
+  },
   "observability": {
     "enabled": true
   },
