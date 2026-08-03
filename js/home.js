@@ -196,6 +196,11 @@ function mailtoFallbackContact(data) {
   window.location.href = 'mailto:contact@abiweb.fr?subject=' + subject + '&body=' + body;
 }
 
+function getTurnstileToken(containerId) {
+  const el = document.querySelector('#' + containerId + ' [name="cf-turnstile-response"]');
+  return el ? el.value : '';
+}
+
 async function submitContact(btn) {
   const nom = document.getElementById('c-nom').value.trim();
   const email = document.getElementById('c-email').value.trim();
@@ -211,6 +216,7 @@ async function submitContact(btn) {
     tel: document.getElementById('c-tel').value,
     website: document.getElementById('c-website').value,
     ts: window.abiwebFormLoadedAt,
+    turnstileToken: getTurnstileToken('turnstile-contact'),
   };
   const originalLabel = btn.textContent;
   btn.disabled = true;
@@ -239,5 +245,7 @@ async function submitContact(btn) {
   } finally {
     btn.disabled = false;
     btn.textContent = originalLabel;
+    // Jeton Turnstile a usage unique - il faut en redemander un pour le prochain essai.
+    if (window.turnstile) window.turnstile.reset(document.getElementById('turnstile-contact'));
   }
 }

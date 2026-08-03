@@ -1243,6 +1243,9 @@
         <label for="c-website">Ne pas remplir</label>
         <input type="text" id="c-website" name="website" tabindex="-1" autocomplete="off" />
       </div>
+      <div class="form-group full">
+        <div class="cf-turnstile" id="turnstile-contact" data-sitekey="0x4AAAAAAEFcN1TgFX59vj1X" data-action="contact"></div>
+      </div>
       <div class="form-submit full">
         <button class="btn-submit" id="contactSubmitBtn" type="button">Envoyer le message →</button>
         <span class="form-note">Réponse rapide · Sans engagement</span>
@@ -1283,6 +1286,7 @@
   <p>© 2026 AbiWeb · <a href="mailto:contact@abiweb.fr">contact@abiweb.fr</a> · <a href="/mentions-legales">Mentions légales</a> · <a href="/cgv">CGV</a> · <a href="/politique-de-confidentialite">Politique de confidentialité</a></p>
 </footer>
 
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script src="/js/pricing-data.js"></script>
 <script src="/js/home.js"></script>
 <!-- TEST GSAP (branche test-animations, local uniquement, a retirer avant merge) -->

@@ -335,6 +335,11 @@ function buildRecap() {
   `;
 }
 
+function getTurnstileToken(containerId) {
+  const el = document.querySelector('#' + containerId + ' [name="cf-turnstile-response"]');
+  return el ? el.value : '';
+}
+
 function collectData() {
   return {
     nom: document.getElementById('nom-structure').value,
@@ -375,6 +380,7 @@ function collectData() {
     infos: document.getElementById('infos-plus').value,
     website: document.getElementById('b-website').value,
     ts: formLoadedAt,
+    turnstileToken: getTurnstileToken('turnstile-brief'),
   };
 }
 
@@ -449,6 +455,9 @@ async function submitBrief() {
     btn.disabled = false;
     btn.textContent = originalLabel;
     document.getElementById('error-brief').classList.add('visible');
+  } finally {
+    // Jeton Turnstile a usage unique - il faut en redemander un pour le prochain essai.
+    if (window.turnstile) window.turnstile.reset(document.getElementById('turnstile-brief'));
   }
 }
 

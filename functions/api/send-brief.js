@@ -13,6 +13,7 @@ import {
 } from './_lib/email-utils.js';
 import { moduleByKey, moduleLabels, alaCarteTotal } from './_lib/pricing.js';
 import { enforceRateLimit } from './_lib/rate-limit.js';
+import { enforceTurnstile } from './_lib/turnstile.js';
 
 const LIMITS = {
   nom: 120,
@@ -89,6 +90,9 @@ export async function onRequestPost({ request, env }) {
     body = {};
   }
   if (!body || typeof body !== 'object') body = {};
+
+  const turnstileRejection = await enforceTurnstile(request, env, body.turnstileToken, 'brief');
+  if (turnstileRejection) return turnstileRejection;
 
   // Honeypot : champ invisible pour les humains - rempli, c'est un bot.
   // On répond un faux succès pour ne pas lui signaler le rejet.
