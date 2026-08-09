@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <script src="/js/analytics-loader.js"></script>
+  <script defer src="/js/analytics-loader.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SEO TITLE & META -->
@@ -380,6 +380,7 @@
 
   <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/poppins-800.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/images/hero/hero-illustration-test-banana.webp" as="image" fetchpriority="high" />
   <link rel="stylesheet" href="/css/shared.css" />
   <style>
     body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; font-size: 16px; }
@@ -608,7 +609,7 @@
     .secteur-open-link { font-size: 0.952rem; font-weight: 600; color: var(--accent); text-decoration: none; }
     .secteur-open-link:hover { text-decoration: underline; }
     .secteur-preview { border-radius: 12px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12); border: 1px solid var(--line); }
-    .secteur-iframe { width: 100%; height: 520px; border: none; display: block; }
+    .secteur-video { width: 100%; height: 520px; border: none; display: block; object-fit: cover; }
     @media (max-width: 700px) {
       .secteur-preview { display: none; }
     }
@@ -760,7 +761,6 @@
     .reveal.visible { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
   </style>
-  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#tarifs">Aller au contenu principal</a>
@@ -792,7 +792,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-visual">
-    <img src="/images/hero/hero-illustration-test-banana.webp" alt="Illustration d'un ordinateur affichant un site internet, entoure d'icones representant une association, un artisan et un commerce" class="hero-illustration" width="1376" height="768" />
+    <img src="/images/hero/hero-illustration-test-banana.webp" alt="Illustration d'un ordinateur affichant un site internet, entoure d'icones representant une association, un artisan et un commerce" class="hero-illustration" width="1376" height="768" fetchpriority="high" />
   </div>
   <div class="hero-inner">
     <div class="hero-content">
@@ -879,7 +879,7 @@
         <div class="browser-url" id="secteurUrl">abiweb.fr/demos/association</div>
         <span class="hosting-chip chip-paid">🎨 Maquette illustrative</span>
       </div>
-      <iframe id="secteurIframe" class="secteur-iframe" src="/demos/association" title="Exemple de site pour Association" loading="lazy"></iframe>
+      <video class="secteur-video" id="secteurVideo" src="/images/exemples-secteurs/site-morphing-v3.mp4" preload="none" muted loop playsinline></video>
     </div>
   </div>
 </section>

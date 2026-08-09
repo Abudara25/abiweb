@@ -4,9 +4,10 @@
 # constate en prod : `! Header` + reset marche pour /demos/* (plus specifique
 # que /*) mais PAS pour `/` (meme specificite apparente que /*, ordre
 # d'application incoherent). D'ou le choix de ne pas dupliquer le CSP sur `/` :
-# frame-src est directement 'self' par defaut (l'iframe #secteurIframe du
-# homepage vers /demos/* en a besoin), un assouplissement mineur et sans risque
-# reel puisque ca n'autorise que l'auto-embarquement same-origin.
+# frame-src reste 'self' par defaut (assouplissement mineur et sans risque
+# reel puisque ca n'autorise que l'auto-embarquement same-origin), meme si
+# l'iframe #secteurIframe du homepage qui le justifiait a ete retiree (video
+# de demo a la place).
 
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; upgrade-insecure-requests
