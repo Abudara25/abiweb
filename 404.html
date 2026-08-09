@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+  <script defer src="/js/analytics-loader.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Page introuvable - AbiWeb</title>
@@ -43,5 +44,13 @@
       <a class="btn-secondary" href="/devis">Demander un devis</a>
     </div>
   </div>
+  <div class="cookie-banner" id="cookieBanner" hidden>
+    <p>Ce site utilise des cookies de mesure d'audience (Google Analytics), déposés uniquement avec votre accord. <a href="/politique-de-confidentialite">En savoir plus</a></p>
+    <div class="cookie-actions">
+      <button id="cookieRefuse">Continuer sans accepter</button>
+      <button id="cookieAccept">Accepter</button>
+    </div>
+  </div>
+  <script src="/js/cookie-banner.js"></script>
 </body>
 </html>
