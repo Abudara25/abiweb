@@ -1,6 +1,6 @@
 export default [
   {
-    ignores: ['node_modules/**'],
+    ignores: ['node_modules/**', 'js/vendor/**'],
   },
   {
     files: ['js/**/*.js'],
@@ -16,8 +16,15 @@ export default [
         console: 'readonly',
         confirm: 'readonly',
         IntersectionObserver: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
         // Défini dans analytics-loader.js, appelé depuis cookie-banner.js.
         abiwebLoadAnalytics: 'readonly',
+        // Chargés via js/vendor/gsap.min.js et ScrollTrigger.min.js.
+        gsap: 'readonly',
+        ScrollTrigger: 'readonly',
       },
     },
     rules: {

@@ -74,7 +74,7 @@ simplement ignorée.
   sitemap, Open Graph) doit utiliser `www`.
 - **Mesure d'audience** : Google Tag Manager et Google Analytics, chargés
   uniquement après acceptation du bandeau cookies (clé `abiweb-consent` dans
-  `localStorage`). Vercel Analytics, sans cookie, est actif sur toutes les pages.
+  `localStorage`).
 
 ## Polices
 
