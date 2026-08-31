@@ -125,7 +125,7 @@ export async function onRequestPost({ request, env }) {
   const domaineLabel =
     data.domaine === 'non' ? 'Non, à acheter'
     : data.domaine === 'oui' ? 'Oui, déjà acheté'
-    : 'Adresse gratuite (vercel.app)';
+    : 'Adresse gratuite offerte par l\'hébergeur';
 
   const tarifMode = data.tarifMode === 'alacarte' ? 'Sur mesure à la carte' : 'Formule clé en main';
   const tarifLabel = data.tarifMode === 'alacarte'

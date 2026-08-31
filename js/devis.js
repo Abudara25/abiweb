@@ -273,7 +273,7 @@ function buildRecap() {
   const maintenance = document.getElementById('maintenance-choix').value;
   const domaine = document.querySelector('input[name="domaine"]:checked')?.value || '-';
   const domaineNom = document.getElementById('domaine-nom').value;
-  const domaineLabel = domaine === 'non' ? 'Pas encore - à acheter' : domaine === 'oui' ? 'Oui, déjà acheté' : 'Adresse gratuite (vercel.app)';
+  const domaineLabel = domaine === 'non' ? 'Pas encore - à acheter' : domaine === 'oui' ? 'Oui, déjà acheté' : 'Adresse gratuite offerte par l\'hébergeur';
 
   let tarifRow;
   if (tarifMode === 'forfait') {
@@ -385,7 +385,7 @@ function collectData() {
 }
 
 function mailtoFallback(data) {
-  const domaineLabel = data.domaine === 'non' ? 'Non, à acheter' : data.domaine === 'oui' ? 'Oui, déjà acheté' : 'Adresse gratuite (vercel.app)';
+  const domaineLabel = data.domaine === 'non' ? 'Non, à acheter' : data.domaine === 'oui' ? 'Oui, déjà acheté' : 'Adresse gratuite offerte par l\'hébergeur';
   const tarifLabel = data.tarifMode === 'forfait' ? data.formule : `Sur mesure - ${data.totalEstime}€`;
   const subject = encodeURIComponent(`Brief AbiWeb - ${data.nom} (${tarifLabel})`);
   const body = encodeURIComponent(

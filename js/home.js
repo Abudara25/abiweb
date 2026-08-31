@@ -117,8 +117,9 @@
   if (secteurOpenLink) {
     document.querySelectorAll('.secteur-tab').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        document.querySelectorAll('.secteur-tab').forEach(function (t) { t.classList.remove('active'); });
+        document.querySelectorAll('.secteur-tab').forEach(function (t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
         btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
         var demo = btn.dataset.demo;
         secteurUrl.textContent = 'abiweb.fr/demos/' + demo;
         secteurOpenLink.href = '/demos/' + demo;
@@ -144,14 +145,17 @@
     // La largeur du conteneur suit le mot actuellement affiche (pas toujours
     // celle du mot le plus long), pour que "pour TPE" reste colle au mot
     // precedent au lieu de laisser un grand vide.
-    rotator.style.width = rotatorItems[rotatorIndex].offsetWidth + 'px';
+    // Largeurs mesurees une seule fois au chargement pour eviter un reflow force
+    // a chaque rotation (offsetWidth lu juste apres une mutation de classList).
+    var rotatorWidths = Array.prototype.map.call(rotatorItems, function (item) { return item.offsetWidth; });
+    rotator.style.width = rotatorWidths[rotatorIndex] + 'px';
     if (rotatorItems.length > 1) {
       setInterval(function () {
         var next = (rotatorIndex + 1) % rotatorItems.length;
         rotatorItems[rotatorIndex].classList.remove('is-active');
         rotatorItems[rotatorIndex].classList.add('is-leaving');
         rotatorItems[next].classList.add('is-active');
-        rotator.style.width = rotatorItems[next].offsetWidth + 'px';
+        rotator.style.width = rotatorWidths[next] + 'px';
         (function (leaving) {
           setTimeout(function () { leaving.classList.remove('is-leaving'); }, 450);
         })(rotatorItems[rotatorIndex]);

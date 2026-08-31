@@ -315,7 +315,7 @@
         "name": "La maintenance mensuelle est-elle obligatoire ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Non, elle est entièrement optionnelle. L'hébergement Vercel est gratuit et votre site fonctionne sans aucun abonnement. La maintenance est utile si vous souhaitez déléguer les mises à jour régulières ou avoir un support prioritaire - sinon, vous êtes 100% autonome après la livraison."
+          "text": "Non, elle est entièrement optionnelle. L'hébergement est gratuit et votre site fonctionne sans aucun abonnement. La maintenance est utile si vous souhaitez déléguer les mises à jour régulières ou avoir un support prioritaire - sinon, vous êtes 100% autonome après la livraison."
         }
       },
       {
@@ -347,7 +347,7 @@
         "name": "L'hébergement est-il vraiment gratuit ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Oui. Votre site est déployé sur un compte gratuit (Vercel ou Cloudflare) créé à votre nom : pour un site vitrine, l'hébergement ne coûte rien, sans limite de durée. Seul le nom de domaine se renouvelle (environ 10 à 15 €/an) - il est offert la 1ère année."
+          "text": "Oui. Votre site est déployé sur un compte gratuit chez un hébergeur reconnu, créé à votre nom : pour un site vitrine, l'hébergement ne coûte rien, sans limite de durée. Seul le nom de domaine se renouvelle (environ 10 à 15 €/an) - il est offert la 1ère année."
         }
       },
       {
@@ -380,7 +380,9 @@
 
   <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/poppins-800.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/images/hero/hero-illustration-test-banana.webp" as="image" fetchpriority="high" />
+  <!-- .hero-visual est en display:none sous 641px (voir shared media query hero) : ne pas precharger
+       cette image en priorite haute sur mobile, ca vole de la bande passante au vrai LCP mobile (le texte du hero). -->
+  <link rel="preload" href="/images/hero/hero-photo-macbook.webp" as="image" fetchpriority="high" media="(min-width: 641px)" />
   <link rel="stylesheet" href="/css/shared.css" />
   <style>
     body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; font-size: 16px; }
@@ -467,7 +469,7 @@
     @media (max-width: 760px) { .simulator-grid { grid-template-columns: 1fr; } }
     .simulator-base { background: var(--accent2); border: 1px solid var(--accent); border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
     .simulator-base-label { font-weight: 700; font-size: 0.98rem; color: var(--accent); }
-    .simulator-base-desc { font-size: 0.874rem; color: var(--accent); opacity: 0.85; flex: 1 1 260px; }
+    .simulator-base-desc { font-size: 0.874rem; color: var(--accent); flex: 1 1 260px; }
     .simulator-base-price { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--accent); white-space: nowrap; }
     .simulator-modules-list { display: flex; flex-direction: column; gap: 0.6rem; }
     .sim-module-item {
@@ -548,7 +550,7 @@
     .step-body h3 { font-weight: 700; font-size: 1.064rem; color: var(--ink); margin-bottom: 0.25rem; }
     .step-body p { font-size: 0.952rem; color: var(--mid); line-height: 1.55; }
     .step-tag { display: inline-block; background: var(--green-bg); color: var(--green); font-size: 0.784rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; margin-top: 0.3rem; }
-    .step-tag-warning { background: #fff3e0; color: #e67e22; }
+    .step-tag-warning { background: #fff3e0; color: #a35400; }
 
     /* INCLUS + POUR QUI (même gabarit visuel, classes distinctes) */
     .included, .audience { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -789,10 +791,11 @@
   </div>
 </nav>
 
+<main>
 <!-- HERO -->
 <section class="hero">
   <div class="hero-visual">
-    <img src="/images/hero/hero-illustration-test-banana.webp" alt="Illustration d'un ordinateur affichant un site internet, entoure d'icones representant une association, un artisan et un commerce" class="hero-illustration" width="1376" height="768" fetchpriority="high" />
+    <img src="/images/hero/hero-photo-macbook.webp" alt="MacBook pose sur un bureau, affichant un site internet professionnel cree par AbiWeb" class="hero-illustration" width="1920" height="1072" />
   </div>
   <div class="hero-inner">
     <div class="hero-content">
@@ -862,13 +865,13 @@
     <p class="section-label">Exemples par secteur</p>
     <h2>À quoi pourrait ressembler votre site ?</h2>
     <p class="secteurs-subtitle">Des maquettes de démonstration fictives, une par type d'activité, pour visualiser concrètement le résultat avant de vous lancer.</p>
-    <div class="secteurs-tabs" role="tablist">
-      <button type="button" class="secteur-tab active" data-demo="association" data-label="Association">🤝 Association</button>
-      <button type="button" class="secteur-tab" data-demo="club-sportif" data-label="Club sportif">🥋 Club sportif</button>
-      <button type="button" class="secteur-tab" data-demo="commerce" data-label="Commerce / Boutique">🛍️ Commerce</button>
-      <button type="button" class="secteur-tab" data-demo="artisan" data-label="Artisan">🔨 Artisan</button>
-      <button type="button" class="secteur-tab" data-demo="tpe-pme" data-label="TPE / PME">🏢 TPE / PME</button>
-      <button type="button" class="secteur-tab" data-demo="freelance" data-label="Auto-entrepreneur / Freelance">💼 Freelance</button>
+    <div class="secteurs-tabs" role="tablist" aria-label="Exemples par secteur d'activité">
+      <button type="button" role="tab" aria-selected="true" class="secteur-tab active" data-demo="association" data-label="Association">🤝 Association</button>
+      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="club-sportif" data-label="Club sportif">🥋 Club sportif</button>
+      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="commerce" data-label="Commerce / Boutique">🛍️ Commerce</button>
+      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="artisan" data-label="Artisan">🔨 Artisan</button>
+      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="tpe-pme" data-label="TPE / PME">🏢 TPE / PME</button>
+      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="freelance" data-label="Auto-entrepreneur / Freelance">💼 Freelance</button>
     </div>
     <div class="secteur-open-row">
       <a href="/demos/association" target="_blank" rel="noopener" id="secteurOpenLink" class="secteur-open-link">Ouvrir cet exemple en plein écran ↗</a>
@@ -1037,7 +1040,7 @@
         <span class="hosting-chip chip-free">Gratuit</span>
       </div>
       <p class="hosting-price">0 € / mois</p>
-      <p class="hosting-desc">Vous créez un compte gratuit sur Vercel ou Cloudflare (5 minutes, je vous guide). Je déploie votre site dessus. Vous êtes propriétaire à 100%, je n'interviens plus après livraison. Aucun abonnement, aucune dépendance.</p>
+      <p class="hosting-desc">Vous créez un compte gratuit chez un hébergeur reconnu (5 minutes, je vous guide). Je déploie votre site dessus. Vous êtes propriétaire à 100%, je n'interviens plus après livraison. Aucun abonnement, aucune dépendance.</p>
     </div>
     <div class="hosting-card">
       <div class="hosting-card-head">
@@ -1159,7 +1162,7 @@
     </details>
     <details class="faq-item">
       <summary class="faq-q">La maintenance mensuelle est-elle obligatoire ?</summary>
-      <p class="faq-a">Non, elle est entièrement optionnelle. L'hébergement Vercel est gratuit et votre site fonctionne sans aucun abonnement. La maintenance est utile si vous souhaitez déléguer les mises à jour régulières ou avoir un support prioritaire - sinon, vous êtes 100% autonome après la livraison.</p>
+      <p class="faq-a">Non, elle est entièrement optionnelle. L'hébergement est gratuit et votre site fonctionne sans aucun abonnement. La maintenance est utile si vous souhaitez déléguer les mises à jour régulières ou avoir un support prioritaire - sinon, vous êtes 100% autonome après la livraison.</p>
     </details>
     <details class="faq-item">
       <summary class="faq-q">Qu'est-ce que le SEO de base inclus dans toutes les formules ?</summary>
@@ -1175,7 +1178,7 @@
     </details>
     <details class="faq-item">
       <summary class="faq-q">L'hébergement est-il vraiment gratuit ?</summary>
-      <p class="faq-a">Oui. Votre site est déployé sur un compte gratuit (Vercel ou Cloudflare) créé à votre nom : pour un site vitrine, l'hébergement ne coûte rien, sans limite de durée. Seul le nom de domaine se renouvelle (environ 10 à 15 €/an) - il est offert la 1ère année.</p>
+      <p class="faq-a">Oui. Votre site est déployé sur un compte gratuit chez un hébergeur reconnu, créé à votre nom : pour un site vitrine, l'hébergement ne coûte rien, sans limite de durée. Seul le nom de domaine se renouvelle (environ 10 à 15 €/an) - il est offert la 1ère année.</p>
     </details>
     <details class="faq-item">
       <summary class="faq-q">Est-ce que je paye avant ou après ?</summary>
@@ -1280,6 +1283,7 @@
     <a class="btn-secondary" href="mailto:contact@abiweb.fr">Envoyer un email</a>
   </div>
 </section>
+</main>
 
 <!-- FOOTER -->
 <footer>
