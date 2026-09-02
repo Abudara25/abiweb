@@ -72,7 +72,12 @@ footer a { display: inline-block; padding: 0.6rem 0.2rem; }
 
 /* Bandeau cookies : sur iPhone, bottom:1rem seul place le bandeau dans la zone
    du home indicator, ou le geste de retour intercepte les taps. */
-.cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; }
+/* opacity/visibility plutot que [hidden] (display:none) : le bandeau garde son
+   rect des le premier frame (position:fixed, hors du flow) et n'apparait/disparait
+   que par opacite, ce qui evite qu'il soit compte dans le CLS (Lighthouse
+   comptait ~0.25 de decalage sur ce seul element avec le toggle [hidden]). */
+.cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; opacity: 0; visibility: hidden; transition: opacity .2s ease; }
+.cookie-banner.visible { opacity: 1; visibility: visible; }
 .cookie-banner p { color: rgba(255,255,255,0.85); font-size: 0.85rem; max-width: none; margin: 0 0 0.75rem; }
 .cookie-banner a { color: #9db1f5; }
 .cookie-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
