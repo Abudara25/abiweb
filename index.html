@@ -482,7 +482,6 @@
     <a class="nav-link" href="#tarifs">Tarifs</a>
     <a class="nav-link" href="#simulateur">Simulateur</a>
     <a class="nav-link" href="#realisations">Réalisations</a>
-    <a class="nav-link" href="#exemples-secteurs">Exemples</a>
     <a class="nav-link" href="#processus">Comment ça marche</a>
     <a class="nav-cta" href="#formulaire">Démarrer</a>
     <button class="nav-burger" id="navBurger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navMenu">
@@ -493,7 +492,6 @@
     <a href="#tarifs">Tarifs</a>
     <a href="#simulateur">Simulateur</a>
     <a href="#realisations">Réalisations</a>
-    <a href="#exemples-secteurs">Exemples par secteur</a>
     <a href="#processus">Comment ça marche</a>
     <a href="#formulaire">Demander un devis</a>
   </div>
@@ -536,11 +534,12 @@
 <section class="realisations-section" id="realisations">
   <div class="realisations-inner">
     <p class="section-label">Mes réalisations</p>
-    <h2>Un exemple concret de ce que je crée</h2>
-    <p class="realisations-subtitle">Un site livré, en ligne, fonctionnel. Voyez par vous-même.</p>
+    <h2>Des exemples concrets de ce que je crée</h2>
+    <p class="realisations-subtitle">Des sites livrés, en ligne, fonctionnels. Voyez par vous-même.</p>
+
     <div class="realisation-card">
       <div class="realisation-info">
-        <div class="realisation-tag">Formule Premium · Association sportive</div>
+        <div class="realisation-tag">Association sportive</div>
         <h3 class="realisation-name">ASC Muay Thaï</h3>
         <p class="realisation-desc">Site vitrine complet pour un club de Muay Thaï. Présentation du club, programme des cours, tarifs d'adhésion, lien HelloAsso, galerie photos, formulaire de contact et carte d'accès.</p>
         <ul class="realisation-features">
@@ -564,33 +563,84 @@
         <img src="/images/asc-muaythai-preview.jpg" alt="Aperçu du site ASC Muay Thaï" class="realisation-iframe" loading="lazy" width="1400" height="613" style="height: auto; object-fit: contain;" />
       </div>
     </div>
-  </div>
-</section>
 
-<!-- EXEMPLES PAR SECTEUR -->
-<section class="secteurs-section" id="exemples-secteurs">
-  <div class="secteurs-inner">
-    <p class="section-label">Exemples par secteur</p>
-    <h2>À quoi pourrait ressembler votre site ?</h2>
-    <p class="secteurs-subtitle">Des maquettes de démonstration fictives, une par type d'activité, pour visualiser concrètement le résultat avant de vous lancer.</p>
-    <div class="secteurs-tabs" role="tablist" aria-label="Exemples par secteur d'activité">
-      <button type="button" role="tab" aria-selected="true" class="secteur-tab active" data-demo="association" data-label="Association">🤝 Association</button>
-      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="club-sportif" data-label="Club sportif">🥋 Club sportif</button>
-      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="commerce" data-label="Commerce / Boutique">🛍️ Commerce</button>
-      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="artisan" data-label="Artisan">🔨 Artisan</button>
-      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="tpe-pme" data-label="TPE / PME">🏢 TPE / PME</button>
-      <button type="button" role="tab" aria-selected="false" class="secteur-tab" data-demo="freelance" data-label="Auto-entrepreneur / Freelance">💼 Freelance</button>
-    </div>
-    <div class="secteur-open-row">
-      <a href="/demos/association" target="_blank" rel="noopener" id="secteurOpenLink" class="secteur-open-link">Ouvrir cet exemple en plein écran ↗</a>
-    </div>
-    <div class="secteur-preview">
-      <div class="browser-bar">
-        <div class="browser-dots"><span></span><span></span><span></span></div>
-        <div class="browser-url" id="secteurUrl">abiweb.fr/demos/association</div>
-        <span class="hosting-chip chip-paid">🎨 Maquette illustrative</span>
+    <div class="realisation-card">
+      <div class="realisation-info">
+        <div class="realisation-tag">Artisan · Couverture &amp; charpente</div>
+        <h3 class="realisation-name">YB Couverture</h3>
+        <p class="realisation-desc">Site vitrine pour un artisan couvreur. Présentation des métiers (rénovation toiture, charpente, gouttières, urgences 24/7), zone d'intervention, avis clients et demande de devis en ligne.</p>
+        <ul class="realisation-features">
+          <li>✓ Formulaire de demande de devis</li>
+          <li>✓ Zone d'intervention détaillée (Val d'Oise, Yvelines, Oise)</li>
+          <li>✓ Avis clients mis en avant (Google, AlloVoisins)</li>
+          <li>✓ FAQ intégrée</li>
+          <li>✓ Disponibilité 24/7 affichée</li>
+          <li>✓ 100% responsive mobile</li>
+        </ul>
+        <a href="https://www.yb-couverture.fr/" target="_blank" rel="noopener" class="realisation-btn">Voir le site →</a>
       </div>
-      <video class="secteur-video" id="secteurVideo" src="/images/exemples-secteurs/site-morphing-v3.mp4" preload="none" muted loop playsinline></video>
+      <div class="realisation-preview">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser-url">yb-couverture.fr</div>
+          <span class="hosting-chip chip-free">✅ Site réel, en ligne</span>
+        </div>
+        <img src="/images/yb-couverture-preview.jpg" alt="Aperçu du site YB Couverture" class="realisation-iframe" loading="lazy" width="1568" height="709" style="height: auto; object-fit: contain;" />
+      </div>
+    </div>
+
+    <div class="realisation-card">
+      <div class="realisation-info">
+        <div class="realisation-tag">Association loi 1901 · Solidarité</div>
+        <h3 class="realisation-name">Voix des Voyageurs</h3>
+        <p class="realisation-desc">Site vitrine pour une association de défense des droits des gens du voyage. Présentation des missions, de l'équipe dirigeante et adhésion en ligne via HelloAsso.</p>
+        <ul class="realisation-features">
+          <li>✓ Présentation des missions et de l'équipe</li>
+          <li>✓ Adhésion en ligne via HelloAsso (QR code inclus)</li>
+          <li>✓ Formulaire de contact</li>
+          <li>✓ Design sur-mesure aux couleurs de l'association</li>
+          <li>✓ 100% responsive mobile</li>
+        </ul>
+        <a href="https://www.voixdesvoyageurs.fr/" target="_blank" rel="noopener" class="realisation-btn">Voir le site →</a>
+      </div>
+      <div class="realisation-preview">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser-url">voixdesvoyageurs.fr</div>
+          <span class="hosting-chip chip-free">✅ Site réel, en ligne</span>
+        </div>
+        <img src="/images/voixdesvoyageurs-preview.jpg" alt="Aperçu du site Voix des Voyageurs" class="realisation-iframe" loading="lazy" width="1568" height="709" style="height: auto; object-fit: contain;" />
+      </div>
+    </div>
+
+    <div class="realisation-card">
+      <div class="realisation-info">
+        <div class="realisation-tag">Club sportif · Football jeunes</div>
+        <h3 class="realisation-name">Saint-Gratien FC</h3>
+        <p class="realisation-desc">Site vitrine pour un club de football loisir pour enfants (U6 à U9). Présentation du club, inscription en ligne, informations pratiques et newsletter.</p>
+        <ul class="realisation-features">
+          <li>✓ Formulaire d'adhésion en ligne</li>
+          <li>✓ Newsletter mensuelle</li>
+          <li>✓ Infos pratiques (adresse, horaires, contact)</li>
+          <li>✓ Espace partenaires/sponsors</li>
+          <li>✓ 100% responsive mobile</li>
+        </ul>
+        <a href="https://www.saintgratienfc.fr/" target="_blank" rel="noopener" class="realisation-btn">Voir le site →</a>
+      </div>
+      <div class="realisation-preview">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser-url">saintgratienfc.fr</div>
+          <span class="hosting-chip chip-free">✅ Site réel, en ligne</span>
+        </div>
+        <img src="/images/saintgratienfc-preview.jpg" alt="Aperçu du site Saint-Gratien FC" class="realisation-iframe" loading="lazy" width="1568" height="709" style="height: auto; object-fit: contain;" />
+      </div>
     </div>
   </div>
 </section>

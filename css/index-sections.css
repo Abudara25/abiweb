@@ -1,6 +1,6 @@
 /* Styles des sections de la page d'accueil situees sous le pli (tarifs,
    simulateur, integrations, hebergement, garantie, etapes, inclus/pour qui,
-   FAQ, realisations, exemples par secteur, formulaire, CTA final).
+   FAQ, realisations, formulaire, CTA final).
    Le CSS critique (nav + hero + boutons partages) reste inline dans
    index.html pour peindre le premier ecran sans attendre ce fichier. */
 
@@ -148,6 +148,7 @@
 .realisations-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: var(--ink); }
 .realisations-subtitle { font-size: 1.008rem; color: var(--mid); margin-bottom: 2.5rem; }
 .realisation-card { display: grid; grid-template-columns: 1fr 1.4fr; gap: 2.5rem; align-items: center; }
+.realisation-card + .realisation-card { margin-top: 3.5rem; padding-top: 3.5rem; border-top: 1px solid var(--line); }
 .realisation-tag { display: inline-block; background: var(--accent2); color: var(--accent); font-size: 0.84rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 5px; margin-bottom: 0.85rem; }
 .realisation-name { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--ink); margin-bottom: 0.75rem; }
 .realisation-desc { font-size: 0.98rem; color: var(--mid); line-height: 1.6; margin-bottom: 1.25rem; }
@@ -167,24 +168,6 @@
 @media (max-width: 700px) {
   .realisation-card { grid-template-columns: 1fr; }
   .realisation-preview { display: none; }
-}
-
-/* EXEMPLES PAR SECTEUR */
-.secteurs-section { background: var(--paper); border-bottom: 1px solid var(--line); padding: 4rem 2rem; }
-.secteurs-inner { max-width: 1020px; margin: 0 auto; }
-.secteurs-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: var(--ink); }
-.secteurs-subtitle { font-size: 1.008rem; color: var(--mid); margin-bottom: 2rem; max-width: 620px; }
-.secteurs-tabs { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
-.secteur-tab { padding: 0.6rem 1.1rem; min-height: 44px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--mid); font-size: 0.952rem; font-weight: 600; cursor: pointer; transition: all .15s; }
-.secteur-tab:hover { border-color: var(--accent); color: var(--ink); }
-.secteur-tab.active { background: var(--accent); color: var(--white); border-color: var(--accent); }
-.secteur-open-row { margin-bottom: 0.9rem; }
-.secteur-open-link { font-size: 0.952rem; font-weight: 600; color: var(--accent); text-decoration: none; }
-.secteur-open-link:hover { text-decoration: underline; }
-.secteur-preview { border-radius: 12px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12); border: 1px solid var(--line); }
-.secteur-video { width: 100%; height: 520px; border: none; display: block; object-fit: cover; }
-@media (max-width: 700px) {
-  .secteur-preview { display: none; }
 }
 
 /* FORMULAIRE */
@@ -271,7 +254,7 @@
 }
 
 /* Ancres : ne pas atterrir sous la nav sticky */
-#tarifs, #simulateur, #garantie, #processus, #realisations, #exemples-secteurs, #formulaire { scroll-margin-top: 76px; }
+#tarifs, #simulateur, #garantie, #processus, #realisations, #formulaire { scroll-margin-top: 76px; }
 
 /* FAQ en accordéons */
 .faq-item summary { cursor: pointer; list-style: none; position: relative; padding-right: 2rem; }

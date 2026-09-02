@@ -92,41 +92,6 @@
     });
   }
 
-  // Video de demo "Exemples par secteur" : chargee seulement quand elle
-  // approche du viewport (evite de telecharger ~2.7 Mo des le chargement de
-  // la page alors qu'elle est sous la ligne de flottaison, et masquee sur
-  // mobile ou l'IntersectionObserver ne se declenche jamais).
-  var secteurVideo = document.getElementById('secteurVideo');
-  if (secteurVideo && 'IntersectionObserver' in window) {
-    var videoIo = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          secteurVideo.setAttribute('autoplay', '');
-          secteurVideo.load();
-          secteurVideo.play().catch(function () {});
-          videoIo.unobserve(secteurVideo);
-        }
-      });
-    }, { rootMargin: '200px' });
-    videoIo.observe(secteurVideo);
-  }
-
-  // Onglets "Exemples par secteur" (bascule le lien vers la démo réelle)
-  var secteurUrl = document.getElementById('secteurUrl');
-  var secteurOpenLink = document.getElementById('secteurOpenLink');
-  if (secteurOpenLink) {
-    document.querySelectorAll('.secteur-tab').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        document.querySelectorAll('.secteur-tab').forEach(function (t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-        var demo = btn.dataset.demo;
-        secteurUrl.textContent = 'abiweb.fr/demos/' + demo;
-        secteurOpenLink.href = '/demos/' + demo;
-      });
-    });
-  }
-
   // Onglets du formulaire (contact rapide / brief)
   document.querySelectorAll('.form-tab').forEach(function (btn) {
     btn.addEventListener('click', function () { switchTab(btn.dataset.tab, btn); });
