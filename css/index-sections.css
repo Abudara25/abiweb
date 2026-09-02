@@ -147,8 +147,16 @@
 .realisations-inner { max-width: 1020px; margin: 0 auto; }
 .realisations-inner h2 { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: var(--ink); }
 .realisations-subtitle { font-size: 1.008rem; color: var(--mid); margin-bottom: 2.5rem; }
-.realisation-card { display: grid; grid-template-columns: 1fr 1.4fr; gap: 2.5rem; align-items: center; }
-.realisation-card + .realisation-card { margin-top: 3.5rem; padding-top: 3.5rem; border-top: 1px solid var(--line); }
+.realisations-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.realisations-scroll::-webkit-scrollbar { display: none; }
+.realisation-card { flex: 0 0 100%; width: 100%; scroll-snap-align: start; display: grid; grid-template-columns: 1fr 1.4fr; gap: 2.5rem; align-items: center; }
+.realisations-nav { display: flex; align-items: center; justify-content: center; gap: 1.25rem; margin-top: 2rem; }
+.realisations-arrow { width: 44px; height: 44px; min-width: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--white); color: var(--ink); font-size: 1.1rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s, opacity .15s; }
+.realisations-arrow:hover { background: var(--paper); }
+.realisations-arrow:disabled { opacity: 0.35; cursor: default; }
+.realisations-dots { display: flex; align-items: center; gap: 0.5rem; }
+.realisations-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); border: none; padding: 0; cursor: pointer; transition: width .2s, background .2s; }
+.realisations-dot.active { background: var(--accent); width: 22px; border-radius: 4px; }
 .realisation-tag { display: inline-block; background: var(--accent2); color: var(--accent); font-size: 0.84rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 5px; margin-bottom: 0.85rem; }
 .realisation-name { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--ink); margin-bottom: 0.75rem; }
 .realisation-desc { font-size: 0.98rem; color: var(--mid); line-height: 1.6; margin-bottom: 1.25rem; }

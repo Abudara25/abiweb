@@ -92,6 +92,51 @@
     });
   }
 
+  // Carrousel horizontal "Mes réalisations" (flèches + points + snap au scroll/swipe)
+  var realisationsScroll = document.getElementById('realisationsScroll');
+  if (realisationsScroll) {
+    var realisationsCards = Array.prototype.slice.call(realisationsScroll.querySelectorAll('.realisation-card'));
+    var realisationsDots = Array.prototype.slice.call(document.querySelectorAll('#realisationsDots .realisations-dot'));
+    var realisationsPrev = document.getElementById('realisationsPrev');
+    var realisationsNext = document.getElementById('realisationsNext');
+
+    var currentRealisationIndex = function () {
+      return Math.round(realisationsScroll.scrollLeft / realisationsScroll.clientWidth);
+    };
+    var scrollToRealisation = function (i) {
+      realisationsCards[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    };
+    var updateRealisationsNav = function () {
+      var i = currentRealisationIndex();
+      realisationsDots.forEach(function (dot, di) { dot.classList.toggle('active', di === i); });
+      realisationsPrev.disabled = i <= 0;
+      realisationsNext.disabled = i >= realisationsCards.length - 1;
+    };
+
+    realisationsDots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () { scrollToRealisation(i); });
+    });
+    realisationsPrev.addEventListener('click', function () { scrollToRealisation(Math.max(0, currentRealisationIndex() - 1)); });
+    realisationsNext.addEventListener('click', function () { scrollToRealisation(Math.min(realisationsCards.length - 1, currentRealisationIndex() + 1)); });
+
+    var realisationsScrollRaf = null;
+    realisationsScroll.addEventListener('scroll', function () {
+      if (realisationsScrollRaf) return;
+      realisationsScrollRaf = requestAnimationFrame(function () { updateRealisationsNav(); realisationsScrollRaf = null; });
+    });
+    updateRealisationsNav();
+
+    // Un carrousel horizontal avec scroll-snap peut avaler le scroll vertical
+    // de la souris/trackpad quand le curseur est dessus, bloquant le défilement
+    // de la page. On force le geste vertical à faire défiler la page normalement.
+    realisationsScroll.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        window.scrollBy(0, e.deltaY);
+        e.preventDefault();
+      }
+    }, { passive: false });
+  }
+
   // Onglets du formulaire (contact rapide / brief)
   document.querySelectorAll('.form-tab').forEach(function (btn) {
     btn.addEventListener('click', function () { switchTab(btn.dataset.tab, btn); });

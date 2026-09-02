@@ -20,6 +20,7 @@ export default [
         clearInterval: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
+        requestAnimationFrame: 'readonly',
         // Défini dans analytics-loader.js, appelé depuis cookie-banner.js.
         abiwebLoadAnalytics: 'readonly',
         // Chargés via js/vendor/gsap.min.js et ScrollTrigger.min.js.
