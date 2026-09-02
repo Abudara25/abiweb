@@ -124,7 +124,11 @@
       if (realisationsScrollRaf) return;
       realisationsScrollRaf = requestAnimationFrame(function () { updateRealisationsNav(); realisationsScrollRaf = null; });
     });
-    updateRealisationsNav();
+    // En rAF : la lecture initiale de scrollLeft/clientWidth juste apres les
+    // mutations de style du reveal IntersectionObserver forcait un reflow
+    // synchrone (254ms mesures en mobile PageSpeed). Reporter au prochain
+    // frame laisse le navigateur peindre normalement avant de lire la geometrie.
+    requestAnimationFrame(updateRealisationsNav);
 
     // Un carrousel horizontal avec scroll-snap peut avaler le scroll vertical
     // de la souris/trackpad quand le curseur est dessus, bloquant le défilement

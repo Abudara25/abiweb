@@ -384,7 +384,13 @@
        cette image en priorite haute sur mobile, ca vole de la bande passante au vrai LCP mobile (le texte du hero). -->
   <link rel="preload" href="/images/hero/hero-photo-macbook.webp" as="image" fetchpriority="high" media="(min-width: 641px)" />
   <link rel="stylesheet" href="/css/shared.css" />
-  <link rel="stylesheet" href="/css/index-sections.css" />
+  <!-- index-sections.css ne couvre que les sections sous la ligne de flottaison
+       (tarifs, simulateur, etapes, FAQ, realisations, formulaire) : chargee en
+       media="print" pour ne pas bloquer le premier rendu, puis basculee en
+       "all" par /js/defer-css.js des qu'elle est prete. -->
+  <link rel="stylesheet" href="/css/index-sections.css" media="print" id="deferredSectionsCss" />
+  <script defer src="/js/defer-css.js"></script>
+  <noscript><link rel="stylesheet" href="/css/index-sections.css" /></noscript>
   <style>
     /* CSS critique (nav + hero + boutons partages) : reste inline pour peindre
        le premier ecran sans attendre un fichier externe. Le reste des sections
