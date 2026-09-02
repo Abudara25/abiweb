@@ -73,10 +73,16 @@ footer a { display: inline-block; padding: 0.6rem 0.2rem; }
 /* Bandeau cookies : sur iPhone, bottom:1rem seul place le bandeau dans la zone
    du home indicator, ou le geste de retour intercepte les taps. */
 /* opacity/visibility plutot que [hidden] (display:none) : le bandeau garde son
-   rect des le premier frame (position:fixed, hors du flow) et n'apparait/disparait
-   que par opacite, ce qui evite qu'il soit compte dans le CLS (Lighthouse
-   comptait ~0.25 de decalage sur ce seul element avec le toggle [hidden]). */
-.cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; opacity: 0; visibility: hidden; transition: opacity .2s ease; }
+   rect des le premier frame (position:fixed, hors du flow). Mesure en direct
+   (PerformanceObserver) : ca ne suffisait PAS a expliquer les ~0.25 de CLS
+   remontes par Lighthouse. Vraie cause trouvee en simulant la largeur mobile :
+   le texte du <p> passe de 3 a 4 lignes entre la police de secours (Arial,
+   ~65px de haut a 328px de large) et Inter une fois chargee (~87px) - le
+   bandeau grandit donc de ~22px apres le swap de police, et comme il est
+   ancre par "bottom", son bord haut se deplace = vrai decalage de mise en
+   page. D'ou la police systeme fixe ci-dessous : jamais de swap possible sur
+   ce texte, donc jamais de changement de hauteur. */
+.cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; opacity: 0; visibility: hidden; transition: opacity .2s ease; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 .cookie-banner.visible { opacity: 1; visibility: visible; }
 .cookie-banner p { color: rgba(255,255,255,0.85); font-size: 0.85rem; max-width: none; margin: 0 0 0.75rem; }
 .cookie-banner a { color: #9db1f5; }
