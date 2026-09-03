@@ -95,6 +95,14 @@ footer a { display: inline-block; padding: 0.6rem 0.2rem; }
 .skip-link { position: absolute; left: -9999px; top: 0; z-index: 1000; background: var(--ink); color: #fff; padding: 0.75rem 1.25rem; border-radius: 0 0 8px 0; font-size: 0.9rem; text-decoration: none; }
 .skip-link:focus { left: 0; }
 
+/* Widget Turnstile charge en differe (voir js/turnstile-lazy.js) : la div est
+   vide (0px) jusqu'au chargement de api.js, qui y injecte un iframe de 65px
+   de haut (taille "normal" par defaut, aucun data-size sur le widget). Sans
+   cette reservation, ce passage de 0 a 65px decale tout le contenu en
+   dessous - CLS constate le 2026-09-03 sur bureau apres la mise en place du
+   differe. */
+.cf-turnstile { min-height: 65px; }
+
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
