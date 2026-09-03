@@ -82,7 +82,8 @@
   footer { background: var(--ink); color: rgba(255,255,255,0.75); padding: 2.5rem 1.5rem; font-size: 0.85rem; text-align: center; }
   footer strong { color: #fff; }
 
-  .cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; }
+  .cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; opacity: 0; visibility: hidden; transition: opacity .2s ease; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .cookie-banner.visible { opacity: 1; visibility: visible; }
   .cookie-banner p { color: rgba(255,255,255,0.85); font-size: 0.85rem; max-width: none; margin: 0 0 0.75rem; }
   .cookie-banner a { color: #9db1f5; }
   .cookie-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
@@ -195,13 +196,6 @@
   <p style="margin-top:0.4rem; opacity:0.7;">Photo : Genista, licence <a href="https://creativecommons.org/licenses/by-sa/2.0/" style="color:inherit;">CC BY-SA 2.0</a>, via <a href="https://www.flickr.com/photos/50457550@N00/263238087" style="color:inherit;">Flickr</a></p>
 </footer>
 
-<div class="cookie-banner" id="cookieBanner">
-  <p>Ce site utilise des cookies de mesure d'audience (Google Analytics), déposés uniquement avec votre accord. <a href="/politique-de-confidentialite">En savoir plus</a></p>
-  <div class="cookie-actions">
-    <button id="cookieRefuse">Continuer sans accepter</button>
-    <button id="cookieAccept">Accepter</button>
-  </div>
-</div>
 <script src="/js/cookie-banner.js"></script>
 </body>
 </html>
