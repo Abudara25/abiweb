@@ -384,13 +384,16 @@
        cette image en priorite haute sur mobile, ca vole de la bande passante au vrai LCP mobile (le texte du hero). -->
   <link rel="preload" href="/images/hero/hero-photo-macbook.webp" as="image" fetchpriority="high" media="(min-width: 641px)" />
   <link rel="stylesheet" href="/css/shared.css" />
-  <!-- index-sections.css ne couvre que les sections sous la ligne de flottaison
-       (tarifs, simulateur, etapes, FAQ, realisations, formulaire) : chargee en
-       media="print" pour ne pas bloquer le premier rendu, puis basculee en
-       "all" par /js/defer-css.js des qu'elle est prete. -->
-  <link rel="stylesheet" href="/css/index-sections.css" media="print" id="deferredSectionsCss" />
-  <script defer src="/js/defer-css.js"></script>
-  <noscript><link rel="stylesheet" href="/css/index-sections.css" /></noscript>
+  <!-- index-sections.css reste bloquant (et NON differe en media="print") :
+       la section "Pour qui" est deja visible dans la premiere fenetre
+       (top ~656px sur un viewport bureau de 940px) et son style vit ici.
+       Mesure du 2026-09-03 : en differant ce fichier, cette section passait de
+       230px a 428px de haut une fois le CSS applique, soit ~198px de decalage
+       apres le premier rendu = CLS de 0.19 sur bureau. Le cout du differe
+       (quelques centaines de ms de rendu estimees) etait tres inferieur au
+       cout du CLS dans le score. Ne pas re-differer sans deplacer d'abord les
+       styles des sections au-dessus de la ligne de flottaison en inline. -->
+  <link rel="stylesheet" href="/css/index-sections.css" />
   <style>
     /* CSS critique (nav + hero + boutons partages) : reste inline pour peindre
        le premier ecran sans attendre un fichier externe. Le reste des sections
