@@ -34,15 +34,26 @@ export default [
     },
   },
   {
-    files: ['api/**/*.js'],
+    // Code reellement execute en prod (Cloudflare Workers) : le routeur
+    // _worker.js et les handlers functions/api/*.js qu'il importe. L'ancien
+    // dossier api/*.js (format serverless Vercel, req/res) a ete supprime le
+    // 2026-09-03 - il n'etait plus utilise depuis la migration vers
+    // Cloudflare et n'implementait meme plus la verification Turnstile.
+    files: ['_worker.js', 'functions/**/*.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
       globals: {
-        process: 'readonly',
-        Buffer: 'readonly',
         console: 'readonly',
         fetch: 'readonly',
+        Response: 'readonly',
+        Request: 'readonly',
+        URL: 'readonly',
+        URLSearchParams: 'readonly',
+        AbortSignal: 'readonly',
+        TextEncoder: 'readonly',
+        btoa: 'readonly',
+        crypto: 'readonly',
       },
     },
     rules: {

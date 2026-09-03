@@ -3,10 +3,13 @@
 # n'est pas du contenu du site doit etre exclu explicitement.
 node_modules/
 .git/
+.github/
 .wrangler/
 _worker.js
 functions/
-api/
+tests/
 package.json
 package-lock.json
 wrangler.jsonc
+eslint.config.mjs
+README.md
