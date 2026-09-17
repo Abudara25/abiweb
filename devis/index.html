@@ -2,14 +2,14 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <script src="/js/analytics-loader.js"></script>
+  <script src="/js/analytics-loader.js?v=20260917"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Devis gratuit - Création de site internet | AbiWeb</title>
   <meta name="description" content="Présentez votre projet de site internet en 5 étapes guidées et recevez un devis gratuit et personnalisé, sans engagement. Val-d'Oise, Île-de-France et partout en France, 100% à distance." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.abiweb.fr/devis" />
+  <link rel="canonical" href="https://www.abiweb.fr/devis/" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.abiweb.fr/devis" />
+  <meta property="og:url" content="https://www.abiweb.fr/devis/" />
   <meta property="og:title" content="Devis gratuit - Création de site internet | AbiWeb" />
   <meta property="og:description" content="Présentez votre projet en 5 étapes guidées et recevez un devis gratuit et personnalisé, sans engagement." />
   <meta property="og:locale" content="fr_FR" />
@@ -21,7 +21,7 @@
   <link rel="icon" type="image/svg+xml" href="/images/logo/abiweb-favicon.svg" />
   <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/poppins-800.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/css/shared.css" />
+  <link rel="stylesheet" href="/css/shared.css?v=20260917" />
   <style>
     :root {
       --red: #dc2626;
@@ -111,7 +111,7 @@
     @media (max-width: 540px) { .form-grid { grid-template-columns: 1fr; } }
     .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
     .form-group.full { grid-column: 1 / -1; }
-    .form-group label {
+    .form-group label, .field-label {
       font-size: 0.8rem; font-weight: 600; color: var(--ink);
       display: flex; align-items: center; gap: 0.3rem;
     }
@@ -446,8 +446,9 @@
 
 <!-- PROGRESS -->
 <div class="progress-wrap">
+  <p id="stepAnnouncement" class="sr-only" role="status" aria-live="polite">Étape 1 sur 5 : Vous</p>
   <div class="progress-steps" id="progressSteps">
-    <div class="progress-step active" data-step="1">
+    <div class="progress-step active" data-step="1" aria-current="step">
       <div class="step-circle">1</div>
       <div class="step-label">Vous</div>
     </div>
@@ -470,22 +471,23 @@
   </div>
 </div>
 
-<div class="form-container">
+<main>
+<form class="form-container" id="briefForm" novalidate>
 
   <!-- ===== STEP 1 : VOUS ===== -->
-  <div class="step-panel active" id="step1">
+  <div class="step-panel active" id="step1" tabindex="-1" role="group" aria-label="Étape 1 sur 5 : Vous">
     <div class="card">
-      <div class="card-title"><span class="icon">👤</span> Qui êtes-vous ?</div>
+      <h2 class="card-title"><span class="icon">👤</span> Qui êtes-vous ?</h2>
       <div class="card-subtitle">Ces informations me permettent de vous recontacter avec votre devis personnalisé.</div>
       <div class="form-grid">
         <div class="form-group">
-          <label>Nom de votre structure <span class="required-dot">*</span></label>
-          <input type="text" id="nom-structure" placeholder="Association XYZ, Resto La Table…" />
+          <label for="nom-structure">Nom de votre structure <span class="required-dot">*</span></label>
+          <input type="text" id="nom-structure" required autocomplete="organization" placeholder="Association XYZ, Resto La Table…" />
           <span class="field-error">Merci d'indiquer le nom de votre structure.</span>
         </div>
         <div class="form-group">
-          <label>Type de structure <span class="required-dot">*</span></label>
-          <select id="type-structure">
+          <label for="type-structure">Type de structure <span class="required-dot">*</span></label>
+          <select id="type-structure" required>
             <option value="">- Choisir -</option>
             <option>Association</option>
             <option>Auto-entrepreneur / Freelance</option>
@@ -498,22 +500,22 @@
           <span class="field-error">Veuillez sélectionner un type.</span>
         </div>
         <div class="form-group">
-          <label>Votre nom / prénom <span class="required-dot">*</span></label>
-          <input type="text" id="contact-nom" placeholder="Prénom Nom" />
+          <label for="contact-nom">Votre nom / prénom <span class="required-dot">*</span></label>
+          <input type="text" id="contact-nom" required autocomplete="name" placeholder="Prénom Nom" />
           <span class="field-error">Merci de renseigner votre nom.</span>
         </div>
         <div class="form-group">
-          <label>Email <span class="required-dot">*</span></label>
-          <input type="email" id="contact-email" placeholder="vous@email.fr" />
+          <label for="contact-email">Email <span class="required-dot">*</span></label>
+          <input type="email" id="contact-email" required autocomplete="email" placeholder="vous@email.fr" />
           <span class="field-error">Adresse email invalide.</span>
         </div>
         <div class="form-group">
-          <label>Téléphone</label>
-          <input type="tel" id="contact-tel" placeholder="06 XX XX XX XX" />
+          <label for="contact-tel">Téléphone</label>
+          <input type="tel" id="contact-tel" autocomplete="tel" placeholder="06 XX XX XX XX" />
         </div>
         <div class="form-group">
-          <label>Ville</label>
-          <input type="text" id="contact-ville" placeholder="Paris, Lyon…" />
+          <label for="contact-ville">Ville</label>
+          <input type="text" id="contact-ville" autocomplete="address-level2" placeholder="Paris, Lyon…" />
         </div>
         <!-- Honeypot anti-spam : invisible pour les humains, les bots le remplissent -->
         <div class="form-group" style="position:absolute; left:-9999px;" aria-hidden="true">
@@ -521,17 +523,18 @@
           <input type="text" id="b-website" name="website" tabindex="-1" autocomplete="off" />
         </div>
         <div class="form-group full">
-          <label>Décrivez votre activité en quelques mots <span class="required-dot">*</span></label>
-          <textarea id="activite-desc" placeholder="Ex : cours de guitare pour enfants et adultes à domicile en région parisienne, tous niveaux…"></textarea>
+          <label for="activite-desc">Décrivez votre activité en quelques mots <span class="required-dot">*</span></label>
+          <textarea id="activite-desc" required placeholder="Ex : cours de guitare pour enfants et adultes à domicile en région parisienne, tous niveaux…"></textarea>
           <span class="field-error">Une courte description est nécessaire.</span>
         </div>
         <div class="form-group full">
-          <label>Avez-vous déjà un site internet ?</label>
-          <div class="radio-row">
+          <span class="field-label" id="siteQuestion">Avez-vous déjà un site internet ?</span>
+          <div class="radio-row" role="radiogroup" aria-labelledby="siteQuestion">
             <label class="radio-pill"><input type="radio" name="site-existant" value="non" checked /><span class="radio-pill-label">Non, c'est mon premier site</span></label>
             <label class="radio-pill"><input type="radio" name="site-existant" value="oui" /><span class="radio-pill-label">Oui, je veux le refaire</span></label>
           </div>
           <div id="site-url-wrap" style="display:none; margin-top: 0.75rem;">
+            <label for="site-url">Adresse du site existant</label>
             <input type="url" id="site-url" placeholder="https://ancien-site.fr" />
           </div>
         </div>
@@ -539,16 +542,16 @@
     </div>
     <div class="nav-buttons">
       <span class="step-counter"><strong>Étape 1</strong> sur 5</span>
-      <button class="btn-next" data-goto="2">Suivant →</button>
+      <button class="btn-next" type="button" data-goto="2">Suivant →</button>
     </div>
   </div>
 
   <!-- ===== STEP 2 : CONTENU ===== -->
-  <div class="step-panel" id="step2">
+  <div class="step-panel" id="step2" tabindex="-1" role="group" aria-label="Étape 2 sur 5 : Contenu">
     <div class="card">
-      <div class="card-title"><span class="icon">📄</span> Sections souhaitées</div>
+      <h2 class="card-title"><span class="icon">📄</span> Sections souhaitées</h2>
       <div class="card-subtitle">Cochez tout ce que vous voulez faire apparaître sur votre site. Cela nous aide aussi à vous suggérer la formule adaptée à l'étape suivante.</div>
-      <div class="check-grid">
+      <div class="check-grid" role="group" aria-label="Sections souhaitées">
         <label class="check-item"><input type="checkbox" name="sections" value="Accueil / présentation" checked /><span>Accueil / présentation</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="À propos / histoire" /><span>À propos / histoire</span></label>
         <label class="check-item"><input type="checkbox" name="sections" value="Services / activités" checked /><span>Services / activités</span></label>
@@ -569,11 +572,11 @@
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">📸</span> Photos & vidéos</div>
+      <h2 class="card-title"><span class="icon">📸</span> Photos & vidéos</h2>
       <div class="card-subtitle">Pour savoir comment préparer vos visuels.</div>
       <div class="form-grid">
         <div class="form-group">
-          <label>Avez-vous des photos ?</label>
+          <label for="photos-dispo">Avez-vous des photos ?</label>
           <select id="photos-dispo">
             <option value="">- Choisir -</option>
             <option value="oui-bonnes">Oui, plusieurs bonnes photos</option>
@@ -583,31 +586,29 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Combien de photos environ ?
-            <div class="tooltip-wrap">
-              <div class="tooltip-icon">?</div>
-              <div class="tooltip-text">Essentiel : max 8 - Standard : max 15 - Premium : max 20</div>
-            </div>
+          <label for="photos-nb">Combien de photos environ ?
+            <span class="form-hint">Base : 8 · Standard : 15 · Premium : 20</span>
           </label>
           <select id="photos-nb">
             <option value="">- Choisir -</option>
-            <option>Moins de 5</option>
-            <option>Entre 5 et 10</option>
-            <option>Entre 10 et 20</option>
-            <option>Plus de 20 (Premium uniquement)</option>
+            <option value="5">Jusqu’à 5</option>
+            <option value="8">6 à 8</option>
+            <option value="15">9 à 15</option>
+            <option value="20">16 à 20</option>
+            <option value="more">Plus de 20 — devis personnalisé</option>
           </select>
         </div>
         <div class="form-group full">
-          <label>Avez-vous des vidéos à intégrer ?</label>
-          <div class="radio-row">
+          <span class="field-label" id="videoQuestion">Avez-vous des vidéos à intégrer ?</span>
+          <div class="radio-row" role="radiogroup" aria-labelledby="videoQuestion">
             <label class="radio-pill"><input type="radio" name="videos" value="non" checked /><span class="radio-pill-label">Non</span></label>
             <label class="radio-pill"><input type="radio" name="videos" value="1" /><span class="radio-pill-label">Oui, 1 vidéo</span></label>
             <label class="radio-pill"><input type="radio" name="videos" value="2-3" /><span class="radio-pill-label">Oui, 2 à 3 vidéos</span></label>
           </div>
-          <div class="form-hint">Uniquement des liens YouTube ou Vimeo (pas d'upload de fichier vidéo). Inclus uniquement dans les formules Standard et Premium - option non disponible pour la formule Essentiel.</div>
+          <div class="form-hint">Uniquement des liens YouTube ou Vimeo (pas d’upload de fichier vidéo). Inclus avec Standard et Premium. Avec la base Essentiel, ce besoin fait l’objet d’un devis personnalisé, hors montant affiché.</div>
         </div>
         <div class="form-group">
-          <label>Avez-vous un logo ?</label>
+          <label for="logo-dispo">Avez-vous un logo ?</label>
           <select id="logo-dispo">
             <option value="">- Choisir -</option>
             <option value="oui-pro">Oui, en bonne qualité (PNG/SVG)</option>
@@ -617,7 +618,7 @@
           <div class="form-hint">Sans logo, je vous oriente vers des outils gratuits (Hatchful, Looka).</div>
         </div>
         <div class="form-group">
-          <label>Avez-vous des textes rédigés ?</label>
+          <label for="textes-dispo">Avez-vous des textes rédigés ?</label>
           <select id="textes-dispo">
             <option value="">- Choisir -</option>
             <option>Oui, textes complets prêts</option>
@@ -629,27 +630,27 @@
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">🔗</span> Liens & réseaux</div>
+      <h2 class="card-title"><span class="icon">🔗</span> Liens & réseaux</h2>
       <div class="card-subtitle">Renseignez les liens que vous souhaitez intégrer au site.</div>
       <div class="form-grid">
-        <div class="form-group"><label>Page Facebook</label><input type="url" id="link-fb" placeholder="https://facebook.com/…" /></div>
-        <div class="form-group"><label>Instagram</label><input type="url" id="link-ig" placeholder="https://instagram.com/…" /></div>
-        <div class="form-group"><label>YouTube</label><input type="url" id="link-yt" placeholder="https://youtube.com/…" /></div>
-        <div class="form-group"><label>Autre lien (TikTok, LinkedIn…)</label><input type="url" id="link-autre" placeholder="https://…" /></div>
+        <div class="form-group"><label for="link-fb">Page Facebook</label><input type="url" id="link-fb" placeholder="https://facebook.com/…" /></div>
+        <div class="form-group"><label for="link-ig">Instagram</label><input type="url" id="link-ig" placeholder="https://instagram.com/…" /></div>
+        <div class="form-group"><label for="link-yt">YouTube</label><input type="url" id="link-yt" placeholder="https://youtube.com/…" /></div>
+        <div class="form-group"><label for="link-autre">Autre lien (TikTok, LinkedIn…)</label><input type="url" id="link-autre" placeholder="https://…" /></div>
       </div>
     </div>
 
     <div class="nav-buttons">
-      <button class="btn-prev" data-goto="1">← Précédent</button>
+      <button class="btn-prev" type="button" data-goto="1">← Précédent</button>
       <span class="step-counter"><strong>Étape 2</strong> sur 5</span>
-      <button class="btn-next" data-goto="3">Suivant →</button>
+      <button class="btn-next" type="button" data-goto="3">Suivant →</button>
     </div>
   </div>
 
   <!-- ===== STEP 3 : TARIFICATION ===== -->
-  <div class="step-panel" id="step3">
+  <div class="step-panel" id="step3" tabindex="-1" role="group" aria-label="Étape 3 sur 5 : Tarif">
     <div class="card">
-      <div class="card-title"><span class="icon">💰</span> Tarification</div>
+      <h2 class="card-title"><span class="icon">💰</span> Tarification</h2>
       <div class="card-subtitle">Voici une suggestion de départ selon votre projet. Choisissez une formule clé en main, ou composez votre offre à la carte, fonction par fonction. Pas sûr(e) ? On en discutera ensemble.</div>
 
       <div class="tarif-suggestion-box" id="tarifSuggestionBox"></div>
@@ -661,16 +662,16 @@
         </div>
       </div>
 
-      <div class="radio-row" style="margin-bottom:1.5rem;">
+      <div class="radio-row" role="radiogroup" aria-label="Mode de tarification" style="margin-bottom:1.5rem;">
         <label class="radio-pill"><input type="radio" name="tarif-mode" value="forfait" /><span class="radio-pill-label">📦 Formule clé en main</span></label>
         <label class="radio-pill"><input type="radio" name="tarif-mode" value="alacarte" checked /><span class="radio-pill-label">🛠️ Sur mesure à la carte</span></label>
       </div>
 
       <!-- MODE FORFAIT -->
       <div id="tarif-panel-forfait" style="display:none;">
-        <div class="formules-grid">
+        <div class="formules-grid" role="radiogroup" aria-label="Formule souhaitée">
           <label class="formule-option">
-            <input type="radio" name="formule" value="Essentiel - 590€" checked />
+            <input type="radio" name="formule" value="essentiel" checked />
             <div class="formule-card">
               <div class="formule-name">Essentiel</div>
               <div class="formule-price">590 €</div>
@@ -684,7 +685,7 @@
             </div>
           </label>
           <label class="formule-option">
-            <input type="radio" name="formule" value="Standard - 790€" />
+            <input type="radio" name="formule" value="standard" />
             <div class="formule-card">
               <div class="formule-name">Standard</div>
               <div class="formule-price">790 €</div>
@@ -697,7 +698,7 @@
             </div>
           </label>
           <label class="formule-option">
-            <input type="radio" name="formule" value="Premium - 1290€" />
+            <input type="radio" name="formule" value="premium" />
             <div class="formule-card">
               <div class="formule-name">Premium</div>
               <div class="formule-price">1290 €</div>
@@ -726,30 +727,30 @@
         <div class="sep"></div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
           <span class="form-hint" style="font-size:0.85rem;">Total estimé</span>
-          <span class="formule-price" id="brief-alacarte-total">590 €</span>
+          <span class="formule-price" id="brief-alacarte-total" role="status" aria-live="polite">590 €</span>
         </div>
         <div class="simulator-suggestion" id="brief-suggestion" style="margin-top:0.85rem;"></div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">🔧</span> Maintenance mensuelle</div>
+      <h2 class="card-title"><span class="icon">🔧</span> Maintenance mensuelle</h2>
       <div class="card-subtitle">Optionnel - vous pourrez aussi en discuter plus tard.</div>
       <div class="form-grid">
         <div class="form-group full">
-          <label>Formule de maintenance souhaitée</label>
+          <label for="maintenance-choix">Formule de maintenance souhaitée</label>
           <select id="maintenance-choix">
-            <option value="Aucune pour l'instant">Aucune pour l'instant</option>
-            <option value="Basique - 25€/mois">Basique - 25€/mois (hébergement, surveillance, 1 modif/mois)</option>
-            <option value="Standard - 45€/mois">Standard - 45€/mois (+ 3 modifs/mois + support email 48h)</option>
-            <option value="Premium - 80€/mois">Premium - 80€/mois (modifs illimitées + support prioritaire 24h)</option>
+            <option value="aucune">Aucune pour l'instant</option>
+            <option value="basique">Basique - 25€/mois (hébergement, surveillance, 1 modif/mois)</option>
+            <option value="standard">Standard - 45€/mois (+ 3 modifs/mois + support email 48h)</option>
+            <option value="premium">Premium - 80€/mois (modifs illimitées + support prioritaire 24h)</option>
           </select>
         </div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">🌐</span> Nom de domaine</div>
+      <h2 class="card-title"><span class="icon">🌐</span> Nom de domaine</h2>
       <div class="card-subtitle">L'adresse web de votre site (ex : monasso.fr)</div>
 
       <div style="display:flex;align-items:flex-start;gap:0.6rem;background:var(--green-bg);border:1px solid #a7f3d0;border-radius:10px;padding:0.85rem 1rem;margin-bottom:1.25rem;">
@@ -761,34 +762,35 @@
 
       <div class="form-grid">
         <div class="form-group full">
-          <label>Avez-vous déjà un nom de domaine ?</label>
-          <div class="radio-row">
+          <span class="field-label" id="domaineQuestion">Avez-vous déjà un nom de domaine ?</span>
+          <div class="radio-row" role="radiogroup" aria-labelledby="domaineQuestion">
             <label class="radio-pill"><input type="radio" name="domaine" value="non" checked /><span class="radio-pill-label">Non, je n'en ai pas</span></label>
             <label class="radio-pill"><input type="radio" name="domaine" value="oui" /><span class="radio-pill-label">Oui, je l'ai déjà</span></label>
             <label class="radio-pill"><input type="radio" name="domaine" value="vercel" /><span class="radio-pill-label">Adresse gratuite offerte par l'hébergeur</span></label>
           </div>
         </div>
         <div class="form-group full" id="domaine-nom-wrap">
-          <label>Nom de domaine souhaité / existant</label>
+          <label for="domaine-nom">Nom de domaine souhaité / existant</label>
           <input type="text" id="domaine-nom" placeholder="monsite.fr, monasso.com…" />
           <div class="form-hint">Les extensions courantes (.fr, .com, .org, .net) sont généralement dans la limite offerte. Les extensions premium (.shop, .club, .paris…) peuvent dépasser 15 € - je vous préviens avant achat.</div>
         </div>
       </div>
     </div>
 
+    <p class="scope-warning" id="scopeWarning" role="status" aria-live="polite" hidden></p>
     <div class="nav-buttons">
-      <button class="btn-prev" data-goto="2">← Précédent</button>
+      <button class="btn-prev" type="button" data-goto="2">← Précédent</button>
       <span class="step-counter"><strong>Étape 3</strong> sur 5</span>
-      <button class="btn-next" data-goto="4">Suivant →</button>
+      <button class="btn-next" type="button" data-goto="4">Suivant →</button>
     </div>
   </div>
 
   <!-- ===== STEP 4 : DESIGN ===== -->
-  <div class="step-panel" id="step4">
+  <div class="step-panel" id="step4" tabindex="-1" role="group" aria-label="Étape 4 sur 5 : Design">
     <div class="card">
-        <div class="card-title"><span class="icon">🎨</span> Style général</div>
+        <h2 class="card-title"><span class="icon">🎨</span> Style général</h2>
         <div class="card-subtitle">Quelle ambiance voulez-vous que votre site dégage ? Voici un aperçu concret de chaque style.</div>
-        <div class="style-grid">
+        <div class="style-grid" role="radiogroup" aria-label="Style du site">
           <label class="style-option">
             <input type="radio" name="style" value="Moderne et épuré" checked />
             <div class="style-card">
@@ -885,22 +887,22 @@
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">🌈</span> Couleurs souhaitées</div>
+      <h2 class="card-title"><span class="icon">🌈</span> Couleurs souhaitées</h2>
       <div class="card-subtitle">Sélectionnez les couleurs qui vous plaisent ou décrivez librement.</div>
 
       <div style="margin-bottom: 1rem;">
         <div class="form-hint" style="margin-bottom: 0.6rem; font-weight: 600; color: var(--ink);">Couleur principale (dominante du site)</div>
-        <div class="color-grid" id="colorGrid1">
-          <div class="color-chip selected" style="background:#3b5bdb" data-color="#3b5bdb" data-group="1" title="Bleu classique"></div>
-          <div class="color-chip" style="background:#0ea5e9" data-color="#0ea5e9" data-group="1" title="Bleu ciel"></div>
-          <div class="color-chip" style="background:#16a34a" data-color="#16a34a" data-group="1" title="Vert"></div>
-          <div class="color-chip" style="background:#dc2626" data-color="#dc2626" data-group="1" title="Rouge"></div>
-          <div class="color-chip" style="background:#d97706" data-color="#d97706" data-group="1" title="Jaune/Ambre"></div>
-          <div class="color-chip" style="background:#7c3aed" data-color="#7c3aed" data-group="1" title="Violet"></div>
-          <div class="color-chip" style="background:#db2777" data-color="#db2777" data-group="1" title="Rose"></div>
-          <div class="color-chip" style="background:#0f172a" data-color="#0f172a" data-group="1" title="Noir/Nuit"></div>
-          <div class="color-chip" style="background:#78716c; border:1px solid #ccc" data-color="#78716c" data-group="1" title="Taupe"></div>
-          <input type="color" id="colorPicker1" value="#3b5bdb" title="Couleur personnalisée" />
+        <div class="color-grid" id="colorGrid1" role="group" aria-label="Couleur principale">
+          <button type="button" class="color-chip selected" style="background:#3b5bdb" data-color="#3b5bdb" data-group="1" title="Bleu classique" aria-label="Bleu classique" aria-pressed="true"></button>
+          <button type="button" class="color-chip" style="background:#0ea5e9" data-color="#0ea5e9" data-group="1" title="Bleu ciel" aria-label="Bleu ciel" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#16a34a" data-color="#16a34a" data-group="1" title="Vert" aria-label="Vert" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#dc2626" data-color="#dc2626" data-group="1" title="Rouge" aria-label="Rouge" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#d97706" data-color="#d97706" data-group="1" title="Jaune/Ambre" aria-label="Jaune/Ambre" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#7c3aed" data-color="#7c3aed" data-group="1" title="Violet" aria-label="Violet" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#db2777" data-color="#db2777" data-group="1" title="Rose" aria-label="Rose" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#0f172a" data-color="#0f172a" data-group="1" title="Noir/Nuit" aria-label="Noir/Nuit" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#78716c; border:1px solid #ccc" data-color="#78716c" data-group="1" title="Taupe" aria-label="Taupe" aria-pressed="false"></button>
+          <input type="color" id="colorPicker1" aria-label="Couleur principale personnalisée" value="#3b5bdb" title="Couleur personnalisée" />
         </div>
       </div>
 
@@ -908,54 +910,54 @@
 
       <div style="margin-bottom: 1rem;">
         <div class="form-hint" style="margin-bottom: 0.6rem; font-weight: 600; color: var(--ink);">Couleur secondaire (accents, boutons)</div>
-        <div class="color-grid" id="colorGrid2">
-          <div class="color-chip selected" style="background:#ffffff; border:1px solid #ddd" data-color="#ffffff" data-group="2" title="Blanc"></div>
-          <div class="color-chip" style="background:#f8f7f4; border:1px solid #ddd" data-color="#f8f7f4" data-group="2" title="Crème"></div>
-          <div class="color-chip" style="background:#0f172a" data-color="#0f172a" data-group="2" title="Noir"></div>
-          <div class="color-chip" style="background:#fbbf24" data-color="#fbbf24" data-group="2" title="Or/Jaune"></div>
-          <div class="color-chip" style="background:#34d399" data-color="#34d399" data-group="2" title="Vert menthe"></div>
-          <div class="color-chip" style="background:#f87171" data-color="#f87171" data-group="2" title="Rouge doux"></div>
-          <div class="color-chip" style="background:#818cf8" data-color="#818cf8" data-group="2" title="Lilas"></div>
-          <input type="color" id="colorPicker2" value="#ffffff" title="Couleur personnalisée" />
+        <div class="color-grid" id="colorGrid2" role="group" aria-label="Couleur secondaire">
+          <button type="button" class="color-chip selected" style="background:#ffffff; border:1px solid #ddd" data-color="#ffffff" data-group="2" title="Blanc" aria-label="Blanc" aria-pressed="true"></button>
+          <button type="button" class="color-chip" style="background:#f8f7f4; border:1px solid #ddd" data-color="#f8f7f4" data-group="2" title="Crème" aria-label="Crème" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#0f172a" data-color="#0f172a" data-group="2" title="Noir" aria-label="Noir" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#fbbf24" data-color="#fbbf24" data-group="2" title="Or/Jaune" aria-label="Or/Jaune" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#34d399" data-color="#34d399" data-group="2" title="Vert menthe" aria-label="Vert menthe" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#f87171" data-color="#f87171" data-group="2" title="Rouge doux" aria-label="Rouge doux" aria-pressed="false"></button>
+          <button type="button" class="color-chip" style="background:#818cf8" data-color="#818cf8" data-group="2" title="Lilas" aria-label="Lilas" aria-pressed="false"></button>
+          <input type="color" id="colorPicker2" aria-label="Couleur secondaire personnalisée" value="#ffffff" title="Couleur personnalisée" />
         </div>
       </div>
 
       <div class="sep"></div>
 
       <div class="form-group">
-        <label>Précisions libres sur les couleurs (optionnel)</label>
+        <label for="couleurs-texte">Précisions libres sur les couleurs (optionnel)</label>
         <input type="text" id="couleurs-texte" placeholder="Ex : comme mon logo, du bleu marine et du beige, pas de rouge…" />
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">💡</span> Références & inspirations</div>
+      <h2 class="card-title"><span class="icon">💡</span> Références & inspirations</h2>
       <div class="card-subtitle">Des exemples m'aident à cerner votre vision plus vite.</div>
       <div class="form-grid">
         <div class="form-group full">
-          <label>Sites que vous aimez (URL ou noms)</label>
+          <label for="refs-sites">Sites que vous aimez (URL ou noms)</label>
           <input type="text" id="refs-sites" placeholder="Ex : apple.com pour l'épure, ou le site de tel concurrent…" />
         </div>
         <div class="form-group full">
-          <label>Ce que vous ne voulez surtout PAS (optionnel)</label>
+          <label for="refs-non">Ce que vous ne voulez surtout PAS (optionnel)</label>
           <input type="text" id="refs-non" placeholder="Trop chargé, trop coloré, police fantaisie, animations partout…" />
         </div>
         <div class="form-group full">
-          <label>Informations complémentaires</label>
+          <label for="infos-plus">Informations complémentaires</label>
           <textarea id="infos-plus" placeholder="Horaires, adresse physique, slogan, contraintes particulières, délai souhaité…"></textarea>
         </div>
       </div>
     </div>
 
     <div class="nav-buttons">
-      <button class="btn-prev" data-goto="3">← Précédent</button>
+      <button class="btn-prev" type="button" data-goto="3">← Précédent</button>
       <span class="step-counter"><strong>Étape 4</strong> sur 5</span>
-      <button class="btn-next" data-goto="5">Voir le récap →</button>
+      <button class="btn-next" type="button" data-goto="5">Voir le récap →</button>
     </div>
   </div>
 
   <!-- ===== STEP 5 : RÉCAP ===== -->
-  <div class="step-panel" id="step5">
+  <div class="step-panel" id="step5" tabindex="-1" role="group" aria-label="Étape 5 sur 5 : Récapitulatif">
     <div class="recap-grid">
       <div class="recap-card" id="recap-vous"></div>
       <div class="recap-card" id="recap-formule"></div>
@@ -966,12 +968,12 @@
     <div class="cf-turnstile" id="turnstile-brief" data-sitekey="0x4AAAAAAEFcN1TgFX59vj1X" data-action="brief"></div>
 
     <div class="nav-buttons">
-      <button class="btn-prev" data-goto="4">← Modifier</button>
+      <button class="btn-prev" type="button" data-goto="4">← Modifier</button>
       <span class="step-counter"><strong>Étape 5</strong> sur 5</span>
-      <button class="btn-submit-final" id="submitBriefBtn" type="button">✅ Envoyer mon projet →</button>
+      <button class="btn-submit-final" id="submitBriefBtn" type="submit">✅ Envoyer mon projet →</button>
     </div>
     <div class="form-error-brief" id="error-brief" role="alert" aria-live="assertive">
-      <p>⚠️ L'envoi automatique a échoué. Réessayez, ou envoyez votre brief directement par email.</p>
+      <p id="error-brief-text">L’envoi automatique a échoué. Réessayez, ou envoyez votre brief directement par email.</p>
       <div class="form-error-actions">
         <button type="button" class="btn-submit-final" id="retryBriefBtn">Réessayer</button>
         <a href="#" id="mailtoBriefLink" class="form-error-mailto">Ouvrir ma messagerie →</a>
@@ -980,22 +982,24 @@
   </div>
 
   <!-- SUCCESS -->
-  <div class="success-screen" id="successScreen">
+  <div class="success-screen" id="successScreen" tabindex="-1" role="status">
     <div class="success-icon">🎉</div>
     <h2>Projet envoyé !</h2>
     <p>Merci ! Je prends le temps de bien lire votre projet et vous recontacte dès que possible pour en discuter.<br><br>En attendant, si vous avez des questions : <a href="mailto:contact@abiweb.fr" style="color:var(--accent)">contact@abiweb.fr</a></p>
   </div>
 
-</div>
+</form>
+</main>
 
 <footer>
   <p>© 2026 AbiWeb · <a href="mailto:contact@abiweb.fr">contact@abiweb.fr</a> · <a href="/mentions-legales">Mentions légales</a> · <a href="/cgv">CGV</a> · <a href="/politique-de-confidentialite">Politique de confidentialité</a></p>
 </footer>
 
 <!-- Turnstile charge a l'approche du formulaire (voir js/turnstile-lazy.js). -->
-<script src="/js/turnstile-lazy.js" defer></script>
-<script src="/js/pricing-data.js"></script>
-<script src="/js/devis.js"></script>
-  <script src="/js/cookie-banner.js"></script>
+<script src="/js/turnstile-lazy.js?v=20260917" defer></script>
+<!-- Autocompletion Google Places, chargee au focus du champ Ville (voir js/ville-autocomplete.js). -->
+<script src="/js/ville-autocomplete.js?v=20260917" defer></script>
+<script type="module" src="/js/devis.js?v=20260917"></script>
+  <script src="/js/cookie-banner.js?v=20260917"></script>
 </body>
 </html>

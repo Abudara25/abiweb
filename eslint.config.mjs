@@ -3,7 +3,7 @@ export default [
     ignores: ['node_modules/**', 'js/vendor/**'],
   },
   {
-    files: ['js/**/*.js'],
+    files: ['js/**/*.js', 'suivi-abiweb/**/*.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'script',
@@ -21,17 +21,31 @@ export default [
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
         requestAnimationFrame: 'readonly',
+        AbortController: 'readonly',
+        AbortSignal: 'readonly',
+        URLSearchParams: 'readonly',
         // Défini dans analytics-loader.js, appelé depuis cookie-banner.js.
         abiwebLoadAnalytics: 'readonly',
         // Chargés via js/vendor/gsap.min.js et ScrollTrigger.min.js.
         gsap: 'readonly',
         ScrollTrigger: 'readonly',
+        // Chargé dynamiquement par js/ville-autocomplete.js (Google Maps JS API).
+        google: 'readonly',
       },
     },
     rules: {
-      'no-unused-vars': 'warn',
+      'no-unused-vars': ['error', { caughtErrors: 'none' }],
       'no-undef': 'error',
+      'no-unreachable': 'error',
+      'no-constant-condition': 'error',
+      'no-dupe-keys': 'error',
+      'no-duplicate-case': 'error',
+      'constructor-super': 'error',
     },
+  },
+  {
+    files: ['js/home.js', 'js/devis.js', 'js/pricing-data.js', 'js/pricing-catalogue.js', 'js/form-rules.js', 'js/form-ui.js'],
+    languageOptions: { sourceType: 'module' },
   },
   {
     // Code reellement execute en prod (Cloudflare Workers) : le routeur
@@ -57,8 +71,35 @@ export default [
       },
     },
     rules: {
-      'no-unused-vars': 'warn',
+      'no-unused-vars': ['error', { caughtErrors: 'none' }],
       'no-undef': 'error',
+      'no-unreachable': 'error',
+      'no-constant-condition': 'error',
+      'no-dupe-keys': 'error',
+      'no-duplicate-case': 'error',
+      'constructor-super': 'error',
+    },
+  },
+  {
+    files: ['tests/**/*.mjs', 'scripts/**/*.mjs', 'client-template/**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        process: 'readonly', console: 'readonly', Buffer: 'readonly',
+        Request: 'readonly', Response: 'readonly', Headers: 'readonly',
+        fetch: 'readonly', URL: 'readonly', URLSearchParams: 'readonly',
+        AbortController: 'readonly', AbortSignal: 'readonly', DOMException: 'readonly',
+        setTimeout: 'readonly', clearTimeout: 'readonly', setImmediate: 'readonly',
+        TextEncoder: 'readonly', TextDecoder: 'readonly', crypto: 'readonly', btoa: 'readonly',
+      },
+    },
+    rules: {
+      'no-unused-vars': ['error', { caughtErrors: 'none' }],
+      'no-undef': 'error',
+      'no-unreachable': 'error',
+      'no-constant-condition': 'error',
+      'no-dupe-keys': 'error',
     },
   },
 ];

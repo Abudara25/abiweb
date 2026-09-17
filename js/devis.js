@@ -1,7 +1,21 @@
+import * as pricing from './pricing-catalogue.js';
+import { BRIEF_LIMITS } from './form-rules.js';
+import { applyFieldLimits, setFieldError, createSubmissionState, postForm, formErrorMessage } from './form-ui.js';
+
 let currentStep = 1;
 let selectedColor1 = '#3b5bdb';
 let selectedColor2 = '#ffffff';
 const formLoadedAt = Date.now();
+const briefSubmission = createSubmissionState();
+let briefSending = false;
+
+const fieldIds = {
+  nom: 'nom-structure', contact: 'contact-nom', email: 'contact-email', tel: 'contact-tel',
+  ville: 'contact-ville', activite: 'activite-desc', siteUrl: 'site-url', domaineNom: 'domaine-nom',
+  fbLink: 'link-fb', igLink: 'link-ig', ytLink: 'link-yt', autreLink: 'link-autre',
+  couleursTexte: 'couleurs-texte', refs: 'refs-sites', refNon: 'refs-non', infos: 'infos-plus',
+};
+applyFieldLimits(fieldIds, BRIEF_LIMITS);
 
 // Echappe le texte saisi par le visiteur avant de l'injecter dans le récap (innerHTML).
 function escHtml(value) {
@@ -9,7 +23,6 @@ function escHtml(value) {
 }
 
 // ===== TARIFICATION =====
-const pricing = window.AbiWebPricing;
 document.getElementById('brief-base-desc').textContent = '- ' + pricing.BASE_LABEL;
 document.getElementById('brief-base-price').textContent = pricing.BASE_PRICE + ' €';
 
@@ -37,11 +50,14 @@ function updateAlaCarteTotal() {
   const suggestion = pricing.bestPackSuggestion(checked);
   if (suggestion) {
     suggestionEl.classList.add('visible');
-    suggestionEl.innerHTML = `Vous avez sélectionné l'équivalent de la formule <strong>${suggestion.formule.name}</strong>, économisez <strong>${suggestion.savings} €</strong> en prenant le pack (${suggestion.packTotal} € au lieu de ${total} €).`;
+    const extra = suggestion.extraKeys.length ? ' + options sélectionnées' : '';
+    const included = suggestion.includedExtraKeys.length ? ' Ce pack inclut aussi des fonctions supplémentaires.' : '';
+    suggestionEl.innerHTML = `La formule <strong>${suggestion.formule.name}${extra}</strong> couvre vos besoins pour <strong>${suggestion.packTotal} €</strong>, soit ${suggestion.savings} € d’économie.${included}`;
   } else {
     suggestionEl.classList.remove('visible');
     suggestionEl.innerHTML = '';
   }
+  updateScopeWarning();
 }
 briefModulesList.addEventListener('change', updateAlaCarteTotal);
 updateAlaCarteTotal();
@@ -49,6 +65,27 @@ updateAlaCarteTotal();
 function setTarifMode(mode) {
   document.getElementById('tarif-panel-forfait').style.display = mode === 'forfait' ? 'block' : 'none';
   document.getElementById('tarif-panel-alacarte').style.display = mode === 'alacarte' ? 'block' : 'none';
+  updateScopeWarning();
+}
+
+function mediaConstraints() {
+  return pricing.estimateMediaConstraints({
+    tarifMode: document.querySelector('input[name="tarif-mode"]:checked')?.value,
+    formule: document.querySelector('input[name="formule"]:checked')?.value,
+    moduleKeys: Array.from(briefModulesList.querySelectorAll('input:checked')).map(input => input.value),
+    photosNb: document.getElementById('photos-nb').value,
+    videos: document.querySelector('input[name="videos"]:checked')?.value,
+    sections: Array.from(document.querySelectorAll('input[name="sections"]:checked')).map(input => input.value),
+  });
+}
+
+function updateScopeWarning() {
+  const scope = mediaConstraints();
+  const warning = document.getElementById('scopeWarning');
+  warning.hidden = scope.estimationStatus !== 'custom';
+  warning.textContent = scope.estimationStatus === 'custom'
+    ? `Devis personnalisé nécessaire. Le montant affiché couvre la sélection tarifaire ; ces besoins restent à chiffrer : ${scope.estimationReasons.join(' ')}`
+    : '';
 }
 document.querySelectorAll('input[name="tarif-mode"]').forEach(r => {
   r.addEventListener('change', () => { if (r.checked) setTarifMode(r.value); });
@@ -113,8 +150,10 @@ function updateTarifSuggestion() {
     idx = Math.max(idx, tierIndexForModule(k));
     if (REASON_LABELS[k] && !reasons.includes(REASON_LABELS[k])) reasons.push(REASON_LABELS[k]);
   });
-  if (videos && videos !== 'non') { idx = Math.max(idx, 1); reasons.push('l’intégration de vidéos'); }
-  if (photosNb === 'Plus de 20 (Premium uniquement)') { idx = Math.max(idx, 2); reasons.push('une galerie de plus de 20 photos'); }
+  const wantsVideos = videos && videos !== 'non' || document.querySelector('input[name="sections"][value="Vidéos"]').checked;
+  if (wantsVideos) { idx = Math.max(idx, 1); reasons.push('l’intégration de vidéos'); }
+  const photosCount = pricing.photoCount(photosNb);
+  if (photosCount > 8) { idx = Math.max(idx, photosCount > 15 ? 2 : 1); reasons.push('le nombre de photos'); }
 
   const formule = pricing.formuleByKey(TIER_ORDER[idx]);
   const reasonText = reasons.length
@@ -137,7 +176,7 @@ function updateTarifSuggestion() {
 
   // Présélectionne + badge la formule correspondante, pour le client qui préfère un forfait fixe
   document.querySelectorAll('.formule-suggested-badge').forEach(b => b.remove());
-  const radio = document.querySelector(`input[name="formule"][value="${formule.name} - ${formule.price}€"]`);
+  const radio = document.querySelector(`input[name="formule"][value="${formule.key}"]`);
   if (radio) {
     radio.checked = true;
     const card = radio.nextElementSibling;
@@ -148,6 +187,7 @@ function updateTarifSuggestion() {
       card.insertBefore(badge, card.firstChild);
     }
   }
+  updateScopeWarning();
 }
 
 // Prefill from the homepage simulator, if the visitor came from "Demander un devis"
@@ -160,17 +200,17 @@ function updateTarifSuggestion() {
     if (selection.formule) {
       // Arrivée depuis un bouton "Choisir X" de l'accueil : ce choix explicite prime sur la suggestion auto
       const f = pricing.formuleByKey(selection.formule);
-      const radio = f && document.querySelector(`input[name="formule"][value="${f.name} - ${f.price}€"]`);
+      const radio = f && document.querySelector(`input[name="formule"][value="${f.key}"]`);
       if (radio) {
         radio.checked = true;
         document.querySelector('input[name="tarif-mode"][value="forfait"]').checked = true;
         setTarifMode('forfait');
         userModifiedTarif = true;
       }
-    } else if (selection.modules && selection.modules.length) {
+    } else if (Array.isArray(selection.modules)) {
       document.querySelector('input[name="tarif-mode"][value="alacarte"]').checked = true;
       setTarifMode('alacarte');
-      selection.modules.forEach(key => {
+      pricing.uniqueModuleKeys(selection.modules).forEach(key => {
         const cb = briefModulesList.querySelector(`input[value="${key}"]`);
         if (cb) cb.checked = true;
       });
@@ -178,7 +218,7 @@ function updateTarifSuggestion() {
       userModifiedTarif = true;
     }
   } catch {}
-  sessionStorage.removeItem('abiweb_pricing_selection');
+  try { sessionStorage.removeItem('abiweb_pricing_selection'); } catch { /* Stockage facultatif. */ }
 })();
 
 // Show/hide site URL
@@ -193,18 +233,22 @@ document.querySelectorAll('input[name="site-existant"]').forEach(r => {
 document.querySelectorAll('.color-chip').forEach(chip => {
   chip.addEventListener('click', function() {
     const group = this.dataset.group;
-    document.querySelectorAll(`.color-chip[data-group="${group}"]`).forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll(`.color-chip[data-group="${group}"]`).forEach(c => {
+      c.classList.remove('selected');
+      c.setAttribute('aria-pressed', 'false');
+    });
     this.classList.add('selected');
+    this.setAttribute('aria-pressed', 'true');
     if (group === '1') { selectedColor1 = this.dataset.color; document.getElementById('colorPicker1').value = this.dataset.color; }
     else { selectedColor2 = this.dataset.color; document.getElementById('colorPicker2').value = this.dataset.color; }
   });
 });
 document.getElementById('colorPicker1').addEventListener('input', function() {
-  document.querySelectorAll('.color-chip[data-group="1"]').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.color-chip[data-group="1"]').forEach(c => { c.classList.remove('selected'); c.setAttribute('aria-pressed', 'false'); });
   selectedColor1 = this.value;
 });
 document.getElementById('colorPicker2').addEventListener('input', function() {
-  document.querySelectorAll('.color-chip[data-group="2"]').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.color-chip[data-group="2"]').forEach(c => { c.classList.remove('selected'); c.setAttribute('aria-pressed', 'false'); });
   selectedColor2 = this.value;
 });
 
@@ -220,15 +264,25 @@ function validate(step) {
     ];
     fields.forEach(f => {
       const el = document.getElementById(f.id);
-      const grp = el.closest('.form-group');
-      if (!f.check(el.value.trim())) { grp.classList.add('has-error'); ok = false; }
-      else grp.classList.remove('has-error');
+      if (setFieldError(el, !f.check(el.value.trim()) || !el.checkValidity())) ok = false;
     });
+  }
+  document.querySelectorAll(`#step${step} input:not([type="radio"]):not([type="checkbox"]), #step${step} textarea`).forEach(field => {
+    if (!field.checkValidity() || field.maxLength > 0 && field.value.length > field.maxLength) {
+      setFieldError(field, true);
+      ok = false;
+    }
+  });
+  if (!ok) {
+    const invalid = document.querySelector(`#step${step} [aria-invalid="true"]`);
+    invalid?.focus();
+    document.getElementById('stepAnnouncement').textContent = 'Vérifiez les champs signalés avant de continuer.';
   }
   return ok;
 }
 
 function goStep(n) {
+  if (briefSending) return;
   if (n > currentStep && !validate(currentStep)) return;
   if (n === 3) updateTarifSuggestion();
   if (n === 5) buildRecap();
@@ -240,9 +294,14 @@ function goStep(n) {
     s.classList.remove('active', 'done');
     if (sn < n) s.classList.add('done');
     if (sn === n) s.classList.add('active');
+    if (sn === n) s.setAttribute('aria-current', 'step');
+    else s.removeAttribute('aria-current');
   });
   currentStep = n;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const stepPanel = document.getElementById('step' + n);
+  stepPanel.focus({ preventScroll: true });
+  document.getElementById('stepAnnouncement').textContent = `Étape ${n} sur 5 : ${['Vous', 'Contenu', 'Tarif', 'Design', 'Récapitulatif'][n - 1]}`;
+  window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 }
 
 function buildRecap() {
@@ -270,15 +329,16 @@ function buildRecap() {
 
   // TARIFICATION
   const tarifMode = document.querySelector('input[name="tarif-mode"]:checked')?.value || 'forfait';
-  const maintenance = document.getElementById('maintenance-choix').value;
+  const maintenanceChoice = pricing.maintenanceByKey(document.getElementById('maintenance-choix').value);
+  const maintenance = maintenanceChoice ? `${maintenanceChoice.label}${maintenanceChoice.price ? ` — ${maintenanceChoice.price} €/mois` : ''}` : '-';
   const domaine = document.querySelector('input[name="domaine"]:checked')?.value || '-';
   const domaineNom = document.getElementById('domaine-nom').value;
   const domaineLabel = domaine === 'non' ? 'Pas encore - à acheter' : domaine === 'oui' ? 'Oui, déjà acheté' : 'Adresse gratuite offerte par l\'hébergeur';
 
   let tarifRow;
   if (tarifMode === 'forfait') {
-    const formule = document.querySelector('input[name="formule"]:checked')?.value || '-';
-    tarifRow = `<div class="recap-row"><span class="recap-label">Formule</span><span class="recap-formule-badge">${formule}</span></div>`;
+    const formule = pricing.formuleByKey(document.querySelector('input[name="formule"]:checked')?.value);
+    tarifRow = `<div class="recap-row"><span class="recap-label">Formule</span><span class="recap-formule-badge">${formule.name} — ${formule.price} €</span></div>`;
   } else {
     const modules = Array.from(briefModulesList.querySelectorAll('input[type="checkbox"]:checked')).map(c => pricing.moduleByKey(c.value)?.label || c.value);
     const total = document.getElementById('brief-alacarte-total').textContent;
@@ -292,6 +352,7 @@ function buildRecap() {
   document.getElementById('recap-formule').innerHTML = `
     <div class="recap-title">💰 Tarification</div>
     ${tarifRow}
+    ${mediaConstraints().estimationStatus === 'custom' ? `<p class="scope-warning">Montant partiel — devis personnalisé nécessaire. ${escHtml(mediaConstraints().estimationReasons.join(' '))}</p>` : ''}
     <div class="recap-row"><span class="recap-label">Maintenance</span><span class="recap-value">${maintenance}</span></div>
     <div class="recap-row"><span class="recap-label">Nom de domaine</span><span class="recap-value">${domaineLabel}${domaineNom ? ' - ' + escHtml(domaineNom) : ''}</span></div>
   `;
@@ -299,7 +360,7 @@ function buildRecap() {
   // CONTENU
   const sections = Array.from(document.querySelectorAll('input[name="sections"]:checked')).map(c => c.value);
   const photos = document.getElementById('photos-dispo').value;
-  const photosNb = document.getElementById('photos-nb').value;
+  const photosNb = document.getElementById('photos-nb').selectedOptions[0].textContent;
   const videos = document.querySelector('input[name="videos"]:checked')?.value;
   const logo = document.getElementById('logo-dispo').value;
   const textes = document.getElementById('textes-dispo').value;
@@ -342,6 +403,7 @@ function getTurnstileToken(containerId) {
 
 function collectData() {
   return {
+    ...mediaConstraints(),
     nom: document.getElementById('nom-structure').value,
     type: document.getElementById('type-structure').value,
     contact: document.getElementById('contact-nom').value,
@@ -386,7 +448,11 @@ function collectData() {
 
 function mailtoFallback(data) {
   const domaineLabel = data.domaine === 'non' ? 'Non, à acheter' : data.domaine === 'oui' ? 'Oui, déjà acheté' : 'Adresse gratuite offerte par l\'hébergeur';
-  const tarifLabel = data.tarifMode === 'forfait' ? data.formule : `Sur mesure - ${data.totalEstime}€`;
+  const formule = pricing.formuleByKey(data.formule);
+  const formuleLabel = formule ? `${formule.name} — ${formule.price} €` : 'Non précisée';
+  const maintenance = pricing.maintenanceByKey(data.maintenance);
+  const maintenanceLabel = maintenance ? `${maintenance.label}${maintenance.price ? ` — ${maintenance.price} €/mois` : ''}` : 'Aucune';
+  const tarifLabel = data.tarifMode === 'forfait' ? formuleLabel : `Sur mesure - ${data.totalEstime}€`;
   const subject = encodeURIComponent(`Brief AbiWeb - ${data.nom} (${tarifLabel})`);
   const body = encodeURIComponent(
 `=== BRIEF CLIENT ABIWEB ===
@@ -400,16 +466,18 @@ Téléphone : ${data.tel || 'Non renseigné'}
 Ville : ${data.ville || 'Non renseignée'}
 Activité : ${data.activite}
 Site existant : ${data.siteExistant === 'oui' ? 'Oui - refonte' : 'Non - 1er site'}
+Adresse du site : ${data.siteUrl || 'Non renseignée'}
 
 --- TARIFICATION ---
 Mode : ${data.tarifMode === 'forfait' ? 'Formule clé en main' : 'Sur mesure à la carte'}
-${data.tarifMode === 'forfait' ? 'Formule : ' + data.formule : 'Modules : ' + (data.modulesChoisis.join(', ') || 'Base seule') + '\nTotal estimé : ' + data.totalEstime + '€'}
-Maintenance : ${data.maintenance}
+${data.tarifMode === 'forfait' ? 'Formule : ' + formuleLabel : 'Modules : ' + (data.modulesChoisis.join(', ') || 'Base seule') + '\nTotal estimé : ' + data.totalEstime + '€'}
+${data.estimationStatus === 'custom' ? 'Montant partiel — devis personnalisé nécessaire : ' + data.estimationReasons.join(' ') : ''}
+Maintenance : ${maintenanceLabel}
 Domaine : ${domaineLabel}${data.domaineNom ? ' - ' + data.domaineNom : ''}
 
 --- CONTENU ---
 Sections souhaitées : ${data.sections.join(', ') || 'Non précisé'}
-Photos : ${data.photos || 'Non précisé'} - Nombre : ${data.photosNb || 'Non précisé'}
+Photos : ${data.photos || 'Non précisé'} - Nombre : ${pricing.PHOTO_OPTIONS.find(option => option.value === data.photosNb)?.label || 'Non précisé'}
 Vidéos : ${data.videos || 'Non précisé'}
 Logo : ${data.logo || 'Non précisé'}
 Textes : ${data.textes || 'Non précisé'}
@@ -433,29 +501,44 @@ ${data.infos || 'Aucune'}
 }
 
 async function submitBrief() {
+  if (briefSending) return;
+  for (let step = 1; step < 5; step++) {
+    if (!validate(step)) {
+      goStep(step);
+      validate(step);
+      return;
+    }
+  }
   const data = collectData();
-  const btn = document.querySelector('.btn-submit-final');
+  const btn = document.getElementById('submitBriefBtn');
   const originalLabel = btn.textContent;
+  briefSending = true;
+  document.getElementById('briefForm').setAttribute('aria-busy', 'true');
+  document.querySelectorAll('[data-goto]').forEach(button => { button.disabled = true; });
   btn.disabled = true;
+  document.getElementById('retryBriefBtn').disabled = true;
   btn.textContent = 'Envoi en cours…';
+  document.getElementById('error-brief').classList.remove('visible');
 
   try {
-    const resp = await fetch('/api/send-brief', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!resp.ok) throw new Error('send_failed');
+    await postForm('/api/send-brief', briefSubmission.prepare(data));
+    briefSubmission.reset();
 
     document.getElementById('error-brief').classList.remove('visible');
     document.getElementById('step5').classList.remove('active');
     document.getElementById('successScreen').classList.add('visible');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } catch {
-    btn.disabled = false;
-    btn.textContent = originalLabel;
+    document.getElementById('successScreen').focus();
+    document.getElementById('stepAnnouncement').textContent = 'Projet envoyé avec succès.';
+  } catch (error) {
+    document.getElementById('error-brief-text').textContent = formErrorMessage(error);
     document.getElementById('error-brief').classList.add('visible');
   } finally {
+    briefSending = false;
+    document.getElementById('briefForm').setAttribute('aria-busy', 'false');
+    document.querySelectorAll('[data-goto]').forEach(button => { button.disabled = false; });
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+    document.getElementById('retryBriefBtn').disabled = false;
     // Jeton Turnstile a usage unique - il faut en redemander un pour le prochain essai.
     if (window.turnstile) window.turnstile.reset(document.getElementById('turnstile-brief'));
   }
@@ -481,5 +564,12 @@ if (mailtoBriefLink) {
 document.querySelectorAll('[data-goto]').forEach(function (btn) {
   btn.addEventListener('click', function () { goStep(Number(btn.dataset.goto)); });
 });
-const submitBriefBtn = document.getElementById('submitBriefBtn');
-if (submitBriefBtn) submitBriefBtn.addEventListener('click', submitBrief);
+document.getElementById('briefForm').addEventListener('submit', event => {
+  event.preventDefault();
+  if (currentStep < 5) goStep(currentStep + 1);
+  else submitBrief();
+});
+document.querySelectorAll('#briefForm input, #briefForm textarea, #briefForm select').forEach(field => {
+  field.addEventListener('input', () => setFieldError(field, false));
+  field.addEventListener('change', updateScopeWarning);
+});

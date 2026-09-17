@@ -11,50 +11,15 @@ import {
   sendFailureAlert,
   toBase64,
 } from './_lib/email-utils.js';
-import { moduleByKey, moduleLabels, alaCarteTotal } from './_lib/pricing.js';
-import { enforceRateLimit } from './_lib/rate-limit.js';
+import { moduleByKey, moduleLabels, alaCarteTotal, estimateMediaConstraints, PHOTO_OPTIONS } from './_lib/pricing.js';
+import { enforceRateLimit, enforceSubmissionLimit } from './_lib/rate-limit.js';
 import { enforceTurnstile } from './_lib/turnstile.js';
-
-const LIMITS = {
-  nom: 120,
-  type: 60,
-  contact: 100,
-  email: 254,
-  tel: 30,
-  ville: 100,
-  activite: 1000,
-  siteUrl: 300,
-  formule: 60,
-  tarifMode: 20,
-  maintenance: 80,
-  domaine: 20,
-  domaineNom: 120,
-  photos: 40,
-  photosNb: 40,
-  videos: 20,
-  logo: 40,
-  textes: 80,
-  fbLink: 300,
-  igLink: 300,
-  ytLink: 300,
-  autreLink: 300,
-  style: 60,
-  couleur1: 30,
-  couleur2: 30,
-  couleursTexte: 300,
-  refs: 500,
-  refNon: 300,
-  infos: 3000,
-};
-
-// Un humain ne peut pas remplir les 5 étapes du brief en moins de 5s - filtre les bots qui postent direct.
-const MIN_FILL_MS = 5000;
-
-const json = (data, status = 200) =>
-  new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
+import { BRIEF_LIMITS as LIMITS } from '../../js/form-rules.js';
+import { resolveFormule, formuleLabel, resolveMaintenance, maintenanceLabel } from './_lib/catalogue-validation.js';
+import { json, invalidFields, validList, validSubmissionId, withIdempotency, continueInBackground } from './_lib/submissions.js';
 
 function safeColor(value) {
-  return /^#[0-9a-fA-F]{3,8}$/.test(value) ? value : '';
+  return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(value) ? value : '';
 }
 
 function htmlLink(url) {
@@ -77,7 +42,7 @@ function colorChip(hex) {
   return `<span style="display:inline-block;width:14px;height:14px;border-radius:3px;background-color:${safe};border:1px solid #d5d4d0;">&nbsp;</span>&nbsp;${esc(safe)}`;
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, ctx }) {
   // Plafonne les envois avant tout traitement : un abus ne doit pas consommer
   // le quota Brevo ni noyer la boite contact@abiweb.fr.
   const limited = enforceRateLimit(request);
@@ -87,12 +52,9 @@ export async function onRequestPost({ request, env }) {
   try {
     body = await request.json();
   } catch {
-    body = {};
+    return json({ error: 'invalid_json' }, 400);
   }
-  if (!body || typeof body !== 'object') body = {};
-
-  const turnstileRejection = await enforceTurnstile(request, env, body.turnstileToken, 'brief');
-  if (turnstileRejection) return turnstileRejection;
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return json({ error: 'invalid_input' }, 400);
 
   // Honeypot : champ invisible pour les humains - rempli, c'est un bot.
   // On répond un faux succès pour ne pas lui signaler le rejet.
@@ -100,28 +62,55 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: true });
   }
 
-  const elapsed = Date.now() - Number(body.ts);
-  if (!Number.isFinite(elapsed) || elapsed < MIN_FILL_MS) {
-    return json({ ok: true });
-  }
+  const fields = invalidFields(body, LIMITS);
+  if (!validList(body.sections, 20, 100)) fields.push('sections');
+  if (!validList(body.moduleKeys, 20, 30)) fields.push('moduleKeys');
+  if (!validSubmissionId(body.submissionId)) fields.push('submissionId');
+  if (fields.length) return json({ error: 'invalid_input', fields }, 400);
 
   const data = {};
   for (const [field, max] of Object.entries(LIMITS)) {
     data[field] = clean(body[field], max);
   }
   data.siteExistant = body.siteExistant === 'oui' ? 'oui' : 'non';
-  data.sections = cleanList(body.sections, 20, 100);
+  data.sections = [...new Set(cleanList(body.sections, 20, 100))];
+  const photoValues = ['', ...PHOTO_OPTIONS.map((item) => item.value), 'Moins de 5', 'Entre 5 et 10', 'Entre 10 et 20', 'Plus de 20 (Premium uniquement)'];
+  if (!photoValues.includes(data.photosNb)) return json({ error: 'invalid_input', fields: ['photosNb'] }, 400);
+  if (!['', 'non', '1', '2-3'].includes(data.videos)) return json({ error: 'invalid_input', fields: ['videos'] }, 400);
 
   // Le total et les libellés de modules sont recalculés côté serveur à partir des clés
   // envoyées par le client - on ne fait jamais confiance à un total/libellé fourni tel quel.
-  const moduleKeys = cleanList(body.moduleKeys, 20, 30).filter((key) => moduleByKey(key));
+  let moduleKeys = [...new Set(cleanList(body.moduleKeys, 20, 30))];
+  if (moduleKeys.some((key) => !moduleByKey(key))) return json({ error: 'invalid_input', fields: ['moduleKeys'] }, 400);
+  if (!['forfait', 'alacarte'].includes(data.tarifMode)) return json({ error: 'invalid_input', fields: ['tarifMode'] }, 400);
+  const formule = resolveFormule(data.formule);
+  if (data.tarifMode === 'forfait' && !formule) return json({ error: 'invalid_input', fields: ['formule'] }, 400);
+  const maintenance = resolveMaintenance(data.maintenance || 'aucune');
+  if (!maintenance) return json({ error: 'invalid_input', fields: ['maintenance'] }, 400);
+  data.maintenanceKey = maintenance.key;
+  data.maintenance = maintenanceLabel(maintenance);
+  data.formuleKey = data.tarifMode === 'forfait' ? formule.key : '';
+  data.formule = data.tarifMode === 'forfait' ? formuleLabel(formule) : '';
+  if (data.tarifMode === 'forfait') moduleKeys = [...formule.modules];
+  data.moduleKeys = moduleKeys;
   data.modulesChoisis = moduleLabels(moduleKeys);
-  data.totalEstime = data.tarifMode === 'alacarte' ? alaCarteTotal(moduleKeys) : 0;
+  data.totalEstime = data.tarifMode === 'alacarte' ? alaCarteTotal(moduleKeys) : formule.price;
+  Object.assign(data, estimateMediaConstraints({ ...data, formule: data.formuleKey }));
 
   if (!data.nom || !data.contact || !data.activite || !EMAIL_RE.test(data.email)) {
     return json({ error: 'invalid_input' }, 400);
   }
 
+  return withIdempotency(request, 'brief', body.submissionId, data, async () => {
+    const turnstileRejection = await enforceTurnstile(request, env, body.turnstileToken, 'brief');
+    if (turnstileRejection) return turnstileRejection;
+    const quota = enforceSubmissionLimit();
+    if (quota) return quota;
+    return sendBriefEmail(data, env, ctx);
+  });
+}
+
+async function sendBriefEmail(data, env, ctx) {
   const domaineLabel =
     data.domaine === 'non' ? 'Non, à acheter'
     : data.domaine === 'oui' ? 'Oui, déjà acheté'
@@ -150,6 +139,7 @@ Site existant : ${data.siteExistant === 'oui' ? 'Oui - refonte' + (data.siteUrl 
 --- TARIFICATION ---
 Mode : ${tarifMode}
 ${tarifDetail}
+${data.estimationStatus === 'custom' ? 'Hors estimation : ' + data.estimationReasons.join(' ') : ''}
 Maintenance : ${data.maintenance || 'Non précisé'}
 Domaine : ${domaineLabel}${data.domaineNom ? ' - ' + data.domaineNom : ''}
 
@@ -197,6 +187,9 @@ ${data.infos || 'Aucune'}
   ];
   if (data.tarifMode === 'alacarte') {
     tarifRows.push(htmlRow('Total estimé', `<strong>${data.totalEstime}&nbsp;€</strong>`, 170));
+  }
+  if (data.estimationStatus === 'custom') {
+    tarifRows.push(htmlRow('Hors estimation', esc(data.estimationReasons.join(' ')), 170));
   }
   tarifRows.push(htmlRow('Maintenance', esc(data.maintenance) || 'Non précisé', 170));
   tarifRows.push(htmlRow('Domaine', esc(domaineLabel) + (data.domaineNom ? ' - ' + esc(data.domaineNom) : ''), 170));
@@ -271,58 +264,61 @@ ${data.infos || 'Aucune'}
       return json({ error: 'send_failed' }, 502);
     }
 
-    try {
-      const attributes = {
-        PRENOM: data.contact,
-        NOM: `${data.nom} - ${tarifLabel}`,
-      };
-      const sms = normalizeFrenchPhone(data.tel);
-      if (sms) attributes.SMS = sms;
-
-      const contactRes = await upsertBrevoContact(env, { email: data.email, attributes });
-
-      if (!contactRes.ok) {
-        console.error('Brevo contact upsert failed:', await contactRes.text());
-      }
-    } catch (err) {
-      console.error('Brevo contact upsert error:', err);
-    }
-
-    if (env.SUPABASE_URL && env.SUPABASE_ANON_KEY) {
+    await continueInBackground(ctx, (async () => {
       try {
-        const supabaseRes = await fetch(`${env.SUPABASE_URL}/rest/v1/briefs`, {
-          method: 'POST',
-          headers: {
-            apikey: env.SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${env.SUPABASE_ANON_KEY}`,
-            'Content-Type': 'application/json',
-            Prefer: 'return=minimal',
-          },
-          body: JSON.stringify({
-            nom: data.nom,
-            email: data.email,
-            type: data.type,
-            data,
-          }),
-        });
+        const attributes = {
+          PRENOM: data.contact,
+          NOM: `${data.nom} - ${tarifLabel}`,
+        };
+        const sms = normalizeFrenchPhone(data.tel);
+        if (sms) attributes.SMS = sms;
 
-        if (!supabaseRes.ok) {
-          const detail = await supabaseRes.text();
-          console.error('Supabase insert failed:', detail);
-          // Le lead est déjà bien arrivé par email à ce stade - on alerte juste que
-          // l'enregistrement Supabase (dossier structuré) n'a pas été sauvegardé.
-          await sendFailureAlert(env, `Supabase insert (send-brief) - ${data.nom}`, detail);
+        const contactRes = await upsertBrevoContact(env, { email: data.email, attributes });
+
+        if (!contactRes.ok) {
+          console.error('Brevo contact upsert failed:', await contactRes.text());
         }
       } catch (err) {
-        console.error('Supabase insert error:', err);
-        await sendFailureAlert(env, `Supabase insert (send-brief) - ${data.nom}`, err && err.message ? err.message : err);
+        console.error('Brevo contact upsert error:', err);
       }
-    }
+
+      if (env.SUPABASE_URL && env.SUPABASE_ANON_KEY) {
+        try {
+          const supabaseRes = await fetch(`${env.SUPABASE_URL}/rest/v1/briefs`, {
+            method: 'POST',
+            signal: AbortSignal.timeout(8_000),
+            headers: {
+              apikey: env.SUPABASE_ANON_KEY,
+              Authorization: `Bearer ${env.SUPABASE_ANON_KEY}`,
+              'Content-Type': 'application/json',
+              Prefer: 'return=minimal',
+            },
+            body: JSON.stringify({
+              nom: data.nom,
+              email: data.email,
+              type: data.type,
+              data,
+            }),
+          });
+
+          if (!supabaseRes.ok) {
+            const detail = await supabaseRes.text();
+            console.error('Supabase insert failed:', detail);
+            // Le lead est déjà bien arrivé par email à ce stade - on alerte juste que
+            // l'enregistrement Supabase (dossier structuré) n'a pas été sauvegardé.
+            await sendFailureAlert(env, `Supabase insert (send-brief) - ${data.nom}`, detail);
+          }
+        } catch (err) {
+          console.error('Supabase insert error:', err);
+          await sendFailureAlert(env, `Supabase insert (send-brief) - ${data.nom}`, err && err.message ? err.message : err);
+        }
+      }
+    })());
 
     return json({ ok: true });
   } catch (err) {
     console.error('Server error:', err);
-    await sendFailureAlert(env, 'send-brief - erreur serveur inattendue', err && err.message ? err.message : err);
+    await continueInBackground(ctx, sendFailureAlert(env, 'send-brief - erreur serveur inattendue', err && err.message ? err.message : err));
     return json({ error: 'server_error' }, 500);
   }
 }

@@ -7,25 +7,25 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.abiweb.fr/devis</loc>
+    <loc>https://www.abiweb.fr/devis/</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.abiweb.fr/mentions-legales</loc>
+    <loc>https://www.abiweb.fr/mentions-legales/</loc>
     <lastmod>2026-07-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.abiweb.fr/politique-de-confidentialite</loc>
+    <loc>https://www.abiweb.fr/politique-de-confidentialite/</loc>
     <lastmod>2026-07-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.abiweb.fr/cgv</loc>
+    <loc>https://www.abiweb.fr/cgv/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

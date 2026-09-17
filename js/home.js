@@ -1,5 +1,11 @@
+import * as pricing from './pricing-catalogue.js';
+import { CONTACT_LIMITS } from './form-rules.js';
+import { applyFieldLimits, setFieldError, createSubmissionState, postForm, formErrorMessage } from './form-ui.js';
+
+const contactSubmission = createSubmissionState();
+let contactSending = false;
+
 (function () {
-  var pricing = window.AbiWebPricing;
   var selectedModules = [];
   window.abiwebFormLoadedAt = Date.now();
 
@@ -32,8 +38,10 @@
     var suggestion = pricing.bestPackSuggestion(selectedModules);
     if (suggestion) {
       suggestionEl.classList.add('visible');
-      suggestionEl.innerHTML = 'Vous avez sélectionné l\'équivalent de la formule <strong>' + suggestion.formule.name +
-        '</strong>, économisez <strong>' + suggestion.savings + ' €</strong> en prenant le pack (' + suggestion.packTotal + ' € au lieu de ' + total + ' €).';
+      const extra = suggestion.extraKeys.length ? ' + options sélectionnées' : '';
+      const included = suggestion.includedExtraKeys.length ? ' Ce pack inclut aussi des fonctions supplémentaires.' : '';
+      suggestionEl.innerHTML = 'La formule <strong>' + suggestion.formule.name + extra +
+        '</strong> couvre vos besoins pour <strong>' + suggestion.packTotal + ' €</strong>, soit ' + suggestion.savings + ' € d’économie.' + included;
     } else {
       suggestionEl.classList.remove('visible');
       suggestionEl.innerHTML = '';
@@ -78,7 +86,6 @@
 
   // Apparition douce des cartes au scroll
   if ('IntersectionObserver' in window) {
-    // .plan et .step retires temporairement : GSAP gere seul leur animation sur la branche test-animations (voir gsap-test.js)
     var revealEls = document.querySelectorAll('.included-item, .integ-group, .hosting-card, .realisation-card');
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -108,7 +115,8 @@
     };
     var updateRealisationsNav = function () {
       var i = currentRealisationIndex();
-      realisationsDots.forEach(function (dot, di) { dot.classList.toggle('active', di === i); });
+    realisationsDots.forEach(function (dot, di) { dot.classList.toggle('active', di === i); });
+      realisationsDots.forEach(function (dot, di) { dot.setAttribute('aria-current', di === i ? 'true' : 'false'); });
       realisationsPrev.disabled = i <= 0;
       realisationsNext.disabled = i >= realisationsCards.length - 1;
     };
@@ -134,7 +142,7 @@
     // de la souris/trackpad quand le curseur est dessus, bloquant le défilement
     // de la page. On force le geste vertical à faire défiler la page normalement.
     realisationsScroll.addEventListener('wheel', function (e) {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      if (!e.ctrlKey && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         window.scrollBy(0, e.deltaY);
         e.preventDefault();
       }
@@ -146,10 +154,10 @@
     btn.addEventListener('click', function () { switchTab(btn.dataset.tab, btn); });
   });
 
-  var contactSubmitBtn = document.getElementById('contactSubmitBtn');
-  if (contactSubmitBtn) {
-    contactSubmitBtn.addEventListener('click', function () { submitContact(contactSubmitBtn); });
-  }
+  document.getElementById('tab-contact').addEventListener('submit', function (event) {
+    event.preventDefault();
+    submitContact(document.getElementById('contactSubmitBtn'));
+  });
 
   // Mot rotatif du H1 (associations / artisans / auto-entrepreneurs...)
   var rotator = document.getElementById('wordRotator');
@@ -161,8 +169,14 @@
     // precedent au lieu de laisser un grand vide.
     // Largeurs mesurees une seule fois au chargement pour eviter un reflow force
     // a chaque rotation (offsetWidth lu juste apres une mutation de classList).
-    var rotatorWidths = Array.prototype.map.call(rotatorItems, function (item) { return item.offsetWidth; });
-    rotator.style.width = rotatorWidths[rotatorIndex] + 'px';
+    var rotatorWidths;
+    const measureWords = function () {
+      rotatorWidths = Array.prototype.map.call(rotatorItems, function (item) { return item.offsetWidth; });
+      rotator.style.width = rotatorWidths[rotatorIndex] + 'px';
+    };
+    measureWords();
+    document.fonts.ready.then(measureWords);
+    window.addEventListener('resize', measureWords);
     if (rotatorItems.length > 1) {
       setInterval(function () {
         var next = (rotatorIndex + 1) % rotatorItems.length;
@@ -180,20 +194,43 @@
 })();
 
 function switchTab(tab, btn) {
-  document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.form-tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+    t.tabIndex = -1;
+  });
   document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
   btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+  btn.tabIndex = 0;
 }
 
 function markError(id, hasError) {
-  document.getElementById(id).closest('.form-group').classList.toggle('has-error', hasError);
-  return hasError;
+  return setFieldError(document.getElementById(id), hasError);
 }
+
+applyFieldLimits({ nom: 'c-nom', email: 'c-email', tel: 'c-tel', message: 'c-message' }, CONTACT_LIMITS);
+document.querySelectorAll('.form-tab').forEach((tab, index, tabs) => {
+  tab.addEventListener('keydown', event => {
+    let next;
+    if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+    else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = tabs.length - 1;
+    else return;
+    event.preventDefault();
+    switchTab(tabs[next].dataset.tab, tabs[next]);
+    tabs[next].focus();
+  });
+});
 
 // Efface l'erreur du champ dès que le visiteur le corrige
 document.querySelectorAll('#tab-contact input, #tab-contact textarea').forEach(el => {
-  el.addEventListener('input', () => el.closest('.form-group').classList.remove('has-error'));
+  el.addEventListener('input', () => {
+    setFieldError(el, false);
+    document.getElementById('success-contact').style.display = 'none';
+  });
 });
 
 var retryContactBtn = document.getElementById('retryContactBtn');
@@ -219,12 +256,15 @@ if (mailtoContactLink) {
 }
 
 function mailtoFallbackContact(data) {
+  const formule = pricing.formuleByKey(data.formule);
+  const formuleLabel = formule ? `${formule.name} — ${formule.price} €`
+    : ({ alacarte: 'Sur mesure à la carte', indecis: 'Je ne sais pas encore' }[data.formule] || '');
   const subject = encodeURIComponent('Demande de devis AbiWeb - ' + data.nom);
   const body = encodeURIComponent(
     'Nom : ' + data.nom + '\n' +
     'Email : ' + data.email + '\n' +
     (data.tel ? 'Téléphone : ' + data.tel + '\n' : '') +
-    (data.formule ? 'Formule : ' + data.formule + '\n' : '') +
+    (formuleLabel ? 'Formule : ' + formuleLabel + '\n' : '') +
     '\nMessage :\n' + data.message
   );
   window.location.href = 'mailto:contact@abiweb.fr?subject=' + subject + '&body=' + body;
@@ -236,14 +276,18 @@ function getTurnstileToken(containerId) {
 }
 
 async function submitContact(btn) {
+  if (contactSending) return;
   const nom = document.getElementById('c-nom').value.trim();
   const email = document.getElementById('c-email').value.trim();
   const message = document.getElementById('c-message').value.trim();
   let invalid = false;
-  invalid = markError('c-nom', nom.length < 2) || invalid;
-  invalid = markError('c-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) || invalid;
-  invalid = markError('c-message', message.length < 5) || invalid;
-  if (invalid) return;
+  invalid = markError('c-nom', nom.length < 2 || nom.length > CONTACT_LIMITS.nom) || invalid;
+  invalid = markError('c-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > CONTACT_LIMITS.email) || invalid;
+  invalid = markError('c-message', message.length < 5 || message.length > CONTACT_LIMITS.message) || invalid;
+  if (invalid) {
+    document.querySelector('#tab-contact [aria-invalid="true"]').focus();
+    return;
+  }
   const data = {
     nom, email, message,
     formule: document.getElementById('c-formule').value,
@@ -253,30 +297,35 @@ async function submitContact(btn) {
     turnstileToken: getTurnstileToken('turnstile-contact'),
   };
   const originalLabel = btn.textContent;
+  contactSending = true;
+  document.getElementById('tab-contact').setAttribute('aria-busy', 'true');
+  ['c-nom', 'c-email', 'c-tel', 'c-message', 'c-formule'].forEach(id => { document.getElementById(id).disabled = true; });
+  document.getElementById('retryContactBtn').disabled = true;
   btn.disabled = true;
   btn.textContent = 'Envoi en cours…';
+  document.getElementById('error-contact').classList.remove('visible');
+  document.getElementById('success-contact').style.display = 'none';
 
   try {
-    const resp = await fetch('/api/send-contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (resp.status === 429) throw new Error('rate_limited');
-    if (!resp.ok) throw new Error('send_failed');
+    await postForm('/api/send-contact', contactSubmission.prepare(data));
+    contactSubmission.reset();
     document.getElementById('error-contact').classList.remove('visible');
     document.getElementById('success-contact').style.display = 'block';
     ['c-nom', 'c-email', 'c-tel', 'c-message'].forEach(id => { document.getElementById(id).value = ''; });
     document.getElementById('c-formule').value = '';
+    document.getElementById('c-message').dispatchEvent(new window.Event('input'));
+    document.getElementById('success-contact').style.display = 'block';
   } catch (err) {
     const msg = document.getElementById('error-contact-text');
     if (msg) {
-      msg.textContent = err.message === 'rate_limited'
-        ? "⚠️ Trop d'envois en peu de temps. Patientez quelques minutes, ou écrivez-moi directement par email."
-        : "⚠️ L'envoi automatique a échoué. Réessayez, ou écrivez-moi directement par email.";
+      msg.textContent = formErrorMessage(err);
     }
     document.getElementById('error-contact').classList.add('visible');
   } finally {
+    contactSending = false;
+    document.getElementById('tab-contact').setAttribute('aria-busy', 'false');
+    ['c-nom', 'c-email', 'c-tel', 'c-message', 'c-formule'].forEach(id => { document.getElementById(id).disabled = false; });
+    document.getElementById('retryContactBtn').disabled = false;
     btn.disabled = false;
     btn.textContent = originalLabel;
     // Jeton Turnstile a usage unique - il faut en redemander un pour le prochain essai.

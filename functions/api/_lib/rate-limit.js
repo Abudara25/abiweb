@@ -1,8 +1,8 @@
 // Limitation de debit des formulaires.
 //
-// Pourquoi : le honeypot et le delai minimum de remplissage ne filtrent que les
-// bots naifs. Le delai s'appuie sur un `ts` envoye par le client, donc
-// falsifiable en une ligne. Sans plafond, n'importe qui peut poster en boucle :
+// La limite par IP compte les tentatives, la limite globale uniquement les
+// soumissions dont le contenu et le jeton Turnstile sont valides.
+// Sans plafond, n'importe qui peut poster en boucle :
 // chaque envoi consomme un email Brevo (quota gratuit 300/jour) et un upsert
 // contact. Saturer le quota rendrait les vrais prospects invisibles.
 //
@@ -16,6 +16,7 @@
 const WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 const MAX_PER_IP = 5; // envois autorises par IP sur la fenetre
 const MAX_GLOBAL = 60; // garde-fou instance, protege le quota Brevo
+const MAX_TRACKED_IPS = 5000;
 
 const hitsByIp = new Map();
 let globalHits = [];
@@ -43,18 +44,24 @@ export function checkRateLimit(request) {
   const now = Date.now();
   const ip = clientIp(request);
 
-  globalHits = prune(globalHits, now);
   const previous = prune(hitsByIp.get(ip) || [], now);
 
   // Purge des IP devenues inactives, sinon la Map grossit indefiniment.
-  if (hitsByIp.size > 5000) {
+  if (!hitsByIp.has(ip) && hitsByIp.size >= MAX_TRACKED_IPS) {
+    let nextExpiry = now + WINDOW_MS;
     for (const [key, list] of hitsByIp) {
-      if (prune(list, now).length === 0) hitsByIp.delete(key);
+      const active = prune(list, now);
+      if (active.length === 0) hitsByIp.delete(key);
+      else nextExpiry = Math.min(nextExpiry, active[active.length - 1] + WINDOW_MS);
+    }
+    // La mémoire reste bornée, sans effacer le compteur d'une IP active.
+    if (hitsByIp.size >= MAX_TRACKED_IPS) {
+      return { limited: true, retryAfter: Math.max(1, Math.ceil((nextExpiry - now) / 1000)) };
     }
   }
 
-  if (previous.length >= MAX_PER_IP || globalHits.length >= MAX_GLOBAL) {
-    const oldest = previous.length >= MAX_PER_IP ? previous[0] : globalHits[0];
+  if (previous.length >= MAX_PER_IP) {
+    const oldest = previous[0];
     hitsByIp.set(ip, previous);
     return {
       limited: true,
@@ -63,14 +70,31 @@ export function checkRateLimit(request) {
   }
 
   previous.push(now);
-  globalHits.push(now);
   hitsByIp.set(ip, previous);
   return { limited: false, retryAfter: 0 };
 }
 
+// Appelé après validation, une seule fois pour chaque nouveau traitement.
+export function checkSubmissionLimit() {
+  const now = Date.now();
+  globalHits = prune(globalHits, now);
+  if (globalHits.length >= MAX_GLOBAL) {
+    return { limited: true, retryAfter: Math.max(1, Math.ceil((globalHits[0] + WINDOW_MS - now) / 1000)) };
+  }
+  globalHits.push(now);
+  return { limited: false, retryAfter: 0 };
+}
+
+export function enforceSubmissionLimit() {
+  return rateLimitResponse(checkSubmissionLimit());
+}
+
 // Renvoie une Response 429 si la limite est depassee, sinon null.
 export function enforceRateLimit(request) {
-  const { limited, retryAfter } = checkRateLimit(request);
+  return rateLimitResponse(checkRateLimit(request));
+}
+
+function rateLimitResponse({ limited, retryAfter }) {
   if (!limited) return null;
   return new Response(JSON.stringify({ error: 'rate_limited', retryAfter }), {
     status: 429,

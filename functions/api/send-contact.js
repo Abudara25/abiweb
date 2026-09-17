@@ -9,24 +9,13 @@ import {
   upsertBrevoContact,
   sendFailureAlert,
 } from './_lib/email-utils.js';
-import { enforceRateLimit } from './_lib/rate-limit.js';
+import { enforceRateLimit, enforceSubmissionLimit } from './_lib/rate-limit.js';
 import { enforceTurnstile } from './_lib/turnstile.js';
+import { CONTACT_LIMITS as LIMITS } from '../../js/form-rules.js';
+import { resolveContactFormule } from './_lib/catalogue-validation.js';
+import { json, invalidFields, validSubmissionId, withIdempotency, continueInBackground } from './_lib/submissions.js';
 
-const LIMITS = {
-  nom: 100,
-  email: 254,
-  tel: 30,
-  formule: 60,
-  message: 5000,
-};
-
-// Un humain ne peut pas remplir ce formulaire en moins de 3s - filtre les bots qui postent direct.
-const MIN_FILL_MS = 3000;
-
-const json = (data, status = 200) =>
-  new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
-
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, ctx }) {
   // Plafonne les envois avant tout traitement : un abus ne doit pas consommer
   // le quota Brevo ni noyer la boite contact@abiweb.fr.
   const limited = enforceRateLimit(request);
@@ -36,12 +25,9 @@ export async function onRequestPost({ request, env }) {
   try {
     body = await request.json();
   } catch {
-    body = {};
+    return json({ error: 'invalid_json' }, 400);
   }
-  if (!body || typeof body !== 'object') body = {};
-
-  const turnstileRejection = await enforceTurnstile(request, env, body.turnstileToken, 'contact');
-  if (turnstileRejection) return turnstileRejection;
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return json({ error: 'invalid_input' }, 400);
 
   // Honeypot : champ invisible pour les humains - rempli, c'est un bot.
   // On répond un faux succès pour ne pas lui signaler le rejet.
@@ -49,23 +35,32 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: true });
   }
 
-  const elapsed = Date.now() - Number(body.ts);
-  if (!Number.isFinite(elapsed) || elapsed < MIN_FILL_MS) {
-    return json({ ok: true });
-  }
+  const fields = invalidFields(body, LIMITS);
+  if (fields.length) return json({ error: 'invalid_input', fields }, 400);
+  if (!validSubmissionId(body.submissionId)) return json({ error: 'invalid_input', fields: ['submissionId'] }, 400);
 
   const data = {
     nom: clean(body.nom, LIMITS.nom),
     email: clean(body.email, LIMITS.email),
     tel: clean(body.tel, LIMITS.tel),
-    formule: clean(body.formule, LIMITS.formule),
+    formule: resolveContactFormule(clean(body.formule, LIMITS.formule)),
     message: clean(body.message, LIMITS.message),
   };
 
-  if (!data.nom || !data.message || !EMAIL_RE.test(data.email)) {
+  if (!data.nom || !data.message || !EMAIL_RE.test(data.email) || data.formule === null) {
     return json({ error: 'invalid_input' }, 400);
   }
 
+  return withIdempotency(request, 'contact', body.submissionId, data, async () => {
+    const turnstileRejection = await enforceTurnstile(request, env, body.turnstileToken, 'contact');
+    if (turnstileRejection) return turnstileRejection;
+    const quota = enforceSubmissionLimit();
+    if (quota) return quota;
+    return sendContactEmail(data, env, ctx);
+  });
+}
+
+async function sendContactEmail(data, env, ctx) {
   const text = `=== CONTACT RAPIDE ABIWEB ===
 
 Nom : ${data.nom}
@@ -126,27 +121,29 @@ ${data.message}
       return json({ error: 'send_failed' }, 502);
     }
 
-    try {
-      const attributes = {
-        PRENOM: data.nom,
-        NOM: data.formule ? `Contact rapide - ${data.formule}` : 'Contact rapide',
-      };
-      const sms = normalizeFrenchPhone(data.tel);
-      if (sms) attributes.SMS = sms;
+    await continueInBackground(ctx, (async () => {
+      try {
+        const attributes = {
+          PRENOM: data.nom,
+          NOM: data.formule ? `Contact rapide - ${data.formule}` : 'Contact rapide',
+        };
+        const sms = normalizeFrenchPhone(data.tel);
+        if (sms) attributes.SMS = sms;
 
-      const contactRes = await upsertBrevoContact(env, { email: data.email, attributes });
+        const contactRes = await upsertBrevoContact(env, { email: data.email, attributes });
 
-      if (!contactRes.ok) {
-        console.error('Brevo contact upsert failed:', await contactRes.text());
+        if (!contactRes.ok) {
+          console.error('Brevo contact upsert failed:', await contactRes.text());
+        }
+      } catch (err) {
+        console.error('Brevo contact upsert error:', err);
       }
-    } catch (err) {
-      console.error('Brevo contact upsert error:', err);
-    }
+    })());
 
     return json({ ok: true });
   } catch (err) {
     console.error('Server error:', err);
-    await sendFailureAlert(env, 'send-contact - erreur serveur inattendue', err && err.message ? err.message : err);
+    await continueInBackground(ctx, sendFailureAlert(env, 'send-contact - erreur serveur inattendue', err && err.message ? err.message : err));
     return json({ error: 'server_error' }, 500);
   }
 }

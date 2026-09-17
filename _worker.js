@@ -2,9 +2,8 @@ import { onRequestPost as sendContact } from './functions/api/send-contact.js';
 import { onRequestPost as sendBrief } from './functions/api/send-brief.js';
 import { onRequestPost as notifyPr } from './functions/api/notify-pr.js';
 
-// Routeur du Worker : assets.directory couvre tout le repo, donc seules les
-// requetes qui ne correspondent a aucun fichier statique arrivent ici
-// (comportement par defaut de Workers Static Assets). On ne branche que /api/*.
+// run_worker_first transmet toutes les requetes ici, y compris les assets.
+// Le sous-domaine suivi utilise les memes fichiers avec un prefixe interne.
 const ROUTES = {
   '/api/send-contact': sendContact,
   '/api/send-brief': sendBrief,
@@ -20,7 +19,7 @@ export default {
       if (request.method !== 'POST') {
         return new Response(JSON.stringify({ error: 'method_not_allowed' }), {
           status: 405,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', Allow: 'POST', 'Cache-Control': 'no-store' },
         });
       }
       return handler({ request, env, ctx });

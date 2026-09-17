@@ -1,78 +1,120 @@
-# Template de suivi client (status.json)
+# Suivi des projets clients
 
-Ce dossier est un modele de reference. Il ne fait rien tout seul : il sert a
-etre copie dans chaque nouveau repo client au demarrage d'un projet, pour que
-la page suivi.abiweb.fr puisse afficher son avancement.
+Ce dossier fournit un modèle à installer dans chaque dépôt client. Rien ne
+s'exécute dans le dépôt AbiWeb : le workflow devient actif uniquement après sa
+copie dans `.github/workflows/` du dépôt client.
 
-## 1. Copier le template dans un nouveau repo client
+## Données publiques
 
-A la creation du repo client :
+Le suivi est public et sans authentification. Le paramètre `?repo=...` identifie
+un dépôt ; ce n'est pas un mot de passe. Le nom du client, l'étape et le message
+de `status.json` peuvent être lus directement sur GitHub, même si la page est
+marquée `noindex`.
 
-1. Copier `status.json` a la racine du nouveau repo.
-2. Ouvrir `status.json` et remplacer `"client": "Nom du client"` par le vrai
-   nom, et regler `"etape"`, `"avancement"`, `"message"` sur l'etape de
-   depart (generalement `paiement_recu`, avancement `5`).
-3. Copier `update-status.yml` dans le nouveau repo a l'emplacement
-   `.github/workflows/update-status.yml` (le renommer si besoin, l'important
-   est qu'il soit bien dans `.github/workflows/`).
-4. Commit + push. Des le premier push sur une branche de developpement, le
-   workflow met a jour `status.json` automatiquement.
+Cette version nécessite un dépôt public. Tous les fichiers de ce dépôt, y
+compris le code client et les anciennes versions Git, sont alors publics.
+Obtenir l'accord du client et ne publier que des informations destinées à être
+publiques : aucun secret, document privé ou détail de paiement. Pour un projet
+confidentiel, conserver son dépôt privé et prévoir un stockage/API de suivi
+avec contrôle d'accès ; ne pas rendre le dépôt public pour contourner un 404.
 
-Important : dans le repo `abiweb` (ce repo-ci), ce fichier `update-status.yml`
-reste dans `client-template/` et n'est PAS dans `.github/workflows/` — il ne
-s'execute donc jamais ici. Il ne doit etre place dans `.github/workflows/`
-que dans les repos clients.
+## Installer dans un nouveau dépôt
 
-## 2. Etapes et automatisation
+Le dépôt client doit avoir une branche `main`.
 
-| etape | avancement | declencheur | automatise ? |
-|---|---|---|---|
-| paiement_recu | 5 | acompte 30% encaisse, projet initialise | non — manuel |
-| developpement | 30-60 | premier commit / travail en cours | oui — push sur toute branche hors `main`/`preview` |
-| preview | 75 | merge sur la branche `preview`, lien de demo envoye | oui — push sur `preview` |
-| corrections | 85 | retours client integres apres preview | non — manuel |
-| mise_en_ligne | 100 | merge sur `main`, domaine connecte, solde encaisse | oui — push sur `main` |
-| garantie_retouches | 100 | dans les 7 jours suivant la mise en ligne | non — manuel |
+1. Copier `status.json` à la racine de `main`. Renseigner le nom public du
+   client, l'étape réelle, le message et la date du jour (`AAAA-MM-JJ`).
+   Utiliser `paiement_recu` seulement après encaissement de l'acompte.
+2. Copier `update-status.mjs` vers `.github/scripts/update-status.mjs`.
+3. Copier `update-status.yml` vers `.github/workflows/update-status.yml`.
+4. Committer ces trois fichiers sur `main` avant les premiers pushes de travail.
+5. Vérifier que GitHub Actions est autorisé et que les règles de branche
+   permettent au workflow de créer et mettre à jour `project-status`. Il
+   demande uniquement la permission GitHub `contents: write`.
+6. Dans **Actions → Update project status → Run workflow**, sélectionner
+   `main` et l'étape initiale réelle pour publier le premier état.
 
-Le workflow ne fait jamais reculer l'avancement (une etape automatisee ne
-peut pas ecraser une etape manuelle plus avancee, ex: `corrections` a 85 qui
-resterait a 85 meme si on repousse sur une branche de dev).
+Le workflow crée `project-status` comme branche de données, avec seulement
+`status.json` suivi par Git. Configurer l'hébergeur pour déployer `main`
+(et éventuellement `preview`), en excluant `project-status` des déploiements.
+Cette branche ne contient pas de site web.
 
-## 3. Mettre a jour manuellement les etapes non automatisees
+Le workflow lit toujours le dernier état de `project-status`, puis écrit sur
+cette même branche. Il utilise le script présent sur `main`, quelle que soit
+la branche de développement à l'origine de l'événement. Au premier lancement,
+il initialise l'état depuis `main/status.json`. Un fichier invalide arrête la
+publication au lieu d'écraser les données.
 
-Pour `paiement_recu`, `corrections` et `garantie_retouches`, editer
-directement `status.json` a la racine du repo client sur GitHub (bouton
-crayon) ou en local puis `git push`, en respectant la structure :
+## Étapes et déclenchement
+
+| Étape | Avancement indicatif | Déclenchement |
+|---|---:|---|
+| paiement_recu | 5 % | Action manuelle après encaissement |
+| developpement | 30 % | Push sur une branche de travail |
+| preview | 75 % | Push sur `preview`, ou action manuelle |
+| corrections | 85 % | Action manuelle |
+| mise_en_ligne | 100 % | Action manuelle après vérification du déploiement |
+| garantie_retouches | 100 % | Action manuelle au début de la période de retouches |
+
+Un push sur `main` ne signifie pas que le site est accessible : il ne déclare
+donc jamais la mise en ligne. Pour `mise_en_ligne` et `garantie_retouches`,
+l'action manuelle exige de cocher la confirmation du déploiement réussi et de
+l'accès au domaine. Vérifier également les conditions commerciales convenues.
+
+Un push sur `preview` indique la phase de prévisualisation ; il ne garantit
+pas la réussite d'un déploiement de démonstration. Vérifier celui-ci avant
+d'envoyer son lien au client. Si la branche porte un autre nom, adapter
+`refs/heads/preview` dans le script.
+
+Les écritures du workflow sont sérialisées et les transitions ne reculent ni
+l'étape ni le pourcentage. Une nouvelle poussée de développement ne remplace
+pas `corrections` ; `mise_en_ligne` ne remplace pas `garantie_retouches`,
+même si les deux valent 100 %. Une transition ignorée conserve la date du
+dernier changement réel. Aucun push forcé n'est utilisé.
+
+## Mise à jour manuelle
+
+Utiliser **Run workflow** sur `main`, choisir l'étape réelle et saisir au besoin
+un message public. Le message peut être changé sans avancer l'étape.
+
+Pour corriger une erreur de données ou un pourcentage précis, éditer
+`project-status/status.json` directement. Dès que cette branche existe,
+modifier le fichier de `main` n'a plus d'effet sur le suivi. Ne pas éditer
+pendant une publication Actions en cours ; en cas de conflit, le push échoue
+sans écraser la modification et le workflow peut être relancé.
 
 ```json
 {
-  "client": "Nom du client",
+  "client": "Nom public du client",
   "etape": "corrections",
   "avancement": 85,
-  "derniere_maj": "2026-08-05",
-  "message": "Vos retours sont en cours d'integration"
+  "derniere_maj": "2026-09-16",
+  "message": "Vos retours sont en cours d’intégration."
 }
 ```
 
-Messages types par etape :
+## Migrer les dépôts clients existants
 
-- `paiement_recu` -> "Votre projet a demarre, developpement en cours de lancement"
-- `corrections` -> "Vos retours sont en cours d'integration"
-- `garantie_retouches` -> "Periode de retouches offertes en cours (7 jours)"
+Les copies déjà installées ne sont pas mises à jour par une modification de ce
+modèle. Pour chaque dépôt client :
 
-Toujours mettre `derniere_maj` a la date du jour (format `AAAA-MM-JJ`).
+1. Désactiver ou remplacer l'ancien workflow pour éviter plusieurs producteurs.
+2. Vérifier l'état réel de `main/status.json`. L'ancien workflow pouvait avoir
+   laissé un état plus récent uniquement dans une branche de travail :
+   reporter cet état dans `main/status.json` avant l'initialisation.
+3. Installer le nouveau workflow **et** son script sur `main`.
+4. Exclure `project-status` des déploiements de l'hébergeur.
+5. Lancer l'action manuelle avec l'état réel et vérifier le contenu publié dans
+   `project-status/status.json`, puis la page de suivi.
 
-## 4. Construire le lien de suivi a envoyer au client
-
-Le lien a pour forme :
+Le lien client reste inchangé :
 
 ```
 https://suivi.abiweb.fr/?repo=nom-exact-du-repo-github
 ```
 
-`nom-exact-du-repo-github` est le nom du repo tel qu'il apparait dans son URL
-GitHub (`github.com/Abudara25/nom-exact-du-repo-github`), sensible a la
-casse. La page va chercher
-`https://raw.githubusercontent.com/Abudara25/nom-exact-du-repo-github/main/status.json`
-— le repo doit donc etre public et avoir `status.json` a la racine de la
-branche `main`.
+La page cherche d'abord
+`https://raw.githubusercontent.com/Abudara25/nom-exact-du-repo-github/project-status/status.json`.
+Elle se replie sur `main/status.json` uniquement si le premier fichier répond
+404, pour permettre la migration progressive. Une erreur réseau ou un JSON
+invalide affiche une erreur au lieu de présenter silencieusement un ancien état.

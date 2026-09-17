@@ -1,100 +1,76 @@
-name: Update status.json
+name: Update project status
 
 on:
   push:
     branches:
       - '**'
       - '!main'
-      - '!preview'
-  # Adapter le nom "preview" ci-dessous si la branche de demo client s'appelle autrement.
+      - '!project-status'
+  workflow_dispatch:
+    inputs:
+      etape:
+        description: Étape vérifiée du projet
+        type: choice
+        required: true
+        options:
+          - paiement_recu
+          - developpement
+          - preview
+          - corrections
+          - mise_en_ligne
+          - garantie_retouches
+      site_en_ligne:
+        description: Le déploiement a réussi et le site est accessible sur son domaine
+        type: boolean
+        default: false
+      message:
+        description: Message public facultatif (aucune donnée confidentielle)
+        type: string
+
+# Un seul producteur écrit la source de suivi commune à toutes les branches.
+permissions:
+  contents: write
+concurrency:
+  group: abiweb-project-status
+  cancel-in-progress: false
 
 jobs:
-  developpement:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Met a jour status.json (developpement)
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Lire le dernier état publié
+        shell: bash
         run: |
-          node -e "
-            const fs = require('fs');
-            let current = { avancement: 0 };
-            try { current = JSON.parse(fs.readFileSync('status.json', 'utf8')); } catch (e) {}
-            const nouvelAvancement = 30;
-            if ((current.avancement || 0) >= nouvelAvancement) { console.log('Deja a ce stade ou au-dela, rien a faire.'); process.exit(0); }
-            const status = {
-              client: current.client || 'Nom du client',
-              etape: 'developpement',
-              avancement: nouvelAvancement,
-              derniere_maj: new Date().toISOString().slice(0, 10),
-              message: 'Votre site est en cours de developpement'
-            };
-            fs.writeFileSync('status.json', JSON.stringify(status, null, 2) + '\n');
-          "
-      - name: Commit status.json
+          if git show-ref --verify --quiet refs/remotes/origin/project-status; then
+            git show refs/remotes/origin/project-status:status.json > "$RUNNER_TEMP/abiweb-current-status.json"
+          else
+            git show refs/remotes/origin/main:status.json > "$RUNNER_TEMP/abiweb-current-status.json"
+          fi
+      - name: Calculer une transition sans régression
+        env:
+          STATUS_EVENT_NAME: ${{ github.event_name }}
+          STATUS_EVENT_REF: ${{ github.ref }}
+          STATUS_REQUESTED_STEP: ${{ inputs.etape }}
+          STATUS_SITE_IS_LIVE: ${{ inputs.site_en_ligne }}
+          STATUS_MESSAGE: ${{ inputs.message }}
+        run: node .github/scripts/update-status.mjs "$RUNNER_TEMP/abiweb-current-status.json" "$RUNNER_TEMP/abiweb-next-status.json"
+      - name: Publier dans la branche de données
+        shell: bash
         run: |
+          if git show-ref --verify --quiet refs/remotes/origin/project-status; then
+            git checkout -B project-status origin/project-status
+          else
+            git checkout --orphan project-status
+            git rm -r --cached .
+          fi
+          cp "$RUNNER_TEMP/abiweb-next-status.json" status.json
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add status.json
           git diff --cached --quiet && exit 0
-          git commit -m "chore: statut developpement (auto)"
-          git push
-
-  preview:
-    if: github.ref == 'refs/heads/preview'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Met a jour status.json (preview)
-        run: |
-          node -e "
-            const fs = require('fs');
-            let current = { avancement: 0 };
-            try { current = JSON.parse(fs.readFileSync('status.json', 'utf8')); } catch (e) {}
-            const nouvelAvancement = 75;
-            if ((current.avancement || 0) >= nouvelAvancement) { console.log('Deja a ce stade ou au-dela, rien a faire.'); process.exit(0); }
-            const status = {
-              client: current.client || 'Nom du client',
-              etape: 'preview',
-              avancement: nouvelAvancement,
-              derniere_maj: new Date().toISOString().slice(0, 10),
-              message: 'Une premiere version est disponible pour relecture'
-            };
-            fs.writeFileSync('status.json', JSON.stringify(status, null, 2) + '\n');
-          "
-      - name: Commit status.json
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add status.json
-          git diff --cached --quiet && exit 0
-          git commit -m "chore: statut preview (auto)"
-          git push
-
-  mise_en_ligne:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Met a jour status.json (mise en ligne)
-        run: |
-          node -e "
-            const fs = require('fs');
-            let current = { avancement: 0 };
-            try { current = JSON.parse(fs.readFileSync('status.json', 'utf8')); } catch (e) {}
-            const status = {
-              client: current.client || 'Nom du client',
-              etape: 'mise_en_ligne',
-              avancement: 100,
-              derniere_maj: new Date().toISOString().slice(0, 10),
-              message: 'Votre site est en ligne'
-            };
-            fs.writeFileSync('status.json', JSON.stringify(status, null, 2) + '\n');
-          "
-      - name: Commit status.json
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add status.json
-          git diff --cached --quiet && exit 0
-          git commit -m "chore: statut mise en ligne (auto)"
-          git push
+          git commit -m "chore: mise à jour du suivi public"
+          git push origin HEAD:project-status

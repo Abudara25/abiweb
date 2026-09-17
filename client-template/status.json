@@ -1,7 +1,7 @@
 {
   "client": "Nom du client",
-  "etape": "developpement",
-  "avancement": 60,
+  "etape": "paiement_recu",
+  "avancement": 5,
   "derniere_maj": "2026-07-31",
-  "message": "Votre site est en cours de développement"
+  "message": "Votre projet a démarré, le développement va commencer."
 }

@@ -38,7 +38,7 @@ export async function enforceTurnstile(request, env, token, expectedAction) {
     return rejection();
   }
 
-  if (!result.success || result.action !== expectedAction || !hostnames.includes(result.hostname)) {
+  if (!result || result.success !== true || result.action !== expectedAction || !hostnames.includes(result.hostname)) {
     return rejection();
   }
 

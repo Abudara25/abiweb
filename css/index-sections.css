@@ -279,6 +279,7 @@
 .form-group.has-error .field-error { display: block; }
 .form-group.has-error input,
 .form-group.has-error textarea { border-color: #e5484d; background: rgba(229,72,77,0.12); }
+.form-section .field-counter { color: rgba(255,255,255,0.7); }
 
 /* ===== Refresh visuel (sections non critiques) ===== */
 ::selection { background: var(--accent2); color: var(--ink); }

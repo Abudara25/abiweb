@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<script defer src="/js/analytics-loader.js"></script>
+<script defer src="/js/analytics-loader.js?v=20260917"></script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="noindex, nofollow" />
@@ -41,14 +41,14 @@
 
   section { padding: 5rem 1.5rem; }
   .inner { max-width: 1100px; margin: 0 auto; }
-  .section-label { color: #888; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+  .section-label { color: #666; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
   h2 { font-size: 1.85rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
   .section-desc { color: #555; max-width: 560px; margin-bottom: 3rem; }
 
   .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); }
   @media (max-width: 800px) { .services-grid { grid-template-columns: 1fr; } }
   .service-card { background: var(--white); padding: 2.2rem 1.8rem; }
-  .service-num { font-size: 0.78rem; color: #999; margin-bottom: 1rem; }
+  .service-num { font-size: 0.78rem; color: #666; margin-bottom: 1rem; }
   .service-card h3 { font-size: 1.05rem; margin-bottom: 0.6rem; }
   .service-card p { font-size: 0.88rem; color: #555; }
 
@@ -57,7 +57,7 @@
   .about-inner p { font-size: 1.05rem; color: #333; margin-bottom: 1rem; }
 
   .clients-strip { display: flex; gap: 2.5rem; flex-wrap: wrap; align-items: center; padding-top: 1rem; border-top: 1px solid var(--line); }
-  .clients-strip span { font-size: 0.85rem; font-weight: 600; color: #999; letter-spacing: 0.02em; }
+  .clients-strip span { font-size: 0.85rem; font-weight: 600; color: #666; letter-spacing: 0.02em; }
 
   .cta-banner { background: var(--ink); color: #fff; padding: 3.5rem 2rem; text-align: center; margin: 0 1.5rem 4rem; }
   .cta-banner h2 { margin-bottom: 0.6rem; color: #fff; }
@@ -66,17 +66,11 @@
   footer { background: var(--ink); color: rgba(255,255,255,0.6); padding: 2.5rem 1.5rem; font-size: 0.85rem; text-align: center; }
   footer strong { color: #fff; }
 
-  .cookie-banner { position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 500; max-width: 560px; margin: 0 auto; background: var(--ink); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: left; opacity: 0; visibility: hidden; transition: opacity .2s ease; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-  .cookie-banner.visible { opacity: 1; visibility: visible; }
-  .cookie-banner p { color: rgba(255,255,255,0.85); font-size: 0.85rem; max-width: none; margin: 0 0 0.75rem; }
-  .cookie-banner a { color: #9db1f5; }
-  .cookie-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-  .cookie-actions button { font-family: inherit; font-size: 0.85rem; font-weight: 600; border-radius: 7px; padding: 0.5rem 1rem; cursor: pointer; min-height: 44px; }
-  #cookieAccept { background: #fff; color: var(--ink); border: none; }
-  #cookieRefuse { background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.3); }
 </style>
+<link rel="stylesheet" href="/demos/shared.css?v=20260917" />
 </head>
 <body>
+<a class="skip-link" href="#main">Aller au contenu</a>
 
 <div class="demo-bar">🎨 Exemple de démonstration signé AbiWeb - personne fictive à but illustratif · <a href="/#realisations">Voir le site AbiWeb →</a></div>
 
@@ -91,6 +85,8 @@
     <a href="#contact" class="nav-cta">Me contacter</a>
   </nav>
 </header>
+
+<main id="main">
 
 <div class="hero">
   <img class="hero-photo" src="/images/demos/hero-freelance.webp" alt="" />
@@ -150,11 +146,13 @@
   <a href="tel:0123456789" class="btn btn-primary">01 23 45 67 89</a>
 </div>
 
+</main>
+
 <footer>
   <p><strong>Camille Dubois</strong> - Graphiste freelance · contact@camilledubois-exemple.fr</p>
   <p style="margin-top:0.4rem;">Site fictif de démonstration, réalisé par AbiWeb.</p>
 </footer>
 
-<script src="/js/cookie-banner.js"></script>
+<script src="/js/cookie-banner.js?v=20260917"></script>
 </body>
 </html>

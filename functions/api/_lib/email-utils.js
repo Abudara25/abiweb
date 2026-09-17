@@ -14,10 +14,14 @@ export function cleanList(value, maxItems, maxLen) {
 }
 
 export function normalizeFrenchPhone(tel) {
-  if (!tel) return '';
-  const digits = tel.replace(/[^0-9]/g, '');
-  if (digits.startsWith('0')) return '33' + digits.slice(1);
-  return digits;
+  if (typeof tel !== 'string' || !/^[+\d\s().-]+$/.test(tel)) return '';
+  let digits = tel.replace(/[^0-9]/g, '');
+  if (digits.startsWith('00')) digits = digits.slice(2);
+  if (/^0[1-9]\d{8}$/.test(digits)) digits = '33' + digits.slice(1);
+  if (/^330[1-9]\d{8}$/.test(digits)) digits = '33' + digits.slice(3);
+  if (digits.startsWith('33')) return /^33[1-9]\d{8}$/.test(digits) ? digits : '';
+  // Les autres pays sont acceptés seulement avec un préfixe international.
+  return /^(?:\+|00)/.test(tel.trim()) && /^[1-9]\d{7,14}$/.test(digits) ? digits : '';
 }
 
 // Les données client sont échappées avant insertion dans le HTML de l'email.
@@ -62,6 +66,7 @@ export async function sendBrevoEmail(env, { to, subject, textContent, htmlConten
 
   return fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
+    signal: AbortSignal.timeout(10_000),
     headers: {
       'api-key': env.BREVO_API_KEY,
       'Content-Type': 'application/json',
@@ -73,6 +78,7 @@ export async function sendBrevoEmail(env, { to, subject, textContent, htmlConten
 export async function upsertBrevoContact(env, { email, attributes }) {
   return fetch('https://api.brevo.com/v3/contacts', {
     method: 'POST',
+    signal: AbortSignal.timeout(8_000),
     headers: {
       'api-key': env.BREVO_API_KEY,
       'Content-Type': 'application/json',
@@ -85,12 +91,13 @@ export async function upsertBrevoContact(env, { email, attributes }) {
 // ne doit jamais faire échouer la requête principale qui l'appelle.
 export async function sendFailureAlert(env, context, detail) {
   try {
-    await sendBrevoEmail(env, {
+    const response = await sendBrevoEmail(env, {
       to: 'contact@abiweb.fr',
       subject: `[AbiWeb] Erreur silencieuse - ${context}`,
       textContent: `Une erreur non bloquante est survenue côté serveur.\n\nContexte : ${context}\nDétail : ${detail}`,
       htmlContent: `<p><strong>Erreur non bloquante côté serveur</strong></p><p>Contexte : ${esc(context)}</p><p>Détail : ${esc(String(detail))}</p>`,
     });
+    if (!response.ok) console.error('Failure-alert email rejected:', response.status);
   } catch (err) {
     console.error('Failure-alert email failed:', err);
   }

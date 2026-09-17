@@ -50,6 +50,19 @@ test('normalizeFrenchPhone laisse passer un numero deja international', () => {
   assert.equal(normalizeFrenchPhone('+33612345678'), '33612345678');
 });
 
+test('normalizeFrenchPhone accepte 0033 et le zero national optionnel', () => {
+  assert.equal(normalizeFrenchPhone('0033612345678'), '33612345678');
+  assert.equal(normalizeFrenchPhone('+33 (0)6 12 34 56 78'), '33612345678');
+  assert.equal(normalizeFrenchPhone('0033 (0)1 23 45 67 89'), '33123456789');
+});
+
+test('normalizeFrenchPhone rejette les numeros incomplets ou ambigus', () => {
+  for (const value of ['123', '06 12', '06 12 34 56 789', '+33 06 12 34', 'telephone 0612345678']) {
+    assert.equal(normalizeFrenchPhone(value), '');
+  }
+  assert.equal(normalizeFrenchPhone('+44 20 7946 0958'), '442079460958');
+});
+
 test('normalizeFrenchPhone renvoie une chaine vide sans entree', () => {
   assert.equal(normalizeFrenchPhone(''), '');
   assert.equal(normalizeFrenchPhone(null), '');

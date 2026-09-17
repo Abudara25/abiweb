@@ -1,8 +1,7 @@
 // clientIp() choisit quelle IP faire confiance pour le plafonnement anti-spam
 // (voir le commentaire dans rate-limit.js sur pourquoi cf-connecting-ip prime
-// sur x-forwarded-for, falsifiable). checkRateLimit() est la seule barriere
-// entre un abus et le quota Brevo (300 emails/jour) - zero couverture avant
-// ce fichier.
+// sur x-forwarded-for, falsifiable). Les tentatives par IP et les envois
+// validés ont des compteurs distincts, avec une fenêtre glissante.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { clientIp, checkRateLimit } from '../functions/api/_lib/rate-limit.js';
@@ -58,4 +57,48 @@ test('checkRateLimit isole les compteurs par IP', () => {
   for (let i = 0; i < 5; i += 1) checkRateLimit(reqA);
   assert.equal(checkRateLimit(reqA).limited, true, 'IP A doit etre plafonnee');
   assert.equal(checkRateLimit(reqB).limited, false, 'IP B ne doit pas heriter du plafond de IP A');
+});
+
+test('la fenêtre par IP expire et Retry-After diminue', async (t) => {
+  const limits = await import('../functions/api/_lib/rate-limit.js?ip-expiration');
+  let now = 1000000;
+  t.mock.method(Date, 'now', () => now);
+  const req = fakeRequest({ 'cf-connecting-ip': 'expiry-client' });
+  for (let i = 0; i < 5; i++) assert.equal(limits.checkRateLimit(req).limited, false);
+  assert.equal(limits.checkRateLimit(req).retryAfter, 600);
+  now += 599000;
+  const response = limits.enforceRateLimit(req);
+  assert.equal(response.status, 429);
+  assert.equal(response.headers.get('Retry-After'), '1');
+  now += 1000;
+  assert.equal(limits.checkRateLimit(req).limited, false);
+});
+
+test('le plafond global accepte 60 envois validés puis expire', async (t) => {
+  const limits = await import('../functions/api/_lib/rate-limit.js?global-expiration');
+  let now = 2000000;
+  t.mock.method(Date, 'now', () => now);
+  for (let i = 0; i < 100; i++) limits.checkRateLimit(fakeRequest({ 'cf-connecting-ip': `attempt-${i}` }));
+  for (let i = 0; i < 60; i++) assert.equal(limits.checkSubmissionLimit().limited, false);
+  const rejection = limits.enforceSubmissionLimit();
+  assert.equal(rejection.status, 429);
+  assert.equal(rejection.headers.get('Retry-After'), '600');
+  now += 600000;
+  assert.equal(limits.checkSubmissionLimit().limited, false);
+});
+
+test('le nombre de compteurs IP est borné sans effacer une IP active', async (t) => {
+  const limits = await import('../functions/api/_lib/rate-limit.js?ip-capacity');
+  let now = 3000000;
+  t.mock.method(Date, 'now', () => now);
+  for (let i = 0; i < 5000; i++) {
+    assert.equal(limits.checkRateLimit(fakeRequest({ 'cf-connecting-ip': `capacity-${i}` })).limited, false);
+  }
+  const newcomer = fakeRequest({ 'cf-connecting-ip': 'capacity-new' });
+  assert.equal(limits.checkRateLimit(newcomer).limited, true);
+  const previous = fakeRequest({ 'cf-connecting-ip': 'capacity-0' });
+  for (let i = 0; i < 4; i++) assert.equal(limits.checkRateLimit(previous).limited, false);
+  assert.equal(limits.checkRateLimit(previous).limited, true);
+  now += 600000;
+  assert.equal(limits.checkRateLimit(newcomer).limited, false);
 });

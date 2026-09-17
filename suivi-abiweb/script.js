@@ -3,7 +3,7 @@ const GITHUB_USER = 'Abudara25';
 const ETAPES = {
   paiement_recu: 'Paiement reçu',
   developpement: 'Développement en cours',
-  preview: 'Version de démonstration disponible',
+  preview: 'Prévisualisation du projet',
   corrections: 'Intégration de vos retours',
   mise_en_ligne: 'Site en ligne',
   garantie_retouches: 'Garantie retouches en cours',
@@ -25,18 +25,19 @@ function getRepoParam() {
   const repo = params.get('repo');
   if (!repo) return null;
   // Un nom de repo GitHub valide : lettres, chiffres, points, tirets, underscores.
-  if (!/^[A-Za-z0-9._-]+$/.test(repo)) return null;
+  if (!/^[A-Za-z0-9._-]{1,100}$/.test(repo) || /^\.+$/.test(repo)) return null;
   return repo;
 }
 
 function formatDate(dateStr) {
   const d = new Date(dateStr);
   if (Number.isNaN(d.getTime())) return dateStr;
-  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 }
 
 function renderError(card, title, detail) {
   card.innerHTML = '';
+  card.setAttribute('aria-busy', 'false');
   const wrap = document.createElement('div');
   wrap.className = 'error';
 
@@ -59,14 +60,17 @@ function renderError(card, title, detail) {
 function isValidStatus(data) {
   return (
     data &&
-    typeof data.client === 'string' &&
+    typeof data.client === 'string' && data.client.trim() &&
     typeof data.etape === 'string' &&
     Object.prototype.hasOwnProperty.call(ETAPES, data.etape) &&
-    typeof data.avancement === 'number' &&
+    Number.isFinite(data.avancement) &&
     data.avancement >= 0 &&
     data.avancement <= 100 &&
-    typeof data.message === 'string' &&
-    typeof data.derniere_maj === 'string'
+    typeof data.message === 'string' && data.message.trim() &&
+    typeof data.derniere_maj === 'string' &&
+    /^\d{4}-\d{2}-\d{2}$/.test(data.derniere_maj) &&
+    !Number.isNaN(Date.parse(data.derniere_maj)) &&
+    new Date(data.derniere_maj).toISOString().slice(0, 10) === data.derniere_maj
   );
 }
 
@@ -83,6 +87,7 @@ function buildStepper(currentEtape) {
     if (index < currentIndex) state = 'done';
     else if (index === currentIndex) state = complete ? 'done' : 'current';
     li.className = 'step is-' + state;
+    if (index === currentIndex) li.setAttribute('aria-current', 'step');
 
     const marker = document.createElement('span');
     marker.className = 'step-marker';
@@ -93,7 +98,12 @@ function buildStepper(currentEtape) {
     label.className = 'step-label';
     label.textContent = ETAPES[etape];
 
-    li.append(marker, label);
+    const accessibleState = document.createElement('span');
+    accessibleState.className = 'sr-only';
+    accessibleState.textContent = index === currentIndex ? ' — Étape actuelle' :
+      (state === 'done' ? ' — Terminée' : ' — À venir');
+
+    li.append(marker, label, accessibleState);
     stepper.appendChild(li);
   });
 
@@ -102,6 +112,7 @@ function buildStepper(currentEtape) {
 
 function renderStatus(card, data) {
   card.innerHTML = '';
+  card.setAttribute('aria-busy', 'false');
 
   const complete = ETAPES_COMPLETES.has(data.etape);
 
@@ -115,6 +126,15 @@ function renderStatus(card, data) {
 
   const stepper = buildStepper(data.etape);
 
+  const progressLabel = document.createElement('p');
+  progressLabel.className = 'progress-label';
+  progressLabel.textContent = 'Avancement : ' + data.avancement + ' %';
+  const progress = document.createElement('progress');
+  progress.className = 'progress';
+  progress.max = 100;
+  progress.value = data.avancement;
+  progress.setAttribute('aria-label', 'Avancement du projet');
+
   const messageEl = document.createElement('div');
   messageEl.className = 'message-box' + (complete ? ' is-complete' : '');
   messageEl.textContent = data.message;
@@ -123,7 +143,26 @@ function renderStatus(card, data) {
   updatedEl.className = 'updated-at';
   updatedEl.textContent = 'Dernière mise à jour : ' + formatDate(data.derniere_maj);
 
-  card.append(clientEl, etapeEl, stepper, messageEl, updatedEl);
+  card.append(clientEl, etapeEl, progressLabel, progress, stepper, messageEl, updatedEl);
+}
+
+async function loadStatus(repo, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  const base = `https://raw.githubusercontent.com/${GITHUB_USER}/${repo}`;
+  try {
+    const options = { cache: 'no-store', signal: controller.signal };
+    let response = await fetch(`${base}/project-status/status.json`, options);
+    // Les liens existants restent valables avant la migration du dépôt client.
+    // Une panne ou un état invalide ne doit pas afficher des données anciennes.
+    if (response.status === 404) response = await fetch(`${base}/main/status.json`, options);
+    if (!response.ok) throw new Error(response.status === 404 ? 'not_found' : 'http_error');
+    const data = await response.json();
+    if (!isValidStatus(data)) throw new Error('invalid_status');
+    return data;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 async function init() {
@@ -139,51 +178,19 @@ async function init() {
     return;
   }
 
-  const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${repo}/main/status.json`;
-
-  let response;
   try {
-    response = await fetch(url, { cache: 'no-store' });
+    renderStatus(card, await loadStatus(repo));
   } catch (e) {
-    renderError(
-      card,
-      'Suivi momentanément indisponible',
-      'Impossible de contacter le service de suivi. Vérifiez votre connexion et réessayez dans quelques instants.'
-    );
-    return;
+    if (e.message === 'not_found') {
+      renderError(card, 'Suivi introuvable', "Ce projet n'a pas encore de suivi disponible, ou le lien est incorrect. Contactez AbiWeb si le problème persiste.");
+    } else if (e.name === 'AbortError') {
+      renderError(card, 'Le suivi met trop de temps à répondre', 'Rechargez la page dans quelques instants ou contactez AbiWeb.');
+    } else if (e.message === 'invalid_status' || e.name === 'SyntaxError') {
+      renderError(card, 'Suivi momentanément indisponible', 'Les informations de suivi sont incomplètes ou illisibles. Merci de contacter AbiWeb.');
+    } else {
+      renderError(card, 'Suivi momentanément indisponible', 'Impossible de contacter le service de suivi. Vérifiez votre connexion et réessayez dans quelques instants.');
+    }
   }
-
-  if (!response.ok) {
-    renderError(
-      card,
-      'Suivi introuvable',
-      "Ce projet n'a pas encore de suivi disponible, ou le lien est incorrect. Contactez AbiWeb si le problème persiste."
-    );
-    return;
-  }
-
-  let data;
-  try {
-    data = await response.json();
-  } catch (e) {
-    renderError(
-      card,
-      'Suivi momentanément indisponible',
-      "Les informations de suivi n'ont pas pu être lues. Merci de contacter AbiWeb."
-    );
-    return;
-  }
-
-  if (!isValidStatus(data)) {
-    renderError(
-      card,
-      'Suivi momentanément indisponible',
-      "Les informations de suivi sont incomplètes. Merci de contacter AbiWeb."
-    );
-    return;
-  }
-
-  renderStatus(card, data);
 }
 
 init();

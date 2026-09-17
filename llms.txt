@@ -9,41 +9,39 @@ AbiWeb est une activite d'auto-entrepreneur exercee par Abdallah Gherari
 (SIREN 106 779 747, SIRET 106 779 747 00018, code APE 62.01Z). Contact :
 contact@abiweb.fr. Site : https://www.abiweb.fr/
 
+<!-- catalogue:start -->
 ## Formules
 
-- **Essentiel : 590 EUR**, livre en 5 jours. Site vitrine 5 sections,
-  formulaire de contact, design responsive, referencement de base.
-- **Standard : 790 EUR**, livre en 7 jours. Essentiel + espace
-  d'administration client + galerie photos.
-- **Premium : 1290 EUR**, livre en 10 jours. Essentiel + les 9 modules a la
-  carte.
+- **Essentiel : 590 EUR**, livré en 5 jours ouvrés. Site vitrine 5 sections, formulaire de contact, design responsive, SEO de base. Jusqu’à 8 photos. Intégration vidéo sur devis complémentaire.
+- **Standard : 790 EUR**, livré en 7 jours ouvrés. Base + Système admin client (modifier textes/photos seul) + Galerie photos dynamique. Jusqu’à 15 photos. Intégration de liens vidéo incluse.
+- **Premium : 1290 EUR**, livré en 10 jours ouvrés. Base + les 10 modules à la carte. Jusqu’à 20 photos. Intégration de liens vidéo incluse.
 
-Les prix sont fermes et affiches. Acompte de 30 % a la commande, solde a la
-livraison.
+Les délais courent après réception des contenus et de l’acompte. Au-delà des limites incluses, notamment plus de 20 photos, un devis personnalisé est nécessaire.
+Acompte de 30 % à la commande, solde à la livraison.
 
-## Modules a la carte
+## Modules à la carte
 
-Chaque module peut etre ajoute a la formule Essentiel plutot que de prendre une
-formule superieure.
-
-- Systeme d'administration client (modifier textes et photos soi-meme) : 300 EUR
-- Formulaire d'inscription avec generation de PDF : 150 EUR
-- Paiement securise avance par carte bancaire (type Stripe) : 150 EUR
-- Blog / actualites : 120 EUR
+- Système admin client (modifier textes/photos seul) : 300 EUR
 - Galerie photos dynamique : 80 EUR
-- Paiement en ligne (type HelloAsso, PayPal) : 80 EUR
-- Emailing / CRM (type Brevo) : 80 EUR
-- SEO avance et referencement Google : 80 EUR
-- Prise de rendez-vous en ligne (type Calendly, Doctolib, Planity) : 80 EUR
+- Formulaire d'inscription + génération PDF : 150 EUR
+- Blog / actualités : 120 EUR
+- Paiement en ligne (ex : HelloAsso, PayPal…) : 80 EUR
+- Emailing / CRM (ex : Brevo…) : 80 EUR
+- Paiement sécurisé avancé (ex : Stripe…) : 150 EUR
+- SEO avancé + référencement Google : 80 EUR
+- Visibilité IA (ChatGPT, Perplexity, AI Overviews) : 80 EUR
+- Prise de rendez-vous en ligne (ex : Calendly, Doctolib, Planity…) : 80 EUR
+
+La modification autonome des textes et photos nécessite le module admin, inclus dans Standard et Premium.
 
 ## Maintenance mensuelle, optionnelle
 
-- Basique : 25 EUR/mois. Hebergement, surveillance, 1 modification par mois.
-- Standard : 45 EUR/mois. 3 modifications par mois, support email sous 48 h.
-- Premium : 80 EUR/mois. Modifications illimitees, support prioritaire sous 24 h.
+- Basique - hébergement, surveillance, 1 modif/mois : 25 EUR/mois.
+- Standard - + 3 modifs/mois + support email 48h : 45 EUR/mois.
+- Premium - modifs illimitées + support prioritaire 24h : 80 EUR/mois.
 
-Aucune maintenance n'est obligatoire. Un site livre sans maintenance reste la
-propriete du client et continue de fonctionner.
+Aucune maintenance n’est obligatoire. Un site livré sans maintenance reste la propriété du client et continue de fonctionner.
+<!-- catalogue:end -->
 
 ## Garanties
 
@@ -76,4 +74,4 @@ veulent un budget connu a l'avance sans abonnement mensuel impose.
 - [Mentions legales](https://www.abiweb.fr/mentions-legales)
 - [Politique de confidentialite](https://www.abiweb.fr/politique-de-confidentialite)
 
-Derniere mise a jour : 2026-07-29
+Derniere mise a jour : 2026-09-17

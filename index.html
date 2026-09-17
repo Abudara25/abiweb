@@ -2,13 +2,13 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <script defer src="/js/analytics-loader.js"></script>
+  <script defer src="/js/analytics-loader.js?v=20260917"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SEO TITLE & META -->
   <title>AbiWeb - Création de site internet clé en main pas cher | Val-d'Oise, Île-de-France</title>
   <link rel="icon" type="image/svg+xml" href="/images/logo/abiweb-favicon.svg" />
-  <meta name="description" content="Création de site internet clé en main à partir de 590€ pour associations, commerçants et auto-entrepreneurs. Basé dans le Val-d'Oise, j'interviens en Île-de-France et partout en France, 100% à distance. Livraison en 7 jours, devis gratuit." />
+  <meta name="description" content="Création de site internet clé en main à partir de 590€ pour associations, commerçants et auto-entrepreneurs. Basé dans le Val-d'Oise, j'interviens en Île-de-France et partout en France, 100% à distance. Livraison sous 5 à 10 jours selon la formule, devis gratuit." />
   <meta name="author" content="AbiWeb" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.abiweb.fr/" />
@@ -17,7 +17,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.abiweb.fr/" />
   <meta property="og:title" content="AbiWeb - Création de site internet clé en main à partir de 590€" />
-  <meta property="og:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Val-d'Oise, Île-de-France et partout en France, 100% à distance. Livraison en 7 jours, devis gratuit." />
+  <meta property="og:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Val-d'Oise, Île-de-France et partout en France, 100% à distance. Livraison sous 5 à 10 jours selon la formule, devis gratuit." />
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:image" content="https://www.abiweb.fr/images/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -27,7 +27,7 @@
   <!-- TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AbiWeb - Création de site internet clé en main à partir de 590€" />
-  <meta name="twitter:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Val-d'Oise, Île-de-France et partout en France. Livraison en 7 jours." />
+  <meta name="twitter:description" content="Sites vitrines clé en main pour associations, TPE et auto-entrepreneurs. Val-d'Oise, Île-de-France et partout en France. Livraison sous 5 à 10 jours selon la formule." />
   <meta name="twitter:image" content="https://www.abiweb.fr/images/og-image.png" />
 
   <!-- SCHEMA.ORG - ProfessionalService (entité locale + offres) -->
@@ -39,7 +39,7 @@
     "url": "https://www.abiweb.fr",
     "image": "https://www.abiweb.fr/images/og-image.png",
     "email": "contact@abiweb.fr",
-    "description": "Création de sites internet clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Basé dans le Val-d'Oise, j'interviens en Île-de-France et partout en France, 100% à distance. Livraison en 7 jours.",
+    "description": "Création de sites internet clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Basé dans le Val-d'Oise, j'interviens en Île-de-France et partout en France, 100% à distance. Livraison sous 5 à 10 jours selon la formule.",
     "priceRange": "590€ - 1290€",
     "founder": {
       "@type": "Person",
@@ -383,7 +383,7 @@
   <!-- .hero-visual est en display:none sous 641px (voir shared media query hero) : ne pas precharger
        cette image en priorite haute sur mobile, ca vole de la bande passante au vrai LCP mobile (le texte du hero). -->
   <link rel="preload" href="/images/hero/hero-photo-macbook.webp" as="image" fetchpriority="high" media="(min-width: 641px)" />
-  <link rel="stylesheet" href="/css/shared.css" />
+  <link rel="stylesheet" href="/css/shared.css?v=20260917" />
   <!-- index-sections.css reste bloquant (et NON differe en media="print") :
        la section "Pour qui" est deja visible dans la premiere fenetre
        (top ~656px sur un viewport bureau de 940px) et son style vit ici.
@@ -393,7 +393,7 @@
        (quelques centaines de ms de rendu estimees) etait tres inferieur au
        cout du CLS dans le score. Ne pas re-differer sans deplacer d'abord les
        styles des sections au-dessus de la ligne de flottaison en inline. -->
-  <link rel="stylesheet" href="/css/index-sections.css" />
+  <link rel="stylesheet" href="/css/index-sections.css?v=20260917" />
   <style>
     /* CSS critique (nav + hero + boutons partages) : reste inline pour peindre
        le premier ecran sans attendre un fichier externe. Le reste des sections
@@ -411,7 +411,7 @@
 
     /* HERO */
     .hero { position: relative; text-align: center; padding: 5rem 2rem 3.5rem; overflow-x: hidden; }
-    /* Test skill banana-animation : illustration en fond pleine largeur (toute la largeur de l'ecran), local uniquement */
+    /* Illustration de fond sur les ecrans larges. */
     .hero-visual { position: absolute; z-index: 0; inset: 0; pointer-events: none; }
     .hero-illustration { width: 100%; height: 100%; object-fit: cover; object-position: right center; display: block; }
     .hero-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--paper) 0%, var(--paper) 38%, rgba(250,249,246,0.55) 55%, transparent 78%); }
@@ -482,7 +482,7 @@
   </style>
 </head>
 <body>
-<a class="skip-link" href="#tarifs">Aller au contenu principal</a>
+<a class="skip-link" href="#contenu">Aller au contenu principal</a>
 
 <!-- NAV -->
 <nav>
@@ -506,7 +506,7 @@
   </div>
 </nav>
 
-<main>
+<main id="contenu">
 <!-- HERO -->
 <section class="hero">
   <div class="hero-visual">
@@ -515,8 +515,8 @@
   <div class="hero-inner">
     <div class="hero-content">
       <span class="hero-eyebrow">Val-d'Oise, Île-de-France et toute la France · 100% à distance</span>
-      <h1>Création de site internet<br><em>clé en main</em> pour <span class="word-rotator" id="wordRotator"><span class="word-rotator-item is-active">associations</span><span class="word-rotator-item">artisans</span><span class="word-rotator-item">auto-entrepreneurs</span><span class="word-rotator-item">commerçants</span><span class="word-rotator-item">TPE</span></span></h1>
-      <p>Sites vitrines clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Livraison en 7 jours, sans jargon, sans abonnement caché.</p>
+      <h1>Création de site internet<br><em>clé en main</em> pour <span class="sr-only">associations, artisans, auto-entrepreneurs, commerçants et TPE</span><span class="word-rotator" id="wordRotator" aria-hidden="true"><span class="word-rotator-item is-active">associations</span><span class="word-rotator-item">artisans</span><span class="word-rotator-item">auto-entrepreneurs</span><span class="word-rotator-item">commerçants</span><span class="word-rotator-item">TPE</span></span></h1>
+      <p>Sites vitrines clé en main pour associations, TPE, commerçants et auto-entrepreneurs. Livraison sous 5 à 10 jours selon la formule, sans jargon, sans abonnement caché.</p>
       <p class="hero-note"><a href="#garantie" style="color:var(--mid);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;">Retouches offertes 7 jours*</a> · Modules à la carte</p>
       <div class="cta-group" style="margin-top: 1.75rem;">
         <a class="btn-primary" href="/devis">Demander un devis gratuit</a>
@@ -534,7 +534,7 @@
     <div class="audience-grid">
       <div class="audience-item"><div class="audience-dot"></div><div><h3>Site internet clé en main pour association</h3><p>Présentez vos activités, gérez les adhésions et centralisez les paiements en ligne (HelloAsso, PayPal…) pour que vos membres et bénévoles trouvent tout au même endroit.</p></div></div>
       <div class="audience-item"><div class="audience-dot"></div><div><h3>Site internet clé en main pour auto-entrepreneur</h3><p>Une vitrine professionnelle pour présenter vos services et être trouvé sur Google, sans les charges fixes d'un abonnement mensuel.</p></div></div>
-      <div class="audience-item"><div class="audience-dot"></div><div><h3>Site internet clé en main pour TPE et commerçants</h3><p>Affichez vos horaires, vos produits et votre localisation sur un site clé en main, livré en 7 jours sans compétence technique de votre côté.</p></div></div>
+      <div class="audience-item"><div class="audience-dot"></div><div><h3>Site internet clé en main pour TPE et commerçants</h3><p>Affichez vos horaires, vos produits et votre localisation sur un site clé en main, livré sous 5 à 10 jours selon la formule sans compétence technique de votre côté.</p></div></div>
     </div>
   </div>
 </section>
@@ -751,7 +751,7 @@
       <div class="simulator-summary">
         <div class="simulator-total-card">
           <p class="simulator-total-label">Total estimé</p>
-          <p class="simulator-total-amount" id="simulatorTotal">590 €</p>
+          <p class="simulator-total-amount" id="simulatorTotal" role="status" aria-live="polite">590 €</p>
           <div class="simulator-suggestion" id="simulatorSuggestion"></div>
           <button class="btn-simulator-cta" id="simulatorCta" type="button">Demander un devis →</button>
           <p class="simulator-cta-note">Pas d'engagement · Réponse rapide</p>
@@ -893,7 +893,7 @@
       <div class="step-num">5</div>
       <div class="step-body">
         <h3>Livraison + guide de mise à jour</h3>
-        <p>Site en ligne, domaine connecté, formulaire de contact actif. Je vous remets un guide simple pour modifier vos textes vous-même.</p>
+        <p>Site en ligne, domaine connecté, formulaire de contact actif. Je vous remets un guide de prise en main. Avec le module admin, vous pouvez modifier vos textes vous-même.</p>
         <span class="step-tag">Garantie retouches 7 jours déclenchée</span>
       </div>
     </div>
@@ -901,7 +901,7 @@
       <div class="step-num">6</div>
       <div class="step-body">
         <h3>Suivi à J+7</h3>
-        <p>Je vérifie que tout fonctionne et je reste disponible pour vos questions. Renouvellement annuel de l'hébergement si option B choisie.</p>
+        <p>Je vérifie que tout fonctionne et je reste disponible pour vos questions. Le renouvellement du nom de domaine reste à prévoir à partir de la deuxième année.</p>
       </div>
     </div>
   </div>
@@ -916,8 +916,8 @@
       <div class="included-item"><div class="included-dot"></div><div><h3>Mise en ligne incluse</h3><p>Je m'occupe du déploiement. Vous n'avez rien à faire techniquement.</p></div></div>
       <div class="included-item"><div class="included-dot"></div><div><h3>Nom de domaine guidé</h3><p>Je vous accompagne pour choisir et connecter votre domaine .fr ou .com.</p></div></div>
       <div class="included-item"><div class="included-dot"></div><div><h3>Mobile-first</h3><p>Le site s'adapte parfaitement aux smartphones et tablettes.</p></div></div>
-      <div class="included-item"><div class="included-dot"></div><div><h3>Livraison en 7 jours</h3><p>Délai maximum à compter de la réception de vos contenus.</p></div></div>
-      <div class="included-item"><div class="included-dot"></div><div><h3>Prise en main simple</h3><p>Un guide clair vous est remis pour mettre à jour vos textes vous-même.</p></div></div>
+      <div class="included-item"><div class="included-dot"></div><div><h3>Un délai annoncé</h3><p>5 jours (Essentiel), 7 jours (Standard) ou 10 jours (Premium), à compter de la réception de vos contenus. Les projets personnalisés ont leur propre délai.</p></div></div>
+      <div class="included-item"><div class="included-dot"></div><div><h3>Prise en main simple</h3><p>Un guide vous est remis. La modification autonome des textes et photos nécessite le module admin, inclus avec Standard et Premium.</p></div></div>
       <div class="included-item"><div class="included-dot"></div><div><h3>Aucune surprise</h3><p>Le prix affiché est le prix final. Acompte 30% au démarrage, solde à la livraison.</p></div></div>
     </div>
   </div>
@@ -984,21 +984,21 @@
     <p class="form-subtitle">Remplissez le formulaire - je l'étudie et vous réponds avec un devis clair, sans engagement.</p>
 
     <p class="form-note" style="margin-bottom: 1.25rem;">Question ou pas encore de projet précis ? Choisissez « Question rapide ». Projet déjà réfléchi ? « Projet déjà cadré » vous guide en 5 étapes sur une page dédiée.</p>
-    <div class="form-tabs">
-      <button class="form-tab active" data-tab="contact">✉️ Question rapide</button>
-      <button class="form-tab" data-tab="brief">📋 Projet déjà cadré →</button>
+    <div class="form-tabs" role="tablist" aria-label="Type de demande">
+      <button class="form-tab active" id="contactTab" data-tab="contact" role="tab" aria-controls="tab-contact" aria-selected="true" type="button">✉️ Question rapide</button>
+      <button class="form-tab" id="briefTab" data-tab="brief" role="tab" aria-controls="tab-brief" aria-selected="false" tabindex="-1" type="button">📋 Projet déjà cadré →</button>
     </div>
 
     <!-- ONGLET CONTACT -->
-    <div class="form-panel active" id="tab-contact">
+    <form class="form-panel active" id="tab-contact" role="tabpanel" aria-labelledby="contactTab" novalidate>
       <div class="form-group">
         <label for="c-nom">Prénom et nom *</label>
-        <input type="text" placeholder="Ex : Jean Martin" id="c-nom" autocomplete="name" />
+        <input type="text" placeholder="Ex : Jean Martin" id="c-nom" required autocomplete="name" />
         <span class="field-error">Merci d'indiquer votre nom.</span>
       </div>
       <div class="form-group">
         <label for="c-email">Email *</label>
-        <input type="email" placeholder="Ex : jean@monentreprise.fr" id="c-email" autocomplete="email" />
+        <input type="email" placeholder="Ex : jean@monentreprise.fr" id="c-email" required autocomplete="email" />
         <span class="field-error">Adresse email invalide.</span>
       </div>
       <div class="form-group">
@@ -1009,16 +1009,16 @@
         <label for="c-formule">Formule qui vous intéresse</label>
         <select id="c-formule">
           <option value="">- Choisir -</option>
-          <option>Essentiel - 590€</option>
-          <option>Standard - 790€</option>
-          <option>Premium - 1290€</option>
-          <option>Sur-mesure à la carte</option>
-          <option>Je ne sais pas encore</option>
+          <option value="essentiel">Essentiel - 590€</option>
+          <option value="standard">Standard - 790€</option>
+          <option value="premium">Premium - 1290€</option>
+          <option value="alacarte">Sur-mesure à la carte</option>
+          <option value="indecis">Je ne sais pas encore</option>
         </select>
       </div>
       <div class="form-group full">
         <label for="c-message">Votre message *</label>
-        <textarea placeholder="Décrivez votre activité et ce que vous souhaitez en quelques lignes..." id="c-message"></textarea>
+        <textarea placeholder="Décrivez votre activité et ce que vous souhaitez en quelques lignes..." id="c-message" required></textarea>
         <span class="field-error">Décrivez votre projet en quelques mots.</span>
       </div>
       <!-- Honeypot anti-spam : invisible pour les humains, les bots le remplissent -->
@@ -1030,7 +1030,7 @@
         <div class="cf-turnstile" id="turnstile-contact" data-sitekey="0x4AAAAAAEFcN1TgFX59vj1X" data-action="contact"></div>
       </div>
       <div class="form-submit full">
-        <button class="btn-submit" id="contactSubmitBtn" type="button">Envoyer le message →</button>
+        <button class="btn-submit" id="contactSubmitBtn" type="submit">Envoyer le message →</button>
         <span class="form-note">Réponse rapide · Sans engagement</span>
       </div>
       <div class="form-success" id="success-contact" role="status" aria-live="polite">✅ Message envoyé ! Je vous réponds rapidement.</div>
@@ -1041,10 +1041,10 @@
           <a href="#" id="mailtoContactLink" class="form-error-mailto">Ouvrir ma messagerie →</a>
         </div>
       </div>
-    </div>
+    </form>
 
     <!-- ONGLET BRIEF -->
-    <div class="form-panel" id="tab-brief">
+    <div class="form-panel" id="tab-brief" role="tabpanel" aria-labelledby="briefTab">
       <div style="grid-column: 1 / -1; text-align: center; padding: 1.5rem 0;">
         <p style="color: rgba(255,255,255,0.75); font-size: 1.064rem; max-width: 460px; margin: 0 auto 1.5rem;">Présentez votre projet sur une page dédiée, en 5 étapes guidées (votre structure, vos besoins, votre style). Comptez environ 5 minutes.</p>
         <a href="/devis" class="btn-submit" style="display: inline-block; text-decoration: none;">Présenter mon projet →</a>
@@ -1072,9 +1072,8 @@
 
 <!-- Turnstile n'est plus charge au premier rendu : /js/turnstile-lazy.js va
      chercher api.js (28 Kio, domaine tiers) quand le formulaire approche. -->
-<script src="/js/turnstile-lazy.js" defer></script>
-<script src="/js/pricing-data.js"></script>
-<script src="/js/home.js"></script>
-  <script src="/js/cookie-banner.js"></script>
+<script src="/js/turnstile-lazy.js?v=20260917" defer></script>
+<script type="module" src="/js/home.js?v=20260917"></script>
+  <script src="/js/cookie-banner.js?v=20260917"></script>
 </body>
 </html>

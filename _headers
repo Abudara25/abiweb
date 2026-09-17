@@ -27,6 +27,13 @@
   ! Content-Security-Policy
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://raw.githubusercontent.com; img-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
 
+# Autocompletion de ville (Google Places) sur le formulaire de devis : elargit
+# script/connect/img-src a maps.googleapis.com et maps.gstatic.com, sans
+# toucher au CSP par defaut des autres pages.
+/devis/*
+  ! Content-Security-Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://challenges.cloudflare.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://maps.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://maps.googleapis.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; upgrade-insecure-requests
+
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
@@ -34,11 +41,13 @@
   Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
 
 /js/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
-
-/js/vendor/*
-  ! Cache-Control
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 
 /css/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+  Cache-Control: public, max-age=0, must-revalidate
+
+/suivi-abiweb/*.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/suivi-abiweb/*.css
+  Cache-Control: public, max-age=0, must-revalidate

@@ -1,15 +1,36 @@
-# Fichiers/dossiers a ne pas uploader comme assets statiques publics.
-# assets.directory = "." (racine du repo) dans wrangler.jsonc, donc tout ce qui
-# n'est pas du contenu du site doit etre exclu explicitement.
-node_modules/
-.git/
-.github/
-.wrangler/
-_worker.js
-functions/
-tests/
-package.json
-package-lock.json
-wrangler.jsonc
-eslint.config.mjs
-README.md
+# Seul le contenu public est autorise. Un nouveau fichier de travail ou de
+# secrets reste prive, meme lors d'un deploiement depuis le poste local.
+*
+!/index.html
+!/404.html
+!/robots.txt
+!/sitemap.xml
+!/llms.txt
+!/css/
+!/css/**
+!/js/
+!/js/**
+!/fonts/
+!/fonts/**
+!/images/
+!/images/**
+!/devis/
+!/devis/index.html
+!/cgv/
+!/cgv/index.html
+!/mentions-legales/
+!/mentions-legales/index.html
+!/politique-de-confidentialite/
+!/politique-de-confidentialite/index.html
+!/demos/
+!/demos/shared.css
+!/demos/*/
+!/demos/*/index.html
+!/suivi-abiweb/
+!/suivi-abiweb/*.html
+!/suivi-abiweb/*.js
+!/suivi-abiweb/*.css
+# Ces exclusions restent prioritaires a l'interieur des dossiers publics.
+**/.*
+**/*.map
+**/*.test.*
